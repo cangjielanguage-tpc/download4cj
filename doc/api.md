@@ -1,0 +1,126 @@
+### 接口说明
+
+主要是核心类和成员函数说明
+
+#### class DownloadTaskBuilder
+
+```
+/**
+ * 用于设置下载文件的名称
+ *
+ * @since 0.34.3
+ */
+public func setFilename(filename:String)
+```
+
+
+```
+/**
+ * 设置下载完成后是否要重新下载
+ *
+ * @since 0.34.3
+ */
+public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool)
+```
+
+
+```
+/**
+ * 设置进度回调的时间间隔
+ *
+ * @since 0.34.3
+ */
+public func setMinIntervalMillisCallbackProcess(passIfAlreadyCompleted:Bool)
+```
+
+#### class DownloadTask
+
+
+```
+/**
+ * 用于执行同步下载
+ *
+ * @since 0.34.3
+ */
+ public func execute(listener:DownloadListener):Unit
+ ```
+
+
+ ```
+/**
+ * 获取任务的Id
+ *
+ * @since 0.34.3
+ */
+public func getId():Int64
+```
+
+ ```
+/**
+ * 获取文件名
+ *
+ * @since 0.34.3
+ */
+public func getFilename():Option<String>
+```
+
+ ```
+/**
+ * 获取文件下载路径
+ *
+ * @since 0.34.3
+ */
+public func getUrl():String
+```
+
+
+ ```
+/**
+ * 获取下载下来的文件的父文件夹
+ *
+ * @since 0.34.3
+ */
+public func getUri():URL
+```
+
+ ```
+/**
+ * 获取下载后的文件
+ *
+ * @since 0.34.3
+ */
+public func getProvidedPathFile():File
+```
+
+ ```
+/**
+ * 获取读取文件的缓存大小
+ *
+ * @since 0.34.3
+ */
+public func getReadBufferSize():Int64
+```
+
+
+ ```
+/**
+ * 获取刷新的缓冲大小
+ *
+ * @since 0.34.3
+ */
+public func getFlushBufferSize():Int64
+```
+
+ ```
+/**
+ * 获取下载时候的连接数
+ *
+ * @since 0.34.3
+ */
+public func getConnectionCount():Int64
+```
+
+
+
+
+
