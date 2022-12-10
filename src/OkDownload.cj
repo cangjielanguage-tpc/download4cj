@@ -77,8 +77,7 @@ public class OkDownload {
 
                 }else{
                     //为空
-                    //TODO
-                    //singleton = OkDownloadBuilder().build()
+                    singleton = OkDownloadBuilder().build()
                 }
             }
 
