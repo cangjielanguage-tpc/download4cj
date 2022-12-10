@@ -94,9 +94,7 @@ main(){
 
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-        println("进来了")
     }else{
-        println("没进来")
     }
 
     //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
