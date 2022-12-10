@@ -52,9 +52,8 @@ public class BreakpointLocalCheck {
 
     public func isOutputStreamSupportResume():Bool{
 
-        //------TODO
-        //let supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
-        let supportSeek:Bool = true
+
+        let supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
         if (supportSeek){
              return true
         }

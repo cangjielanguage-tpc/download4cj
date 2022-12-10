@@ -84,9 +84,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         targetFile = directoryFile.createFile(this.filename.getOrThrow())
         providedPathFile = targetFile.getOrThrow()
 
-        //------TODO
-        //this.id = OkDownload.withs().breakpointStore().findOrCreateId(this)
-        this.id = 1
+        this.id = OkDownload.withs().breakpointStore().findOrCreateId(this)
 
     }
 
@@ -254,8 +252,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     public func execute(listener:DownloadListener):Unit{
         this.listener = listener
         println("aaaa")
-        //------TODO
-        //OkDownload.withs().downloadDispatcher().execute(this)
+        OkDownload.withs().downloadDispatcher().execute(this)
     }
 
 
