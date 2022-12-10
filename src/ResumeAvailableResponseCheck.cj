@@ -15,7 +15,7 @@ public class ResumeAvailableResponseCheck {
     public func inspect():Unit{
         let blockInfo:BlockInfo = info.getBlock(blockIndex).getOrThrow()
         let code:Int64 = connected.getResponseCode()
-        let newEtag:String = connected.getResponseHeaderField("Etag").getOrThrow()
+        let newEtag:String = connected.getResponseHeaderField(Util.ETAG).getOrThrow()
         let resumeFailedCause:Option<ResumeFailedCause> = OkDownload.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag)
         //------
 
