@@ -38,7 +38,11 @@ public class KeyToIdMap{
 
 
     func generateKey(task:DownloadTask):String{
-        return task.getUrl()+task.getUri().toString()+task.getFilename().getOrThrow()
+        if(Util.isEmpty(task.getFilename())){
+            return task.getUrl()+task.getUri().toString()
+        }else{
+            return task.getUrl()+task.getUri().toString()+task.getFilename().getOrThrow()
+        }
     }
 
 }

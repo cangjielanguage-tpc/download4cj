@@ -47,9 +47,13 @@
 
 | 成员函数 | 入参 | 返回值 | 作用描述 |
 | --- | --- |  --- | --- |
+| init   | url:String,file:Directory | DownloadTaskBuilder | 用于构造DownloadTaskBuilder对象 |
 | setFilename   | filename:String | DownloadTaskBuilder | 用于设置下载文件的名称 |
 | setPassIfAlreadyCompleted   | passIfAlreadyCompleted:Bool | DownloadTaskBuilder | 设置下载完成后是否要重新下载|
 | setMinIntervalMillisCallbackProcess   | minIntervalMillisCallbackProcess:Int64 | DownloadTaskBuilder | 设置进度回调的时间间隔 |
+| setReadBufferSize   | readBufferSize:Int64 | DownloadTaskBuilder | 设置读取缓存大小|
+| setFlushBufferSize   |flushBufferSize:Int64 | DownloadTaskBuilder | 设置刷新缓冲大小 |
+| build   | 无 | DownloadTask | 用于构造DownloadTask对象 |
 
 
 💡 DownloadTask 任务对象类
@@ -65,6 +69,24 @@
 | getReadBufferSize   | 无 | Int64 | 获取读取文件的缓存大小 |
 | getFlushBufferSize   | 无 | Int64 | 获取刷新的缓冲大小 |
 | getConnectionCount   | 无 | Int64 | 获取下载时候的连接数 |
+
+
+
+💡 DownloadListener 下载任务回调接口类
+
+| 成员函数 | 入参 | 返回值 | 作用描述 |
+| --- | --- | --- | --- |
+| taskStart   | task:DownloadTask | Unit | 任务刚开始的回调 |
+| connectTrialStart   | task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务开始尝试连接的回调|
+| connectTrialEnd   | task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务结束尝试连接的回调 |
+| downloadFromBeginning   | task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause | Unit | 从开始下载的回调 |
+| downloadFromBreakpoint   | task:DownloadTask,info:BreakpointInfo | Unit | 从断点处下载的回调 |
+| connectStart   | task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接开始的回调 |
+| connectEnd   | task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接结束的回调 |
+| fetchStart   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 开始获取进度的回调 |
+| fetchProgress   | task:DownloadTask,blockIndex:Int64,increaseBytes:Int64 | Unit | 获取进度的回调 |
+| fetchEnd   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 获取进度结束的回调 |
+| taskEnd   | task:DownloadTask,cause:EndCause,realCause:Option<Exception> | Unit | 任务结束的回调 |
 
 
 ###### 5.1.4 展示示例

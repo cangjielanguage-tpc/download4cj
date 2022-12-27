@@ -6,7 +6,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.34.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.35.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.1%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -96,6 +96,28 @@ public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess
 ```cangjie
  public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool):DownloadTaskBuilder{
 ```
+
+
+#### interface DownloadListener  DownLoadTask下载任务的回调监听接口
+
+#####  func taskStart
+
+任务开始的回调
+
+```cangjie
+func taskStart(task:DownloadTask):Unit
+```
+
+......
+
+
+任务结束的回调
+
+```cangjie
+func taskEnd(task:DownloadTask,cause:EndCause,realCause:Option<Exception>):Unit
+```
+
+
 
 
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 编译执行

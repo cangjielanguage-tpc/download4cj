@@ -39,7 +39,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     private let lastCallbackProcessTimestamp:AtomicInt64 //上次回调处理时间戳
     private var filenameFromResponse:Bool //文件名来自响应
     private let filenameHolder:FileNameHolder
-    private let providedPathFile:File //提供的路径文件
+    private let providedPathFile:Option<File> //提供的路径文件
     private let directoryFile :Directory
     private var targetFile :Option<File>
     private var redirectLocation : String
@@ -78,6 +78,13 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         filenameFromResponse = true
         directoryFile = dirFile
         this.filenameFromResponse = filenameFromResponse
+
+        if(Util.isEmpty(this.filename.getOrThrow())){
+            //如果没设置名字，名字就从url里取
+            let lastIndex:Int64 = url.lastIndexOf("/").getOrThrow()
+            this.filename = url.substring(lastIndex+1)
+        }else{
+        }
 
 
         filenameHolder = FileNameHolder(this.filename.getOrThrow())
@@ -136,7 +143,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return redirectLocation
     }
 
-    public func getProvidedPathFile():File{
+    public func getProvidedPathFile():Option<File>{
         return  providedPathFile
     }
 
@@ -243,10 +250,18 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
 
 
-    //------
+     public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener):Unit{
+        for(task in tasks){
+            task.listener = listener
+        }
+        OkDownload.withs().downloadDispatcher().enqueue(tasks)
+    }
 
 
-    //------
+    public func enqueue(listener:DownloadListener):Unit{
+        this.listener = listener
+        OkDownload.withs().downloadDispatcher().enqueue(this)
+    }
 
 
     public func execute(listener:DownloadListener):Unit{
@@ -268,7 +283,13 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
 
 
-    //------
+    public func getListener():DownloadListener{
+        return this.listener.getOrThrow()
+    }
+
+    public func getPriority():Int64{
+        return priority
+    }
 
 
 
@@ -288,7 +309,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
 
     public func hashCode(): Int64{
-        return (url + providedPathFile.info.path.toString() + filenameHolder.get().getOrThrow()).hashCode();
+        return (url + providedPathFile.getOrThrow().info.path.toString() + filenameHolder.get().getOrThrow()).hashCode();
     }
 
 

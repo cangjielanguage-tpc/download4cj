@@ -17,7 +17,11 @@ public class MockTaskForCompare <: IdentifiedTask {
         this.url =  task.getUrl()
         this.parentFile = task.getParentFile()
         this.providedPathFile = task.getProvidedPathFile()
-        this.filename = task.getFilename().getOrThrow()
+        if(Util.isEmpty(task.getFilename())){
+            this.filename = ""
+        }else{
+            this.filename = task.getFilename().getOrThrow()
+        }
     }
 
 
@@ -32,7 +36,7 @@ public class MockTaskForCompare <: IdentifiedTask {
     }
 
 
-    public func getProvidedPathFile():File{
+    public func getProvidedPathFile():Option<File>{
         return providedPathFile.getOrThrow()
     }
 

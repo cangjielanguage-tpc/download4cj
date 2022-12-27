@@ -22,7 +22,35 @@ public class CallbackDispatcher {
         return (minInterval <= 0) || ((now - TaskHideWrapper.getLastCallbackProcessTs(task)) >= minInterval)
    }
 
-//------
+
+   public func endTasksWithError(errorCollection:ArrayList<DownloadTask>,realCause:Exception):Unit{
+      if(errorCollection.size <= 0){
+         return
+      }
+
+      for (task in errorCollection) {
+         task.getListener().taskEnd(task, EndCause.ERROR, realCause)
+      }
+   }
+
+
+   public func endTasks(completedTaskCollection:ArrayList<DownloadTask>,sameTaskConflictCollection:ArrayList<DownloadTask>,fileBusyCollection:ArrayList<DownloadTask>){
+
+      if (completedTaskCollection.size == 0 && sameTaskConflictCollection.size == 0&& fileBusyCollection.size == 0) {
+            return
+      }
+
+      for (task in completedTaskCollection) {
+         task.getListener().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None)
+      }
+      for (task in sameTaskConflictCollection) {
+         task.getListener().taskEnd(task, EndCause.SAME_TASK_BUSY, Option<Exception>.None)
+      }
+      for (task in fileBusyCollection) {
+         task.getListener().taskEnd(task, EndCause.FILE_BUSY, Option<Exception>.None)
+      }
+
+   }
 
 
 

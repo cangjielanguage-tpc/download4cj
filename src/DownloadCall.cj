@@ -247,7 +247,9 @@ public class DownloadCall <: Equatable<DownloadCall>{
         return DownloadCache(outputStream)
     }
 
-    //------
+    func getPriority():Int64 {
+        return task.getPriority()
+    }
 
 
 
