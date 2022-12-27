@@ -40,7 +40,7 @@ main(){
      println("fileName="+task.getFilename().getOrThrow())
      println("url="+task.getUrl())
      println("uri="+task.getUri().toString())
-     println("ProvidedPathFile="+task.getProvidedPathFile().info.path.toString())
+     println("ProvidedPathFile="+task.getProvidedPathFile().getOrThrow().info.path.toString())
      println("ReadBufferSize="+task.getReadBufferSize().toString())
      println("FlushBufferSize="+task.getFlushBufferSize().toString())
      println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())

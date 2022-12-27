@@ -1,13 +1,14 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
+
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
 main(){
 
-    var url:String = "http://a2.dxiazaicc.com/down4/rufusv3.18_downcc.com.zip"
+    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
     //println("FileEnds="+FileEnds)
@@ -15,7 +16,7 @@ main(){
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
 
-    let parentFilePath:Path = Path("./fileDownLoad4")
+    let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
 
     if (!Directory.exists(parentFilePath)) {
@@ -34,6 +35,8 @@ main(){
          .setPassIfAlreadyCompleted(false)
          .build()
 
-     task.execute(DefaultTransmitListener())
+     task.enqueue(DefaultTransmitListener())
+     sleep(1000*1000*1000*3)
+     println("jieshu")
 }
 

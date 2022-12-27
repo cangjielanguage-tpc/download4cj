@@ -27,7 +27,7 @@ main(){
 
     //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-         .setFilename(filename)
+         //.setFilename(filename)
          // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
          // do re-download even if the task has already been completed in the past.

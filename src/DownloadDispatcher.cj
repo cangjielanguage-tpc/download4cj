@@ -40,6 +40,121 @@ public class DownloadDispatcher{
         this.store = store
     }
 
+
+
+    public func enqueue(tasks:Array<DownloadTask>):Unit{
+        skipProceedCallCount.fetchAdd(1)
+        enqueueLocked(tasks)
+        skipProceedCallCount.fetchSub(1)
+    }
+
+    public func enqueue(task:DownloadTask):Unit{
+        println("b1b1b1b1b1b1")
+        skipProceedCallCount.fetchAdd(1)
+        enqueueLocked(task)
+        skipProceedCallCount.fetchSub(1)
+    }
+
+    private func enqueueLocked(tasks:Array<DownloadTask>):Unit{
+        synchronized(m){
+            println("b2b2b2b2b2b2")
+            let taskList:ArrayList<DownloadTask>  = ArrayList<DownloadTask>()
+            taskList.appendAll(tasks)
+            if(taskList.size > 1){
+                taskList.sortBy({rht:DownloadTask,lht:DownloadTask =>
+                    if(rht.getPriority() < lht.getPriority()){
+                        return Ordering.GT
+                    }
+                    if(rht.getPriority() > lht.getPriority()){
+                        return Ordering.LT
+                    }
+                    return Ordering.EQ
+                },stable:true)
+            }
+
+            let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
+            try{
+                println("b3b3b3b3b3b3")
+                let completedTaskList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+                let sameTaskConflictList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+                let fileBusyList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+                for(task in taskList){
+                    if (inspectCompleted(task, completedTaskList)){
+                        continue
+                    }
+                    if (inspectForConflict(task, sameTaskConflictList, fileBusyList)){
+                        continue
+                    }
+                    println("b4b4b4b4b4b4")
+                    enqueueIgnorePriority(task)
+                }
+                OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
+            }catch(e:Exception){
+                let errorList:ArrayList<DownloadTask> = ArrayList<DownloadTask>(taskList)
+                OkDownload.withs().callbackDispatcher().endTasksWithError(errorList, e)
+            }
+
+            if(originReadyAsyncCallSize != readyAsyncCalls.size){
+                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                    if(rht.getPriority() < lht.getPriority()){
+                        return Ordering.GT
+                    }
+                    if(rht.getPriority() > lht.getPriority()){
+                        return Ordering.LT
+                    }
+                    return Ordering.EQ
+                },stable:true)
+            }
+
+        }
+    }
+
+
+    private func enqueueLocked(task:DownloadTask):Unit{
+        synchronized(m){
+            if (inspectCompleted(task)){
+                return
+            }
+            if (inspectForConflict(task)){
+                return
+            }
+            let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
+            enqueueIgnorePriority(task)
+            if(originReadyAsyncCallSize != readyAsyncCalls.size){
+                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                    if(rht.getPriority() < lht.getPriority()){
+                        return Ordering.GT
+                    }
+                    if(rht.getPriority() > lht.getPriority()){
+                        return Ordering.LT
+                    }
+                    return Ordering.EQ
+                },stable:true)
+            }
+        }
+    }
+
+
+
+
+    private func enqueueIgnorePriority(task:DownloadTask):Unit{
+        println("b5b5b5b5b5b5")
+        let call:DownloadCall = DownloadCall.create(task, true, store.getOrThrow())
+        if (runningAsyncSize() < maxParallelRunningCount) {
+            runningAsyncCalls.append(call)
+            spawn{=>
+                call.execute()
+            }
+        } else {
+            // priority
+            readyAsyncCalls.append(call)
+        }
+    }
+
+
+
+
+
     public func execute(task:DownloadTask):Unit{
         let call:DownloadCall
         synchronized (m) {
@@ -182,7 +297,9 @@ public class DownloadDispatcher{
    //......
 
 
-    //......
+    private func runningAsyncSize():Int64{
+        return runningAsyncCalls.size - flyingCanceledAsyncCallCount.load()
+    }
 
 
 

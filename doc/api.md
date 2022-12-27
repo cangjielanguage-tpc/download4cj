@@ -4,13 +4,23 @@
 
 #### class DownloadTaskBuilder
 
+
+```
+/**
+ * 用于构造DownloadTaskBuilder对象
+ *
+ * @since 0.34.3
+ */
+public init(url:String,file:Directory)
+```
+
 ```
 /**
  * 用于设置下载文件的名称
  *
  * @since 0.34.3
  */
-public func setFilename(filename:String)
+public func setFilename(filename:String):DownloadTaskBuilder
 ```
 
 
@@ -20,7 +30,7 @@ public func setFilename(filename:String)
  *
  * @since 0.34.3
  */
-public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool)
+public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool):DownloadTaskBuilder
 ```
 
 
@@ -30,8 +40,39 @@ public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool)
  *
  * @since 0.34.3
  */
-public func setMinIntervalMillisCallbackProcess(passIfAlreadyCompleted:Bool)
+public func setMinIntervalMillisCallbackProcess(passIfAlreadyCompleted:Bool):DownloadTaskBuilder
 ```
+
+```
+/**
+ * 设置读取缓存大小
+ *
+ * @since 0.34.3
+ */
+public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder
+```
+
+
+```
+/**
+ * 设置刷新缓冲大小
+ *
+ * @since 0.34.3
+ */
+public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder
+```
+
+
+```
+/**
+ * 用于构造DownloadTask对象
+ *
+ * @since 0.34.3
+ */
+public func build():DownloadTask
+```
+
+
 
 #### class DownloadTask
 
@@ -121,6 +162,117 @@ public func getConnectionCount():Int64
 ```
 
 
+#### interface DownloadListener
 
 
+```
+/**
+ * 任务刚开始的回调
+ *
+ * @since 0.34.3
+ */
+ func taskStart(task:DownloadTask):Unit
+ ```
+
+
+
+ ```
+/**
+ * 任务开始尝试连接的回调
+ *
+ * @since 0.34.3
+ */
+ func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit
+ ```
+
+
+```
+/**
+ * 任务结束尝试连接的回调
+ *
+ * @since 0.34.3
+ */
+ func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit
+ ```
+
+
+ ```
+/**
+ * 从开始下载的回调
+ *
+ * @since 0.34.3
+ */
+ func downloadFromBeginning(task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause):Unit
+ ```
+
+
+```
+/**
+ * 从断点处下载的回调
+ *
+ * @since 0.34.3
+ */
+ func downloadFromBreakpoint(task:DownloadTask,info:BreakpointInfo):Unit
+ ```
+
+
+```
+/**
+ * 连接开始的回调
+ *
+ * @since 0.34.3
+ */
+ func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit
+ ```
+
+
+
+```
+/**
+ * 连接结束的回调
+ *
+ * @since 0.34.3
+ */
+ func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit
+ ```
+
+
+```
+/**
+ * 开始获取进度的回调
+ *
+ * @since 0.34.3
+ */
+ func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit
+ ```
+
+
+```
+/**
+ * 获取进度的回调
+ *
+ * @since 0.34.3
+ */
+ func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit
+ ```
+
+
+```
+/**
+ * 获取进度结束的回调
+ *
+ * @since 0.34.3
+ */
+ func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit
+ ```
+
+
+ ```
+/**
+ * 任务结束的回调
+ *
+ * @since 0.34.3
+ */
+ func taskEnd(task:DownloadTask,cause:EndCause,realCause:Option<Exception>):Unit
+ ```
 

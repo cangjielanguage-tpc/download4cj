@@ -20,7 +20,7 @@ public abstract class IdentifiedTask{
 
     public func getUrl(): String
 
-    protected func getProvidedPathFile():File
+    protected func getProvidedPathFile():Option<File>
 
     public func getParentFile():Directory
 

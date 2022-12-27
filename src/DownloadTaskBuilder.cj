@@ -98,15 +98,30 @@ public class DownloadTaskBuilder{
     //------
 
 
-    //------
+    public func setPriority(priority:Int64):DownloadTaskBuilder{
+        this.priority = priority
+        return this
+    }
 
 
 
-    //------
+    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
+        if (readBufferSize < 0){
+            throw IllegalArgumentException("Value must be positive!")
+        }
+        this.readBufferSize = readBufferSize
+        return this
+    }
 
 
 
-    //------
+     public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder{
+        if (flushBufferSize < 0){
+            throw IllegalArgumentException("Value must be positive!")
+        }
+        this.flushBufferSize = flushBufferSize
+        return this
+    }
 
 
 
