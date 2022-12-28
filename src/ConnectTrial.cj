@@ -129,8 +129,13 @@ public class ConnectTrial{
         if (connected.getResponseCode() == Util.HTTP_PARTIAL){
             return true
         }
-        let acceptRanges:String = connected.getResponseHeaderField(Util.ACCEPT_RANGES).getOrThrow()
-        return "bytes".equals(acceptRanges)
+        try{
+            let acceptRanges:String = connected.getResponseHeaderField(Util.ACCEPT_RANGES).getOrThrow()
+            return "bytes".equals(acceptRanges)
+        }catch(e:Exception){
+            return false
+        }
+
     }
 
 
@@ -200,7 +205,11 @@ public class ConnectTrial{
 
 
     private static func findEtag(connected:DownloadConnectionConnected):String{
-        return connected.getResponseHeaderField(Util.ETAG).getOrThrow()
+        try{
+            return connected.getResponseHeaderField(Util.ETAG).getOrThrow()
+        }catch(e:Exception){
+            return ""
+        }
     }
 
 

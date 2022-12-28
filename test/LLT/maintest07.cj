@@ -16,7 +16,6 @@ main(){
     var FileEnds = url.substring(lastIndex)
     var FileEnds2 = url2.substring(lastIndex2)
 
-    //println("FileEnds="+FileEnds)
 
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds

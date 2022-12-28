@@ -15,7 +15,7 @@
 
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/> 介绍
-可靠、灵活、快速和强大的下载引擎。1.0版本提供同步下载 参考地址 https://github.com/lingochamp/okdownload.git
+可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载 参考地址 https://github.com/lingochamp/okdownload.git
 
 ### 特性
 
@@ -70,6 +70,25 @@
 ```cangjie
 public func execute(listener:DownloadListener):Unit
 ```
+
+#####  func enqueue
+
+用于执行异步下载
+
+```cangjie
+public func enqueue(listener:DownloadListener):Unit
+```
+
+
+#####  func enqueues
+
+用于执行异步下载多个
+
+```cangjie
+public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener):Unit
+```
+
+
 
 #### class DownloadTaskBuilder   DownloadTaskBuilder下载任务类的构建类对象
 
@@ -169,6 +188,7 @@ main(){
          .build()
 
      task.execute(DefaultTransmitListener())
+     //task.enqueue(DefaultTransmitListener())
 
 }
 ```

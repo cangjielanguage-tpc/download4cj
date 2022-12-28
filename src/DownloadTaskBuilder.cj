@@ -86,6 +86,9 @@ public class DownloadTaskBuilder{
 
 
     public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
+        if(minIntervalMillisCallbackProcess < 0){
+            throw IllegalArgumentException("Value must be positive!")
+        }
         this.minIntervalMillisCallbackProcess = minIntervalMillisCallbackProcess;
         return this;
     }
