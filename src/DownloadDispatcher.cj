@@ -266,10 +266,8 @@ public class DownloadDispatcher{
         while(true){
             var optCall:Option<DownloadCall> = iterator.next()
             match(optCall){
-                case Some(v)=>
-                    println("")
+                case Some(v)=>v
                     //------
-
                 case None => break
             }
         }
