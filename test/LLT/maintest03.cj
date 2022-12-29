@@ -11,7 +11,6 @@ main(){
     var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
-    //println("FileEnds="+FileEnds)
 
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
@@ -26,7 +25,6 @@ main(){
         println("没进来")
     }
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
          // the minimal interval millisecond for callback progress

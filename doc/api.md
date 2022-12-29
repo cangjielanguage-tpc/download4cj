@@ -86,6 +86,24 @@ public func build():DownloadTask
  public func execute(listener:DownloadListener):Unit
  ```
 
+ ```
+/**
+ * 用于执行异步下载
+ *
+ * @since 0.34.3
+ */
+ public func enqueue(listener:DownloadListener):Unit
+ ```
+
+ ```
+/**
+ * 用于执行异步下载多个任务
+ *
+ * @since 0.34.3
+ */
+ public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener):Unit
+ ```
+
 
  ```
 /**

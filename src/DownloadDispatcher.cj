@@ -203,8 +203,12 @@ public class DownloadDispatcher{
 
     //检查是否完成
     func inspectCompleted(task:DownloadTask,completedCollection:Option<ArrayList<DownloadTask>>):Bool{
+        let store:BreakpointStore = OkDownload.withs().breakpointStore()
+        let isOnlyMemoryCache = store.isOnlyMemoryCache()
+        println("isOnlyMemoryCache===================="+isOnlyMemoryCache.toString())
+        if(task.isPassIfAlreadyCompleted() && !isOnlyMemoryCache){
+         //那就要判断有没有已经下载好文件了
 
-        if(task.isPassIfAlreadyCompleted()){
         //if(task.isPassIfAlreadyCompleted() && StatusUtil.isCompleted(task)){
             //是否已结束
             //如果文件名不正常，为空就没结束 应该这个意思

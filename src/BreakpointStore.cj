@@ -16,7 +16,7 @@ public interface BreakpointStore{
 
     func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>
 
-    //func isOnlyMemoryCache():Bool
+    func isOnlyMemoryCache():Bool
 
     //func isFileDirty(id:Int64):Bool
 }

@@ -61,6 +61,8 @@
 | 成员函数 | 入参 | 返回值 | 作用描述 |
 | --- | --- | --- | --- |
 | execute   | listener:DownloadListener | Unit | 用于执行同步下载 |
+| enqueue   | listener:DownloadListener | Unit | 用于执行异步下载 |
+| enqueues   | tasks:Array<DownloadTask>，listener:DownloadListener | Unit | 用于执行异步下载多个任务 |
 | getId   | 无 | Int64 | 获取任务的Id|
 | getFilename   | 无 | Option<String> | 获取文件名 |
 | getUrl   | 无 | String | 获取文件下载路径 |
@@ -129,6 +131,7 @@ main(){
          .build()
 
      task.execute(DefaultTransmitListener())
+     //task.enqueue(DefaultTransmitListener())
 
 }
 ```

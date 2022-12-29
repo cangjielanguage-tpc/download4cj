@@ -221,7 +221,9 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     //------
-
+    public func isOnlyMemoryCache():Bool{
+        return true
+    }
 
 
     //------
