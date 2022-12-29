@@ -15,13 +15,13 @@ main(){
         //var url:String = "http://a2.dxiazaicc.com/down4/rufusv3.18_downcc.com.zip"
         //var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
         var url:String = "https://nodejs.org/dist/v11.2.0/node-v11.2.0.tar.gz"
-
         //var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
-        let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-        var FileEnds = url.substring(lastIndex)
 
-        let filenamePre:String = "single-test"
-        let filename = filenamePre+FileEnds
+
+        //let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
+        //var FileEnds = url.substring(lastIndex)
+        //let filenamePre:String = "single-test"
+        //let filename = filenamePre+FileEnds
 
         let parentFilePath:Path = Path("./fileDownLoad")
         //let parentFilePath:Path = Path("./fileDownLoad"+i.toString())
@@ -35,7 +35,7 @@ main(){
         }
 
         let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            .setFilename(filename)
+            //.setFilename(filename)
             // the minimal interval millisecond for callback progress
             .setMinIntervalMillisCallbackProcess(30)
             // do re-download even if the task has already been completed in the past.
