@@ -6,7 +6,6 @@ public class DefaultTransmitListener <: DownloadListener {
 
     public func taskStart(task:DownloadTask):Unit{
 
-        println("CallbackDispatcher---taskStart"+task.getId().toString())
         inspectTaskStart(task)
     }
 
@@ -50,7 +49,7 @@ public class DefaultTransmitListener <: DownloadListener {
     public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
         //println("increaseBytes="+increaseBytes.toString())
         totalSize+=increaseBytes
-        println("totalSize="+totalSize.toString())
+        //println("totalSize="+totalSize.toString())
         if (task.getMinIntervalMillisCallbackProcess() > 0) {
             TaskHideWrapper.setLastCallbackProcessTs(task,Time.now().unixNano()/1000)
         }

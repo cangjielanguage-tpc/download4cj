@@ -40,13 +40,13 @@ public class MultiPointOutputStream {
     var requireStreamBlocks:Option<ArrayList<Int64>>
 
 
-    init(task:DownloadTask,info:BreakpointInfo,store:DownloadStore,syncRunnable:Option<()->Unit>){
-        this.task = task
-        this.flushBufferSize = task.getFlushBufferSize()
-        this.syncBufferSize = task.getSyncBufferSize()
-        this.syncBufferIntervalMills = task.getSyncBufferIntervalMills()
-        this.info = info
-        this.store = store
+    init(taska:DownloadTask,infoa:BreakpointInfo,storea:DownloadStore,syncRunnable:Option<()->Unit>){
+        this.task = taska
+        this.flushBufferSize = taska.getFlushBufferSize()
+        this.syncBufferSize = taska.getSyncBufferSize()
+        this.syncBufferIntervalMills = taska.getSyncBufferIntervalMills()
+        this.info = infoa
+        this.store = storea
         this.supportSeek = OkDownload.withs().outputStreamFactory().supportSeek()
         this.isPreAllocateLength = OkDownload.withs().processFileStrategy().isPreAllocateLength(task)
         this.noMoreStreamList = ArrayList<Int64>()

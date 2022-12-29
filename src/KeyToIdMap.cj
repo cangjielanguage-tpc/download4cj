@@ -16,7 +16,6 @@ public class KeyToIdMap{
 
     public func get(task:DownloadTask):Option<Int64>{
         let genKey:String = generateKey(task)
-        println("6666666666666666")
         if(let Some(i) = keyToIdMap.get(genKey)){
             return i.getOrThrow()
         }else{

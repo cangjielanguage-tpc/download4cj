@@ -61,7 +61,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func createAndInsert(task:DownloadTask):BreakpointInfo{
-        println("kkkkkkkkkkkkk")
         let id:Int64 = task.getId()
         var newInfo:BreakpointInfo = BreakpointInfo(id,task.getUrl(),task.getParentFile(), task.getFilename().getOrThrow())
         synchronized(m){
@@ -149,12 +148,10 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
     public func findOrCreateId(task:DownloadTask):Int64{
         synchronized(m){
-            print("44444")
             let candidate:Option<Int64> = keyToIdMap.get(task)
             if(let Some(i) = candidate){
                 return i
             }
-            print("55555")
             let keyList:Keys<Int64> = storedInfos.keys()
             let itera:Iterator<Int64>  = keyList.iterator()
             while(true){
@@ -167,7 +164,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
                     case None => break
                }
             }
-            print("66666")
            let keyList2:Keys<Int64> = unStoredTasks.keys()
            let itera2:Iterator<Int64>  = keyList2.iterator()
            while(true){
@@ -180,9 +176,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                     case None => break
                 }
            }
-            print("77777")
            let id:Int64 = allocateId()
-            print("id==="+id.toString())
            unStoredTasks.put(id, task.mock(id))
            keyToIdMap.add(task, id)
            return id
@@ -191,7 +185,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
 
     public func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>{
-        println("llllll6")
         let clonedMap:HashMap<Int64,Option<BreakpointInfo>>
         synchronized(m){
             clonedMap = storedInfos.clone()

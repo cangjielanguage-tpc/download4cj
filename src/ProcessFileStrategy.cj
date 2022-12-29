@@ -23,7 +23,6 @@ public class ProcessFileStrategy {
         if(File.exists(file.getOrThrow().info.path)){
             try{
                 File.delete(file.getOrThrow().info.path)
-                println("delete success")
             }catch(e:Exception){
                 throw IOException("Delete file failed!")
             }
@@ -35,17 +34,13 @@ public class ProcessFileStrategy {
 
 
     public func isPreAllocateLength(task:DownloadTask):Bool{
-        println("isPreAllocateLengthisPreAllocateLength0")
         var supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
         if(!supportSeek){
             return false
         }
-        println("isPreAllocateLengthisPreAllocateLength11")
         if(let Some(i) = task.getSetPreAllocateLength()){
-            //println("isPreAllocateLengthisPreAllocateLength12")
             return i
         }else{
-            println("isPreAllocateLengthisPreAllocateLength13")
             return true
         }
 

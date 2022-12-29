@@ -7,7 +7,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
     //var doneCount:AtomicInt64 = AtomicInt64(0)
 
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>{
-        println("下载开始了004      blockIndex==="+chain.getBlockIndex().toString())
         let connected:DownloadConnectionConnected =  chain.processConnect()
         let info:BreakpointInfo = chain.getInfo()
         //totalBlockCount = info.getBlockCount()
@@ -37,7 +36,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         } catch (e:Exception) {
             throw IOException("Update store failed!"+e.toString())
         }
-        println("下载开始了005     blockIndex==="+chain.getBlockIndex().toString())
         return connected
 
     }
@@ -54,7 +52,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
         let outputStream:MultiPointOutputStream = chain.getOutputStream()
 
-        println("下载开始了010     blockIndex==="+blockIndex.toString())
 
         try {
             while (true) {
@@ -70,7 +67,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
                 }
             }
         }catch(e:Exception){
-            println("进catch了,原因是"+e.message.toString())
+            println("reason="+e.message.toString())
         }finally{
             // finish
             chain.flushNoCallbackIncreaseBytes()
