@@ -10,13 +10,13 @@ public class DownloadStrategy{
 
 
     // 1 connection: [0, 1MB)
-    private static let ONE_CONNECTION_UPPER_LIMIT:Int64 = 1*1024*1024    //1
+    private static let ONE_CONNECTION_UPPER_LIMITA:Int64 = 1*1024*1024    //1
     // 2 connection: [1MB, 5MB)
-    private static let TWO_CONNECTION_UPPER_LIMIT:Int64 = 5*1024*1024    //5
+    private static let TWO_CONNECTION_UPPER_LIMITA:Int64 = 5*1024*1024    //5
     // 3 connection: [5MB, 50MB)
-    private static let THREE_CONNECTION_UPPER_LIMIT:Int64 = 50*1024*1024   //50
+    private static let THREE_CONNECTION_UPPER_LIMITA:Int64 = 50*1024*1024   //50
     // 4 connection: [50MB, 100MB)
-    private static let FOUR_CONNECTION_UPPER_LIMIT:Int64 = 100*1024*1024   //100
+    private static let FOUR_CONNECTION_UPPER_LIMITA:Int64 = 100*1024*1024   //100
 
 
     public func resumeAvailableResponseCheck(connected:DownloadConnectionConnected,blockIndex:Int64,info:BreakpointInfo):ResumeAvailableResponseCheck{
@@ -24,8 +24,7 @@ public class DownloadStrategy{
     }
 
 
-    public func determineBlockCount(task:DownloadTask,totalLength:Int64):Int64{
-        println("conn1")
+    public func determineBlockCount(task:DownloadTask,totalLengtha:Int64):Int64{
         if(let Some(i) = task.getSetConnectionCount()){
             if(i != 0){
                 return i
@@ -33,23 +32,18 @@ public class DownloadStrategy{
         }else{
 
         }
-        println("conn3")
-        if (totalLength < ONE_CONNECTION_UPPER_LIMIT) {
+        if (totalLengtha < ONE_CONNECTION_UPPER_LIMITA) {
             return 1
         }
-
-        if (totalLength < TWO_CONNECTION_UPPER_LIMIT) {
+        if (totalLengtha < TWO_CONNECTION_UPPER_LIMITA) {
             return 2
         }
-
-        if (totalLength < THREE_CONNECTION_UPPER_LIMIT) {
+        if (totalLengtha < THREE_CONNECTION_UPPER_LIMITA) {
             return 3
         }
-
-        if (totalLength < FOUR_CONNECTION_UPPER_LIMIT) {
+        if (totalLengtha < FOUR_CONNECTION_UPPER_LIMITA) {
             return 4
         }
-
         return 5
     }
 
@@ -58,23 +52,18 @@ public class DownloadStrategy{
 
 
     public func inspectAnotherSameInfo(task:DownloadTask,info:BreakpointInfo,instanceLength:Int64):Bool{
-        println("lllll2")
         if (!task.isFilenameFromResponse()){
             return false
         }
-        println("lllll3")
 
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
-        println("lllll4")
 
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
-        println("lllll5")
 
         if(let Some(i) = anotherInfo){
             //------
 
         }else{
-             println("lllll8")
             return false
         }
         //------
@@ -147,7 +136,6 @@ public class DownloadStrategy{
         if (responseCode == Util.HTTP_RESET && isAlreadyProceed) {
             return RESPONSE_RESET_RANGE_NOT_FROM_0
         }
-        println("mmmmmmmm35b")
         return Option<ResumeFailedCause>.None
 
     }

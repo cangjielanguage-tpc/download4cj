@@ -13,7 +13,6 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
                      //throw InterruptException.SIGNAL
                      //----
                 }
-                println("下载开始了003      blockIndex==="+chain.getBlockIndex().toString())
                 return chain.processConnect()
             }catch (e:IOException) {
                 //------
@@ -28,7 +27,6 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
 
     public func interceptFetch(chain:DownloadChain):Int64{
         try {
-            println("下载开始了009     blockIndex==="+chain.getBlockIndex().toString())
             return chain.processFetch()
         } catch (e:IOException) {
             //------

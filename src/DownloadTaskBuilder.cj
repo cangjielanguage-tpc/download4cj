@@ -53,7 +53,6 @@ public class DownloadTaskBuilder{
     public init(url:String,file:Directory){
         this.url = url
         this.uri = URL.parse(file.info.path.toString())
-        println("uriPath="+file.info.path.toString())
         this.isFilenameFromResponse = false
         this.filename = ""
         this.connectionCount = 0
@@ -109,7 +108,7 @@ public class DownloadTaskBuilder{
 
 
     public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
-        if (readBufferSize < 0){
+        if (readBufferSize <= 0){
             throw IllegalArgumentException("Value must be positive!")
         }
         this.readBufferSize = readBufferSize
@@ -119,7 +118,7 @@ public class DownloadTaskBuilder{
 
 
      public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder{
-        if (flushBufferSize < 0){
+        if (flushBufferSize <= 0){
             throw IllegalArgumentException("Value must be positive!")
         }
         this.flushBufferSize = flushBufferSize

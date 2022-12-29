@@ -136,7 +136,6 @@ public class DownloadChain {
 
 
     func start():Unit{
-       println("下载开始了001      blockIndex==="+blockIndex.toString())
         let dispatcher:CallbackDispatcher =  OkDownload.withs().callbackDispatcher()
         // connect chain
         let retryInterceptor:RetryInterceptor = RetryInterceptor()
@@ -146,20 +145,17 @@ public class DownloadChain {
         connectInterceptorList.append(HeaderInterceptor())
         connectInterceptorList.append(CallServerInterceptor())
         var connectIndex:Int64 = 0
-        println("下载开始了002      blockIndex==="+blockIndex.toString())
         let connected:DownloadConnectionConnected = processConnect()
         if (cache.isInterrupt()) {
             throw InterruptException.SIGNAL
         }
         dispatcher.dispatch().fetchStart(task, blockIndex, getResponseContentLength())
         // fetch chain
-        println("下载开始了007     blockIndex==="+blockIndex.toString())
         let fetchDataInterceptor:FetchDataInterceptor = FetchDataInterceptor(blockIndex, connected.getInputStream(),getOutputStream(), task)
         fetchInterceptorList.append(retryInterceptor)
         fetchInterceptorList.append(breakpointInterceptor)
         fetchInterceptorList.append(fetchDataInterceptor)
         var fetchIndex:Int64 = 0
-        println("下载开始了008     blockIndex==="+blockIndex.toString())
         let totalFetchedBytes:Int64 = processFetch()
         dispatcher.dispatch().fetchEnd(task, blockIndex, totalFetchedBytes)
     }

@@ -45,21 +45,21 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     private var redirectLocation : String
     private var filename:Option<String>
 
-    public DownloadTask(url:String,uri:URL,priority:Int64,readBufferSize:Int64,flushBufferSize:Int64,syncBufferSize:Int64,
-    syncBufferIntervalMills:Int64,autoCallbackToUIThread:Bool,minIntervalMillisCallbackProcess:Int64,
-    headerMapFields:HashMap<String, ArrayList<String>>,filename:Option<String>,passIfAlreadyCompleted:Bool,wifiRequired:Bool,
+    public DownloadTask(urla:String,uria:URL,prioritya:Int64,readBufferSizea:Int64,flushBufferSizea:Int64,syncBufferSizea:Int64,
+    syncBufferIntervalMillsa:Int64,autoCallbackToUIThreada:Bool,minIntervalMillisCallbackProcessa:Int64,
+    headerMapFieldsa:HashMap<String, ArrayList<String>>,filename:Option<String>,passIfAlreadyCompleted:Bool,wifiRequired:Bool,
     filenameFromResponses:Option<Bool>,connectionCount:Int64,isPreAllocateLength:Option<Bool>){
         this.id = 0
-        this.url = url
-        this.uri = uri
-        this.priority = priority
-        this.readBufferSize = readBufferSize
-        this.flushBufferSize = flushBufferSize
-        this.syncBufferSize = syncBufferSize
-        this.syncBufferIntervalMills = syncBufferIntervalMills
-        this.autoCallbackToUIThread = autoCallbackToUIThread
-        this.minIntervalMillisCallbackProcess = minIntervalMillisCallbackProcess
-        this.headerMapFields = headerMapFields
+        this.url = urla
+        this.uri = uria
+        this.priority = prioritya
+        this.readBufferSize = readBufferSizea
+        this.flushBufferSize = flushBufferSizea
+        this.syncBufferSize = syncBufferSizea
+        this.syncBufferIntervalMills = syncBufferIntervalMillsa
+        this.autoCallbackToUIThread = autoCallbackToUIThreada
+        this.minIntervalMillisCallbackProcess = minIntervalMillisCallbackProcessa
+        this.headerMapFields = headerMapFieldsa
         this.lastCallbackProcessTimestamp = AtomicInt64(0)
         this.passIfAlreadyCompleted = passIfAlreadyCompleted;
         this.wifiRequired = wifiRequired
@@ -72,17 +72,16 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         this.keyTagMap = Option<HashMap<Int64,Object>>.None
         this.tag = Option<Object>.None
         this.redirectLocation = ""
-        println("1111")
 
-        let dirFile:Directory = Directory(uri.path)
+        let dirFile:Directory = Directory(uria.path)
         filenameFromResponse = true
         directoryFile = dirFile
         this.filenameFromResponse = filenameFromResponse
 
         if(Util.isEmpty(this.filename.getOrThrow())){
             //如果没设置名字，名字就从url里取
-            let lastIndex:Int64 = url.lastIndexOf("/").getOrThrow()
-            this.filename = url.substring(lastIndex+1)
+            let lastIndex:Int64 = urla.lastIndexOf("/").getOrThrow()
+            this.filename = urla.substring(lastIndex+1)
         }else{
         }
 
@@ -266,7 +265,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     public func execute(listener:DownloadListener):Unit{
         this.listener = listener
-        println("aaaa")
         OkDownload.withs().downloadDispatcher().execute(this)
     }
 

@@ -48,7 +48,6 @@ public class HeaderInterceptor <: InterceptorConnect{
         }
 
         OkDownload.withs().callbackDispatcher().dispatch().connectStart(task, blockIndex, connection.getRequestProperties())
-        println("下载开始了006     blockIndex==="+blockIndex.toString())
         var connected:DownloadConnectionConnected = chain.processConnect()
 
         if (chain.getCache().isInterrupt()) {

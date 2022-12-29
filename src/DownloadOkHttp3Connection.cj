@@ -22,7 +22,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     init(client:OkHttpClient,url:String){
         //this(client,RequestBuilder().url(url))
         this(client,Request.builder().url(url))
-        println("urlurlurlurlurlurlurl========================================================"+url.toString())
     }
 
     public func addHeader(name:String,value:String):Unit{
@@ -144,11 +143,8 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getRedirectLocation():Option<String>{
-         println("mmmm20aaaa")
         let priorRes:Option<Response> = response.getOrThrow().getPrevResponse()
-        println("mmmm20bbbbbb")
         //------
-
         return Option<String>.None
 
     }

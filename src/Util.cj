@@ -66,9 +66,7 @@ public class Util{
     public static func assembleBlock(task:DownloadTask,info:BreakpointInfo,instanceLength:Int64,isAcceptRange:Bool):Unit{
         let blockCount:Int64
         if (OkDownload.withs().downloadStrategy().isUseMultiBlock(isAcceptRange)) {
-            println("isMulti")
             blockCount = OkDownload.withs().downloadStrategy().determineBlockCount(task, instanceLength)
-            println("isMulti"+blockCount.toString())
         } else {
             blockCount = 1
         }
@@ -85,7 +83,6 @@ public class Util{
                  contentLength = eachLength
             }
             let blockInfo:BlockInfo = BlockInfo(startOffset, contentLength)
-            println("startOffset="+startOffset.toString()+"------contentLength"+contentLength.toString())
             info.addBlock(blockInfo)
         }
     }

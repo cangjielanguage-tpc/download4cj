@@ -49,7 +49,6 @@
 | --- | --- |  --- | --- |
 | init   | url:String,file:Directory | DownloadTaskBuilder | 用于构造DownloadTaskBuilder对象 |
 | setFilename   | filename:String | DownloadTaskBuilder | 用于设置下载文件的名称 |
-| setPassIfAlreadyCompleted   | passIfAlreadyCompleted:Bool | DownloadTaskBuilder | 设置下载完成后是否要重新下载|
 | setMinIntervalMillisCallbackProcess   | minIntervalMillisCallbackProcess:Int64 | DownloadTaskBuilder | 设置进度回调的时间间隔 |
 | setReadBufferSize   | readBufferSize:Int64 | DownloadTaskBuilder | 设置读取缓存大小|
 | setFlushBufferSize   |flushBufferSize:Int64 | DownloadTaskBuilder | 设置刷新缓冲大小 |
@@ -126,8 +125,6 @@ main(){
          .setFilename(filename)
          // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
-         .setPassIfAlreadyCompleted(false)
          .build()
 
      task.execute(DefaultTransmitListener())

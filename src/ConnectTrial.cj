@@ -23,30 +23,23 @@ public class ConnectTrial{
     }
 
     public func executeTrial():Unit{
-        println("mmmmm14")
         var connection:DownloadConnection = OkDownload.withs().connectionFactory().create(task.getUrl())
         var isNeedTrialHeadMethod:Bool = false
-        println("mmmmm15")
         try{
 
             if(!Util.isEmpty(info.getEtag())){
                 connection.addHeader(Util.IF_MATCH, info.getEtag().getOrThrow())
             }
             connection.addHeader(Util.RANGE, "bytes=0-0")
-            println("mmmmm16")
             let userHeader:Option<HashMap<String,ArrayList<String>>> = task.getHeaderMapFields()
             if(let Some(i) = userHeader){
                  Util.addUserRequestHeaderField(userHeader.getOrThrow(), connection)
             }
-            println("mmmmm17")
             let listener:DownloadListener = OkDownload.withs().callbackDispatcher().dispatch()
             let requestProperties:HashMap<String,ArrayList<String>> = connection.getRequestProperties()
-            println("mmmmm18")
 
             listener.connectTrialStart(task, requestProperties)
-            println("mmmmm19")
             let connected:DownloadConnectionConnected = connection.execute()
-            println("mmmmm20")
 
             if(let Some(i) = connected.getRedirectLocation()){
                   task.setRedirectLocation(connected.getRedirectLocation().getOrThrow())
@@ -54,28 +47,22 @@ public class ConnectTrial{
 
             }
 
-             println("mmmmm21")
 
             //Util.d(TAG, "task[" + task.getId().toString() + "] redirect location: "+ task.getRedirectLocation())
             this.responseCode = connected.getResponseCode()
-            println("mmmmm22Code"+responseCode.toString())
 
             this.acceptRange = isAcceptRanges(connected)
             this.instanceLength = findInstanceLength(connected)
             this.responseEtag = findEtag(connected)
             this.responseFilename = findFilename(connected)
-             println("mmmmm23")
              var responseHeader: Option<HashMap<String, ArrayList<String>>> = connected.getResponseHeaderFields()
              if(let Some(i) = responseHeader){
 
              }else{
                  responseHeader = HashMap<String, ArrayList<String>>()
              }
-              println("mmmmm24")
              listener.connectTrialEnd(task, responseCode, responseHeader.getOrThrow())
-             println("mmmmm25")
              isNeedTrialHeadMethod = isNeedTrialHeadMethodForInstanceLength(instanceLength,connected)
-            println("mmmmm26"+isNeedTrialHeadMethod.toString())
         }finally {
             connection.release()
         }

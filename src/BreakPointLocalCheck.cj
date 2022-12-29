@@ -86,7 +86,6 @@ public class BreakpointLocalCheck {
         fileExist = isFileExistToResume()
         infoRight = isInfoRightToResume()
         outputStreamSupport = isOutputStreamSupportResume()
-        println(fileExist.toString()+"--"+infoRight.toString()+"--"+outputStreamSupport.toString())
         dirty = !infoRight || !fileExist || !outputStreamSupport
     }
 

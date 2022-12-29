@@ -108,14 +108,6 @@ public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess
  public func setFilename(filename:String):DownloadTaskBuilder
 ```
 
-##### func setPassIfAlreadyCompleted
-
-设置下载完成后是否要重新下载
-
-```cangjie
- public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool):DownloadTaskBuilder{
-```
-
 
 #### interface DownloadListener  DownLoadTask下载任务的回调监听接口
 
@@ -184,7 +176,6 @@ main(){
          .setFilename(filename)
          // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         .setPassIfAlreadyCompleted(false)
          .build()
 
      task.execute(DefaultTransmitListener())

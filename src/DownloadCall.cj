@@ -7,7 +7,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
 
     private static let TAG:String = "DownloadCall"
-    static let MAX_COUNT_RETRY_FOR_PRECONDITION_FAILED:Int64 = 1
+    static let MAX_COUNT_RETRY_FOR_PRECONDITION_FAILEDA:Int64 = 1
     public let task:DownloadTask
     public let asyncExecuted:Bool
     let blockChainList:ArrayList<DownloadChain>
@@ -53,26 +53,21 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     public func execute():Unit{
         //currentThread = Thread.currentThread();
-        println("dddd")
         var retry:Bool = false
         var retryCount:Int64 = 0
         // ready param
         let okDownload:OkDownload = OkDownload.withs()
         let fileStrategy:ProcessFileStrategy = okDownload.processFileStrategy()
         //inspect task start
-        println("eeee")
 
         inspectTaskStart()
-        println("ffff")
 
         do{
-            println("ffffff")
             // 0. check basic param before start
             if(task.getUrl().size <= 0){
                 this.cache = PreError(IOException("unexpected url: "+task.getUrl()))
                 break
             }
-            println("gggggg1")
              if (canceled){
                 break
              }
@@ -80,18 +75,14 @@ public class DownloadCall <: Equatable<DownloadCall>{
              // 1. create basic info if not exist
              var info:BreakpointInfo
               try{
-                println("hhhhhh2")
                 var infoOnStore:Option<BreakpointInfo> = store.get(task.getId())
                 if(let Some(i) = infoOnStore){
                     //已经存在
                     info = i
                 }else{
-                    println("hhhhhh3")
                     info = store.createAndInsert(task)
                 }
-                println("hhhhhh4")
                 setInfoToTask(info)
-                println("hhhhhh5")
              }catch(e:IOException){
                  info = BreakpointInfo(0,"",Option<Directory>.None,"")
                  this.cache = PreError(e)
@@ -100,16 +91,13 @@ public class DownloadCall <: Equatable<DownloadCall>{
              if (canceled){
                 break
              }
-            println("iiiiiii")
             // ready cache.
             let cachea:DownloadCache = createCache(info)
             this.cache = cachea
-            println("jjjjjj")
 
             // 2. remote check.
             let remoteCheck:BreakpointRemoteCheck = createRemoteCheck(info)
             try {
-                println("mmmmm88")
                 remoteCheck.check()
 
 
@@ -121,33 +109,25 @@ public class DownloadCall <: Equatable<DownloadCall>{
             }
 
 
-            println("mmmmmmm40")
 
             if(!Util.isEmpty(task.getRedirectLocation())){
                 cache.getOrThrow().setRedirectLocation(task.getRedirectLocation())
             }
             // 3. waiting for file lock release after file path is confirmed.
-            println("kkkkkkk1111")
               // 4. reuse another info if another info is idle and available for reuse.
             OkDownload.withs().downloadStrategy().inspectAnotherSameInfo(task, info, remoteCheck.getInstanceLength())
-            println("llllllll2222")
             try{
                  if (remoteCheck.isResumable()) {
                          // 5. local check
 
-                    println("llllllll3333")
                     let localCheck:BreakpointLocalCheck = createLocalCheck(info,remoteCheck.getInstanceLength())
-                    println("llllllll4444")
                     localCheck.check()
-                    println("llllllll5555")
                     if(localCheck.isDirty()) {
-                         println("llllllll6666")
                         Util.d(TAG, "breakpoint invalid: download from beginning because of local check is dirty "+task.getId().toString()+" "+localCheck.toString())
                          // 6. assemble block data
                         fileStrategy.discardProcess(task)
                         assembleBlockAndCallbackFromBeginning(info,remoteCheck,localCheck.getCauseOrThrow())
                     }else{
-                         //println("llllllll7777")
                          okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
                     }
                  }else{
@@ -159,7 +139,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
                 break
             }
 
-            println("mmmmmmmm")
             // 7. start with cache and info.
             start(cache.getOrThrow(), info)
 
@@ -171,15 +150,18 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
              // 8. retry if precondition failed.
             retryCount++
-            if (cache.getOrThrow().isPreconditionFailed() && retryCount < MAX_COUNT_RETRY_FOR_PRECONDITION_FAILED) {
+            if (cache.getOrThrow().isPreconditionFailed() && retryCount < MAX_COUNT_RETRY_FOR_PRECONDITION_FAILEDA) {
+                //移除对应的id
                 store.remove(task.getId())
+                //重新开始
                 retry = true
             } else {
+                //不用重新开始
                 retry = false
             }
         }while(retry)
 
-        // finish
+        // finish结束了
         finishing = true
         blockChainList.clear()
 
@@ -211,9 +193,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     private func inspectTaskStart():Unit{
         store.onTaskStart(task.getId())
-        println("gggggg")
         OkDownload.withs().callbackDispatcher().dispatch().taskStart(task)
-        println("hhhhh")
     }
 
 
@@ -273,8 +253,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         }
 
         cache.getOutputStream().setRequireStreamBlocks(blockIndexList)
-        println("startblocks")
-        println("开始下载了************************************************************************************************************************************************")
         startBlocks(blockChainList)
 
     }
@@ -292,7 +270,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         var futures:ArrayList<Future<Unit>> = ArrayList<Future<Unit>>(tasks.size)
 
         try{
-            println("下载开始了000     blockIndex===")
             for(i in 0..tasks.size){
                 let fut : Future<Unit> = spawn{ =>
 
@@ -314,13 +291,11 @@ public class DownloadCall <: Equatable<DownloadCall>{
             blockChainList.appendAll(tasks)
             for(future in futures){
                 future.getResult()
-                println("下载开始了AAA     blockIndex===")
             }
 
         }catch(e:Exception){
             throw e
         }finally{
-            println("下载开始了CCC     blockIndex===")
             doDelete(blockChainList,tasks)
         }
     }

@@ -49,7 +49,6 @@ public class DownloadDispatcher{
     }
 
     public func enqueue(task:DownloadTask):Unit{
-        println("b1b1b1b1b1b1")
         skipProceedCallCount.fetchAdd(1)
         enqueueLocked(task)
         skipProceedCallCount.fetchSub(1)
@@ -57,7 +56,6 @@ public class DownloadDispatcher{
 
     private func enqueueLocked(tasks:Array<DownloadTask>):Unit{
         synchronized(m){
-            println("b2b2b2b2b2b2")
             let taskList:ArrayList<DownloadTask>  = ArrayList<DownloadTask>()
             taskList.appendAll(tasks)
             if(taskList.size > 1){
@@ -74,7 +72,6 @@ public class DownloadDispatcher{
 
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             try{
-                println("b3b3b3b3b3b3")
                 let completedTaskList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 let sameTaskConflictList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 let fileBusyList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
@@ -85,7 +82,6 @@ public class DownloadDispatcher{
                     if (inspectForConflict(task, sameTaskConflictList, fileBusyList)){
                         continue
                     }
-                    println("b4b4b4b4b4b4")
                     enqueueIgnorePriority(task)
                 }
                 OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
@@ -138,7 +134,6 @@ public class DownloadDispatcher{
 
 
     private func enqueueIgnorePriority(task:DownloadTask):Unit{
-        println("b5b5b5b5b5b5")
         let call:DownloadCall = DownloadCall.create(task, true, store.getOrThrow())
         if (runningAsyncSize() < maxParallelRunningCount) {
             runningAsyncCalls.append(call)
@@ -158,15 +153,12 @@ public class DownloadDispatcher{
     public func execute(task:DownloadTask):Unit{
         let call:DownloadCall
         synchronized (m) {
-            println("bbbb")
             if (inspectCompleted(task)) {
                 return
             }
-            println("cccc")
             if(inspectForConflict(task)){
                 return
             }
-            println("dddd")
             call = DownloadCall.create(task, false, store.getOrThrow())
             runningSyncCalls.append(call)
         }
@@ -205,7 +197,6 @@ public class DownloadDispatcher{
     func inspectCompleted(task:DownloadTask,completedCollection:Option<ArrayList<DownloadTask>>):Bool{
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
         let isOnlyMemoryCache = store.isOnlyMemoryCache()
-        println("isOnlyMemoryCache===================="+isOnlyMemoryCache.toString())
         if(task.isPassIfAlreadyCompleted() && !isOnlyMemoryCache){
          //那就要判断有没有已经下载好文件了
 

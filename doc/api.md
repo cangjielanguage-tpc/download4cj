@@ -26,21 +26,11 @@ public func setFilename(filename:String):DownloadTaskBuilder
 
 ```
 /**
- * 设置下载完成后是否要重新下载
- *
- * @since 0.34.3
- */
-public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool):DownloadTaskBuilder
-```
-
-
-```
-/**
  * 设置进度回调的时间间隔
  *
  * @since 0.34.3
  */
-public func setMinIntervalMillisCallbackProcess(passIfAlreadyCompleted:Bool):DownloadTaskBuilder
+public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder
 ```
 
 ```
