@@ -32,7 +32,7 @@ main(){
          // do re-download even if the task has already been completed in the past.
          .build()
 
-     task.execute(DefaultTransmitListener())
+     task.execute(MyListen())
      println("taskId="+task.getId().toString())
      println("fileName="+task.getFilename().getOrThrow())
      println("url="+task.getUrl())
@@ -42,6 +42,42 @@ main(){
      println("FlushBufferSize="+task.getFlushBufferSize().toString())
      println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())
      println("ConnectionCount="+task.getConnectionCount().toString())
+}
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    }
 }
 
 

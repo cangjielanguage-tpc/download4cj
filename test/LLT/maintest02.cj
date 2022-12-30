@@ -33,8 +33,79 @@ main(){
             // do re-download even if the task has already been completed in the past.
             .build()
 
-        task.execute(DefaultTransmitListener())
+        task.execute(MyListen())
     }
 
+}
+
+public class MyListen<: DownloadListener{
+    public func taskStart(task:DownloadTask):Unit{
+        println("==================taskStart=======================")
+        println("task.getId="+task.getId().toString())
+    }
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         println("==================connectTrialStart=======================")
+         println("requestHeaderFields="+requestHeaderFields.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         println("===============connectTrialEnd===================")
+         println("responseCode="+responseCode.toString())
+         println("responseHeaderFields="+responseHeaderFields.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+         println("===============downloadFromBeginning===================")
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+         println("===============downloadFromBreakpoint===================")
+         println("task.getId="+task.getId().toString())
+
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         println("===============connectStart===================")
+         println("blockIndex="+blockIndex.toString())
+         println("requestHeaderFields="+requestHeaderFields.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         println("===============connectEnd===================")
+         println("blockIndex="+blockIndex.toString())
+         println("responseCode="+responseCode.toString())
+         println("requestHeaderFields="+requestHeaderFields.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+         println("===============fetchStart===================")
+         println("blockIndex="+blockIndex.toString())
+         println("contentLength="+contentLength.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+         println("===============fetchProgress===================")
+         println("blockIndex="+blockIndex.toString())
+         println("increaseBytes="+increaseBytes.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+         println("===============fetchEnd===================")
+         println("blockIndex="+blockIndex.toString())
+         println("contentLength="+contentLength.toString())
+         println("task.getId="+task.getId().toString())
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+         println("===============taskEnd===================")
+         println("task.getId="+task.getId().toString())
+    }
 }
 

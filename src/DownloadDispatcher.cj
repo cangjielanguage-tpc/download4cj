@@ -206,7 +206,8 @@ public class DownloadDispatcher{
 
             //------
 
-            OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None);
+            //OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None);
+            OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, Option<Exception>.None)
 
             return true
         }

@@ -128,7 +128,8 @@ public class DownloadCall <: Equatable<DownloadCall>{
                         fileStrategy.discardProcess(task)
                         assembleBlockAndCallbackFromBeginning(info,remoteCheck,localCheck.getCauseOrThrow())
                     }else{
-                         okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
+                         //okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
+                         okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
                     }
                  }else{
                     //------
@@ -215,7 +216,9 @@ public class DownloadCall <: Equatable<DownloadCall>{
                 //OkDownload.withs().processFileStrategy().completeProcessStream(cache.getOutputStream(), task)
             case _ =>  println("cause not complete")
         }
-        OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, cause, realCause)
+        //OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, cause, realCause)
+        OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, realCause)
+
     }
 
 
@@ -345,7 +348,9 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck,failedCause:ResumeFailedCause):Unit{
         Util.assembleBlock(task, info, remoteCheck.getInstanceLength(),remoteCheck.isAcceptRange())
-        OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task, info, failedCause)
+        //OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task, info, failedCause)
+        OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
+
     }
 
 
