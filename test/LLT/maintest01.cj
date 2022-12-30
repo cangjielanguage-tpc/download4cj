@@ -18,10 +18,7 @@ main(){
         //var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
 
 
-        //let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-        //var FileEnds = url.substring(lastIndex)
-        //let filenamePre:String = "single-test"
-        //let filename = filenamePre+FileEnds
+
 
         let parentFilePath:Path = Path("./fileDownLoad")
         //let parentFilePath:Path = Path("./fileDownLoad"+i.toString())
@@ -40,9 +37,45 @@ main(){
             .setMinIntervalMillisCallbackProcess(30)
             // do re-download even if the task has already been completed in the past.
             .build()
-        task.execute(DefaultTransmitListener())
+        task.execute(MyListen())
 
     //}
 
+}
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    }
 }
 

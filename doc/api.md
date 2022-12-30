@@ -210,7 +210,7 @@ public func getConnectionCount():Int64
  *
  * @since 0.34.3
  */
- func downloadFromBeginning(task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause):Unit
+ func downloadFromBeginning(task:DownloadTask):Unit
  ```
 
 
@@ -220,7 +220,7 @@ public func getConnectionCount():Int64
  *
  * @since 0.34.3
  */
- func downloadFromBreakpoint(task:DownloadTask,info:BreakpointInfo):Unit
+ func downloadFromBreakpoint(task:DownloadTask):Unit
  ```
 
 
@@ -281,6 +281,6 @@ public func getConnectionCount():Int64
  *
  * @since 0.34.3
  */
- func taskEnd(task:DownloadTask,cause:EndCause,realCause:Option<Exception>):Unit
+ func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit
  ```
 

@@ -125,7 +125,7 @@ func taskStart(task:DownloadTask):Unit
 任务结束的回调
 
 ```cangjie
-func taskEnd(task:DownloadTask,cause:EndCause,realCause:Option<Exception>):Unit
+func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit
 ```
 
 
@@ -178,10 +178,50 @@ main(){
          .setMinIntervalMillisCallbackProcess(30)
          .build()
 
-     task.execute(DefaultTransmitListener())
-     //task.enqueue(DefaultTransmitListener())
+     task.execute(MyListen())
+     //task.enqueue(MyListen())
 
 }
+
+
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    }
+}
+
+
 ```
 
 

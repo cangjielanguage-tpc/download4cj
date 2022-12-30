@@ -80,14 +80,14 @@
 | taskStart   | task:DownloadTask | Unit | 任务刚开始的回调 |
 | connectTrialStart   | task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务开始尝试连接的回调|
 | connectTrialEnd   | task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务结束尝试连接的回调 |
-| downloadFromBeginning   | task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause | Unit | 从开始下载的回调 |
-| downloadFromBreakpoint   | task:DownloadTask,info:BreakpointInfo | Unit | 从断点处下载的回调 |
+| downloadFromBeginning   | task:DownloadTask | Unit | 从开始下载的回调 |
+| downloadFromBreakpoint   | task:DownloadTask | Unit | 从断点处下载的回调 |
 | connectStart   | task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接开始的回调 |
 | connectEnd   | task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接结束的回调 |
 | fetchStart   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 开始获取进度的回调 |
 | fetchProgress   | task:DownloadTask,blockIndex:Int64,increaseBytes:Int64 | Unit | 获取进度的回调 |
 | fetchEnd   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 获取进度结束的回调 |
-| taskEnd   | task:DownloadTask,cause:EndCause,realCause:Option<Exception> | Unit | 任务结束的回调 |
+| taskEnd   | task:DownloadTask,realCause:Option<Exception> | Unit | 任务结束的回调 |
 
 
 ###### 5.1.4 展示示例
@@ -127,10 +127,51 @@ main(){
          .setMinIntervalMillisCallbackProcess(30)
          .build()
 
-     task.execute(DefaultTransmitListener())
-     //task.enqueue(DefaultTransmitListener())
-
+     task.execute(MyListen())
+     //task.enqueue(MyListen())
 }
+
+
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    }
+}
+
+
+
+
 ```
 
 #### 🚀 6 架构图
