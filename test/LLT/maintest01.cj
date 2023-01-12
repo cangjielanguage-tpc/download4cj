@@ -9,7 +9,7 @@ from std import fs.*
 
 main(){
 
-    //for(i in 0..10){
+    for(i in 0..1){
 
 
         //var url:String = "http://a2.dxiazaicc.com/down4/rufusv3.18_downcc.com.zip"
@@ -20,8 +20,8 @@ main(){
 
 
 
-        let parentFilePath:Path = Path("./fileDownLoad")
-        //let parentFilePath:Path = Path("./fileDownLoad"+i.toString())
+        //let parentFilePath:Path = Path("./fileDownLoad")
+        let parentFilePath:Path = Path("./fileDownLoad"+i.toString())
         var parentFile:Option<Directory> = Option<Directory>.None
 
         if (!Directory.exists(parentFilePath)) {
@@ -39,7 +39,7 @@ main(){
             .build()
         task.execute(MyListen())
 
-    //}
+    }
 
 }
 

@@ -86,21 +86,21 @@ public class DownloadDispatcher{
                 }
                 OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
             }catch(e:Exception){
-                let errorList:ArrayList<DownloadTask> = ArrayList<DownloadTask>(taskList)
-                OkDownload.withs().callbackDispatcher().endTasksWithError(errorList, e)
+                //let errorList:ArrayList<DownloadTask> = ArrayList<DownloadTask>(taskList)
+                //OkDownload.withs().callbackDispatcher().endTasksWithError(errorList, e)
             }
 
-            if(originReadyAsyncCallSize != readyAsyncCalls.size){
-                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
-                    if(rht.getPriority() < lht.getPriority()){
-                        return Ordering.GT
-                    }
-                    if(rht.getPriority() > lht.getPriority()){
-                        return Ordering.LT
-                    }
-                    return Ordering.EQ
-                },stable:true)
-            }
+            // if(originReadyAsyncCallSize != readyAsyncCalls.size){
+            //     readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+            //         if(rht.getPriority() < lht.getPriority()){
+            //             return Ordering.GT
+            //         }
+            //         if(rht.getPriority() > lht.getPriority()){
+            //             return Ordering.LT
+            //         }
+            //         return Ordering.EQ
+            //     },stable:true)
+            // }
 
         }
     }
@@ -116,17 +116,17 @@ public class DownloadDispatcher{
             }
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             enqueueIgnorePriority(task)
-            if(originReadyAsyncCallSize != readyAsyncCalls.size){
-                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
-                    if(rht.getPriority() < lht.getPriority()){
-                        return Ordering.GT
-                    }
-                    if(rht.getPriority() > lht.getPriority()){
-                        return Ordering.LT
-                    }
-                    return Ordering.EQ
-                },stable:true)
-            }
+            // if(originReadyAsyncCallSize != readyAsyncCalls.size){
+            //     readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+            //         if(rht.getPriority() < lht.getPriority()){
+            //             return Ordering.GT
+            //         }
+            //         if(rht.getPriority() > lht.getPriority()){
+            //             return Ordering.LT
+            //         }
+            //         return Ordering.EQ
+            //     },stable:true)
+            // }
         }
     }
 
@@ -207,9 +207,10 @@ public class DownloadDispatcher{
             //------
 
             //OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None);
-            OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, Option<Exception>.None)
+            //目前这里进不来因为isOnlyMemoryCache
+            // OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, Option<Exception>.None)
 
-            return true
+            // return true
         }
 
         return false
