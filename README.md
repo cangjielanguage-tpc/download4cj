@@ -1,6 +1,6 @@
-<p align="center">
+<div align="center">
 <h1>OkDownLoad</h1>
-</p>
+</div>
 
 
 <p align="center">
@@ -11,19 +11,18 @@
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
-# 一个用仓颉实现的okdownload库
-
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/> 介绍
-可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载 参考地址 https://github.com/lingochamp/okdownload.git
+可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载
+参考地址 https://github.com/lingochamp/okdownload.git
 
-### 特性
+**特性**：
 
 - 🚀 支持多线程下载
 
 - 🚀 纯仓颉开发，无额外引用
 
-- 💪 代码简单、精简，可方便学习仓颉和扩展需要的功能
+- 🚀 支持同步下载和异步下载
 
 
 ### 架构图
@@ -61,89 +60,22 @@
 
 主要是核心类和成员函数说明，详情请见  [设计文档](./doc/design.md)
 
-#### class DownloadTask  DownLoadTask下载任务的对象类，可以构建出下载对象
-
-#####  func execute
-
-用于执行同步下载
-
-```cangjie
-public func execute(listener:DownloadListener):Unit
-```
-
-#####  func enqueue
-
-用于执行异步下载
-
-```cangjie
-public func enqueue(listener:DownloadListener):Unit
-```
-
-
-#####  func enqueues
-
-用于执行异步下载多个
-
-```cangjie
-public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener):Unit
-```
-
-
-
-#### class DownloadTaskBuilder   DownloadTaskBuilder下载任务类的构建类对象
-
-##### func setMinIntervalMillisCallbackProcess
-
-设置进度回调的时间间隔
-
-```cangjie
-public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder
-```
-
-##### func setFilename
-
-设置任务的文件名
-
-```cangjie
- public func setFilename(filename:String):DownloadTaskBuilder
-```
-
-
-#### interface DownloadListener  DownLoadTask下载任务的回调监听接口
-
-#####  func taskStart
-
-任务开始的回调
-
-```cangjie
-func taskStart(task:DownloadTask):Unit
-```
-
-......
-
-
-任务结束的回调
-
-```cangjie
-func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit
-```
-
-
-
-
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 编译执行
 
 ### 编译
 
-编译描述和具体shell命令
-
-```shell
-cpm update
-cpm build
+```
+git clone https://gitee.com/HW-PLLab/ok-download.git
+地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 ok-download 根目录下
+python3 ci_test/main.py build
+python3 ci_test/main.py test
 ```
 
-### 调用示例
-- 示例代码1
+
+### 示例
+
+####  同步下载示例
+
 ```
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
@@ -156,33 +88,99 @@ from std import fs.*
 main(){
 
     var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
-    //println("FileEnds="+FileEnds)
-
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
 
     let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
-
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
     }else{
     }
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
          .build()
 
      task.execute(MyListen())
-     //task.enqueue(MyListen())
-
 }
 
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    }
+}
+```
+
+####  异步下载示例
+
+```
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
+
+
+from okdownload import okdownload.*
+from std import collection.*
+from std import fs.*
+
+main(){
+
+    var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+
+    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
+    var FileEnds = url.substring(lastIndex)
+    let filenamePre:String = "single-test"
+    let filename = filenamePre+FileEnds
+
+    let parentFilePath:Path = Path("./fileDownLoad0")
+    var parentFile:Option<Directory> = Option<Directory>.None
+    if (!Directory.exists(parentFilePath)) {
+        parentFile = Directory.create(parentFilePath, recursive: true)
+    }else{
+    }
+
+    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+         .setFilename(filename)
+         .setMinIntervalMillisCallbackProcess(30)
+         .build()
+
+    task.enqueue(MyListen())
+}
 
 
 public class MyListen<: DownloadListener{
