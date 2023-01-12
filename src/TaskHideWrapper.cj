@@ -7,7 +7,7 @@ public class TaskHideWrapper {
     }
 
     public static func setLastCallbackProcessTs(task:DownloadTask,lastCallbackProcessTimestamp:Int64):Unit{
-        task.setLastCallbackProcessTs(lastCallbackProcessTimestamp);
+        task.setLastCallbackProcessTs(lastCallbackProcessTimestamp)
     }
 
     public static func setBreakpointInfo(task:DownloadTask,info:BreakpointInfo):Unit{

@@ -57,7 +57,7 @@ public class DefaultTransmitListener <: DownloadListener {
         totalSize+=increaseBytes
         //println("totalSize="+totalSize.toString())
         if (task.getMinIntervalMillisCallbackProcess() > 0) {
-            TaskHideWrapper.setLastCallbackProcessTs(task,Time.now().unixNano()/1000)
+            TaskHideWrapper.setLastCallbackProcessTs(task,Time.now().unixTimeStamp().nanoseconds()/1000)
         }
     }
 

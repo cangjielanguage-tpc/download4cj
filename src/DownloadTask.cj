@@ -121,9 +121,9 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
 
 
-    public func getFilenameHolder():FileNameHolder{
-        return filenameHolder
-    }
+    // public func getFilenameHolder():FileNameHolder{
+    //     return filenameHolder
+    // }
 
     public func getUri():URL{
         return uri

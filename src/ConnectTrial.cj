@@ -131,7 +131,8 @@ public class ConnectTrial{
     private static func findFilename(connected:DownloadConnectionConnected):String{
         let optStr:Option<String> = connected.getResponseHeaderField(Util.CONTENT_DISPOSITION)
         if(let Some(i) = optStr){
-            return parseContentDisposition(optStr).getOrThrow()
+            //return parseContentDisposition(optStr).getOrThrow()
+            return ""
         }else{
             return ""
         }
@@ -144,49 +145,49 @@ public class ConnectTrial{
 
 
 
-    private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
+    // private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
 
-        if(let Some(i) = contentDisposition){
+    //     if(let Some(i) = contentDisposition){
 
-        }else{
-            return Option<String>.None
-        }
+    //     }else{
+    //         return Option<String>.None
+    //     }
 
-        try{
+    //     try{
 
-            var fileName:Option<String> = Option<String>.None
-            var isM:Bool = false
-            match(CONTENT_DISPOSITION_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
-                case Some(r)
-                    => fileName = r.matchStr()
-                case None
-                    => isM = true
-            }
+    //         var fileName:Option<String> = Option<String>.None
+    //         var isM:Bool = false
+    //         match(CONTENT_DISPOSITION_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
+    //             case Some(r)
+    //                 => fileName = r.matchStr()
+    //             case None
+    //                 => isM = true
+    //         }
 
-            if(isM){
-                match(CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
-                    case Some(r)
-                        => fileName = r.matchStr()
-                    case None
-                        => fileName = Option<String>.None
-                 }
-            }
+    //         if(isM){
+    //             match(CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
+    //                 case Some(r)
+    //                     => fileName = r.matchStr()
+    //                 case None
+    //                     => fileName = Option<String>.None
+    //              }
+    //         }
 
-            if(let Some(i) = fileName){
-                if(fileName.getOrThrow().contains("../")){
-                    throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
-                }
-            }
+    //         if(let Some(i) = fileName){
+    //             if(fileName.getOrThrow().contains("../")){
+    //                 throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
+    //             }
+    //         }
 
-            return fileName
+    //         return fileName
 
-        }catch(ex:IllegalStateException){
+    //     }catch(ex:IllegalStateException){
 
-        }
+    //     }
 
-        return Option<String>.None
+    //     return Option<String>.None
 
-    }
+    // }
 
 
 
