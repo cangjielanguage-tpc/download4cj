@@ -39,9 +39,9 @@ public class HeaderInterceptor <: InterceptorConnect{
 
         // add etag if exist
         let etag:String = info.getEtag().getOrThrow()
-        if(!Util.isEmpty(etag)){
-            connection.addHeader(Util.IF_MATCH, etag)
-        }
+        // if(!Util.isEmpty(etag)){
+        //     connection.addHeader(Util.IF_MATCH, etag)
+        // }
 
         if (chain.getCache().isInterrupt()) {
             throw InterruptException.SIGNAL

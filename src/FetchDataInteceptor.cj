@@ -39,10 +39,13 @@ public class FetchDataInterceptor <: InterceptorFetch {
         // logger.log(LogLevel.OFF, "在读文件fetchLength="+fetchLength.toString())
 
 
+        if(fetchLength == 0){
+            return fetchLength
+        }
+
 
         if(fetchLength<task.getReadBufferSize()){
-            let r:Range<Int64> = 0..fetchLength
-            outputStream.write(blockIndex, readBuffer.clone(r), fetchLength)
+            outputStream.write(blockIndex, readBuffer.slice(0,fetchLength), fetchLength)
         }else{
             outputStream.write(blockIndex, readBuffer, fetchLength)
         }
