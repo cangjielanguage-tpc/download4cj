@@ -28,7 +28,7 @@ public class ConnectTrial{
         try{
 
             if(!Util.isEmpty(info.getEtag())){
-                connection.addHeader(Util.IF_MATCH, info.getEtag().getOrThrow())
+                //connection.addHeader(Util.IF_MATCH, info.getEtag().getOrThrow())
             }
             connection.addHeader(Util.RANGE, "bytes=0-0")
             let userHeader:Option<HashMap<String,ArrayList<String>>> = task.getHeaderMapFields()

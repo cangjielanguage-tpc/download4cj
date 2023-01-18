@@ -11,10 +11,10 @@ main(){
 
     for(i in 0..1){
 
-
+        //http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip
         //var url:String = "http://a2.dxiazaicc.com/down4/rufusv3.18_downcc.com.zip"
-        //var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
-        var url:String = "https://nodejs.org/dist/v11.2.0/node-v11.2.0.tar.gz"
+        var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
+        //var url:String = "https://nodejs.org/dist/v11.2.0/node-v11.2.0.tar.gz"
         //var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
 
 

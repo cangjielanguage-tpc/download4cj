@@ -56,15 +56,15 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         try {
             while (true) {
                 processFetchLength = chain.loopFetch()
-                fetchLength += processFetchLength
                 //if (processFetchLength == -1) {
-                if (fetchLength ==  contentLength) {
+                if (processFetchLength ==  0) {
                     //doneCount.fetchAdd(1)
                     // if(doneCount.load() == totalBlockCount){
                     //     break
                     // }
                     break
                 }
+                fetchLength += processFetchLength
             }
         }catch(e:Exception){
             println("reason="+e.message.toString())
@@ -96,16 +96,20 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
 
     func getExactContentLengthRangeFrom0(connected:DownloadConnectionConnected):Int64{
-        let contentRangeField:String = connected.getResponseHeaderField(Util.CONTENT_RANGE).getOrThrow()
+        let contentRangeField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_RANGE)
         var contentLength:Int64 = -1
         if (!Util.isEmpty(contentRangeField)){
-            let rightRange:Int64 = getRangeRightFromContentRange(contentRangeField)
+            let rightRange:Int64 = getRangeRightFromContentRange(contentRangeField.getOrThrow())
             if (rightRange > 0){
                 contentLength = rightRange + 1
             }
         }
         if (contentLength < 0) {
             //------
+            let contentLengthField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_LENGTH)
+            if (!Util.isEmpty(contentLengthField)) {
+                contentLength = Int64.parse(contentLengthField.getOrThrow())
+            }
 
         }
         return contentLength
