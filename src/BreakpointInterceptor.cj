@@ -57,7 +57,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             while (true) {
                 processFetchLength = chain.loopFetch()
                 //if (processFetchLength == -1) {
-                if (processFetchLength ==  0) {
+                if (processFetchLength <= 0) {
                     //doneCount.fetchAdd(1)
                     // if(doneCount.load() == totalBlockCount){
                     //     break

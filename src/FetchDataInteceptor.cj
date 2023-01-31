@@ -2,7 +2,7 @@ package okdownload
 
 public class FetchDataInterceptor <: InterceptorFetch {
 
-    private let inputStream:InputStream
+    private let source:Source
 
 
     private let readBuffer:Array<Byte>
@@ -12,9 +12,9 @@ public class FetchDataInterceptor <: InterceptorFetch {
     private let dispatcher:CallbackDispatcher
 
 
-    public init(blockIndex:Int64,inputStream:InputStream,outputStream:MultiPointOutputStream,task:DownloadTask){
+    public init(blockIndex:Int64,source:Source,outputStream:MultiPointOutputStream,task:DownloadTask){
         this.blockIndex = blockIndex
-        this.inputStream = inputStream
+        this.source = source
         this.readBuffer = Array<Byte>(task.getReadBufferSize(),{i => 0})
         this.outputStream = outputStream
         this.task = task
@@ -29,7 +29,10 @@ public class FetchDataInterceptor <: InterceptorFetch {
 
         // fetch
 
-        var fetchLength:Int64 = inputStream.read(readBuffer)
+        let stream = ByteArrayStream()
+
+        var fetchLength:Int64 = source.read(stream,task.getReadBufferSize())
+
 
         //var fetchLength:Int64 = 0
 
@@ -39,18 +42,11 @@ public class FetchDataInterceptor <: InterceptorFetch {
         // logger.log(LogLevel.OFF, "在读文件fetchLength="+fetchLength.toString())
 
 
-        if(fetchLength == 0){
+        if(fetchLength <= 0){
             return fetchLength
         }
 
-
-        if(fetchLength<task.getReadBufferSize()){
-            outputStream.write(blockIndex, readBuffer.slice(0,fetchLength), fetchLength)
-        }else{
-            outputStream.write(blockIndex, readBuffer, fetchLength)
-        }
-
-
+        outputStream.write(blockIndex, stream.readToEnd(), fetchLength)
 
          //outputStream.write(blockIndex, readBuffer, fetchLength)
 
