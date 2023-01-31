@@ -81,7 +81,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     }
 
 
-    public func getInputStream():InputStream{
+    public func getInputStream():Source{
         if(let Some(i) = response){
 
         }else{
@@ -89,10 +89,12 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
         }
 
         let body:Option<ResponseBody> = response.getOrThrow().getBody()
+        println("进来了测试下1111")
         if(let Some(i) = body){
-            let stream = ByteArrayStream()
-            while (i.getSource().read(stream, 4096) > 0) {}
-            return stream
+            // let stream = ByteArrayStream()
+            // while (i.getSource().read(stream, 4096) > 0) {}
+            // return stream
+            return i.getSource()
         }else{
             throw  IOException("no body found on response!")
         }

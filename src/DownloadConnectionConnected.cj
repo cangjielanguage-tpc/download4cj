@@ -4,7 +4,7 @@ public interface DownloadConnectionConnected {
 
     func getResponseCode():Int64
 
-    func getInputStream():InputStream
+    func getInputStream():Source
 
     func getResponseHeaderFields():Option<HashMap<String,ArrayList<String>>>
 
