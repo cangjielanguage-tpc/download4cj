@@ -29,7 +29,7 @@ public class HeaderInterceptor <: InterceptorConnect{
         if(let Some(i) = blockInfo){
 
         }else{
-            throw IOException("No block-info found on " + blockIndex.toString())
+            throw ReadWriteException("No block-info found on " + blockIndex.toString())
         }
         var range:String = "bytes=" + blockInfo.getOrThrow().getRangeLeft().toString() + "-"
         range = range +  blockInfo.getOrThrow().getRangeRight().toString()

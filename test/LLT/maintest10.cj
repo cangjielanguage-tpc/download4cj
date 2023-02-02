@@ -1,6 +1,7 @@
 
 
 
+
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
@@ -59,8 +60,8 @@ func runBench(n:Int64,fileName:String):Unit{
 
 main(){
 	println("TCS: okdownload, time elapsed: 1 ns, RESULT:")
-	let count = [2]
-    let files = ["zdywinrml","lenovobatterysetting","yjcdtjfzwjklj"]
+	let count = [1]
+    let files = ["lenovobatterysetting"]
     for (f in files){
         for (n in count){
             runBench(n,f)

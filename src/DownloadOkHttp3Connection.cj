@@ -76,7 +76,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
         if(let Some(i) = response){
             return i.getCode()
         }else{
-            throw  IOException("Please invoke execute first!")
+            throw  ReadWriteException("Please invoke execute first!")
         }
     }
 
@@ -85,7 +85,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
         if(let Some(i) = response){
 
         }else{
-            throw  IOException("Please invoke execute first!")
+            throw  ReadWriteException("Please invoke execute first!")
         }
 
         let body:Option<ResponseBody> = response.getOrThrow().getBody()
@@ -96,7 +96,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
             // return stream
             return i.getSource()
         }else{
-            throw  IOException("no body found on response!")
+            throw  ReadWriteException("no body found on response!")
         }
     }
 

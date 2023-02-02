@@ -1,5 +1,6 @@
 package okdownload
 
+from std import runtime.*
 public class FetchDataInterceptor <: InterceptorFetch {
 
     private let source:Source
@@ -29,10 +30,11 @@ public class FetchDataInterceptor <: InterceptorFetch {
 
         // fetch
 
-        let stream = ByteArrayStream()
+        var stream = ByteArrayStream()
 
         var fetchLength:Int64 = source.read(stream,task.getReadBufferSize())
 
+        //println("maxHeapSize="+MemoryInfo.maxHeapSize.toString()+"-------allocatedHeapSize="+MemoryInfo.allocatedHeapSize.toString()+"------heapPhysicalMemory="+MemoryInfo.heapPhysicalMemory.toString())
 
         //var fetchLength:Int64 = 0
 
