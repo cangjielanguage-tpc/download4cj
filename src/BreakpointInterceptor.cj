@@ -31,10 +31,10 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         let store:DownloadStore = chain.getDownloadStore()
         try {
             if (!store.update(info)) {
-                throw IOException("Update store failed!")
+                throw ReadWriteException("Update store failed!")
             }
         } catch (e:Exception) {
-            throw IOException("Update store failed!"+e.toString())
+            throw ReadWriteException("Update store failed!"+e.toString())
         }
         return connected
 
@@ -81,7 +81,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             outputStream.inspectComplete(blockIndex)
             // response content length check.
             if (fetchLength != contentLength) {
-                throw  IOException("Fetch-length isn't equal to the response content-length, "+ fetchLength.toString() + "!= " + contentLength.toString())
+                throw  ReadWriteException("Fetch-length isn't equal to the response content-length, "+ fetchLength.toString() + "!= " + contentLength.toString())
             }
         }
 

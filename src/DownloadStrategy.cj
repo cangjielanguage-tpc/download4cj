@@ -10,7 +10,7 @@ public class DownloadStrategy{
 
 
     // 1 connection: [0, 1MB)
-    private static let ONE_CONNECTION_UPPER_LIMITA:Int64 = 10240*1024*1024    //1
+    private static let ONE_CONNECTION_UPPER_LIMITA:Int64 = 1*1024*1024    //1
     // 2 connection: [1MB, 5MB)
     private static let TWO_CONNECTION_UPPER_LIMITA:Int64 = 5*1024*1024    //5
     // 3 connection: [5MB, 50MB)

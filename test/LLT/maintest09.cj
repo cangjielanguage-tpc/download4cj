@@ -1,10 +1,11 @@
 
 
-
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 from std import time.*
+from std import runtime.*
+
 
 func runBench(n:Int64,fileName:String):Unit{
     //var url:String = "http://127.0.0.1:8080/examples/${fileName}.txt"
@@ -58,8 +59,8 @@ func runBench(n:Int64,fileName:String):Unit{
 
 main(){
 	println("TCS: okdownload, time elapsed: 1 ns, RESULT:")
-	let count = [1,10]
-    let files = ["1B","1K","1M","10M","100M"]
+	let count = [1]
+    let files = ["100M"]
     for (f in files){
         for (n in count){
             runBench(n,f)
@@ -94,6 +95,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+        println("maxHeapSize="+MemoryInfo.maxHeapSize.toString()+"-------allocatedHeapSize="+MemoryInfo.allocatedHeapSize.toString()+"------heapPhysicalMemory="+MemoryInfo.heapPhysicalMemory.toString())
     }
 
     public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{

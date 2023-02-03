@@ -16,7 +16,7 @@
 可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载
 参考地址 https://github.com/lingochamp/okdownload.git
 
-**特性**：
+### 特性
 
 - 🚀 支持多线程下载
 
@@ -24,6 +24,7 @@
 
 - 🚀 支持同步下载和异步下载
 
+## <img alt="" src="./doc/assets/readme-icon-framework.png" style="display: inline-block;" width=3%/> 软件架构
 
 ### 架构图
 
@@ -60,7 +61,7 @@
 
 主要是核心类和成员函数说明，详情请见  [设计文档](./doc/design.md)
 
-## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 编译执行
+## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 使用说明
 
 ### 编译
 
@@ -72,7 +73,7 @@ python3 ci_test/main.py test
 ```
 
 
-### 示例
+### 功能示例
 
 ####  同步下载示例
 

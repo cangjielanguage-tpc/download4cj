@@ -187,8 +187,8 @@ public class MultiPointOutputStream {
                     if(!Directory.exists(parentFile.info.path)){
                         try{
                             Directory.create(parentFile.info.path)
-                        }catch(e:IOException){
-                            throw IOException("Create parent folder failed!")
+                        }catch(e:ReadWriteException){
+                            throw ReadWriteException("Create parent folder failed!")
                         }
                     }
                     try{

@@ -24,7 +24,7 @@ public class ProcessFileStrategy {
             try{
                 File.delete(file.getOrThrow().info.path)
             }catch(e:Exception){
-                throw IOException("Delete file failed!")
+                throw ReadWriteException("Delete file failed!")
             }
         }
     }
