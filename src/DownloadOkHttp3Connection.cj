@@ -89,7 +89,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
         }
 
         let body:Option<ResponseBody> = response.getOrThrow().getBody()
-        println("进来了测试下1111")
         if(let Some(i) = body){
             // let stream = ByteArrayStream()
             // while (i.getSource().read(stream, 4096) > 0) {}

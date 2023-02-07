@@ -17,7 +17,7 @@ public interface DownloadListener{
 
     func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit
 
-    func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit
+    func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit
 
     func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit
 
