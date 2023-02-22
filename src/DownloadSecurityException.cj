@@ -3,7 +3,7 @@ package okdownload
 public class DownloadSecurityException <: Exception {
 
 
-    public init(message:String){
+    init(message:String){
         super(message)
     }
 

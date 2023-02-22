@@ -6,7 +6,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     let out:BufferedOutputStream
     let fos:File
 
-    public init(uri:URL,bufferSize:Int64){
+     init(uri:URL,bufferSize:Int64){
         this.fos = File(uri.toString(),OpenOption.Open(true,true))
         this.out = BufferedOutputStream(fos,bufferSize)
     }
@@ -19,12 +19,10 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
 
 
     public func close():Unit{
-        //println("close了")
         fos.close()
     }
 
     public func flushAndSync():Unit{
-        //println("flush了")
         out.flush()
         fos.flush()
     }

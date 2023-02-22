@@ -3,7 +3,7 @@
   "organization": "huang-haoshuai",
   "name": "okdownload",
   "description": "仓颉版okdownload",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "requires": {
     "okhttp": {
       "organization": "cangjie",

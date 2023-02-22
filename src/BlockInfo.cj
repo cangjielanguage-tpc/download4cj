@@ -6,49 +6,38 @@ public class BlockInfo {
     private let contentLength:Int64
     private let currentOffset:AtomicInt64
 
-    public init(startOffset:Int64,contentLength:Int64){
+    init(startOffset:Int64,contentLength:Int64){
         this(startOffset, contentLength, 0);
     }
 
-    public init(startOffset:Int64,contentLength:Int64,currentOffset:Int64){
+    init(startOffset:Int64,contentLength:Int64,currentOffset:Int64){
 
-        //------
         this.startOffset = startOffset
         this.contentLength = contentLength
         this.currentOffset =  AtomicInt64(currentOffset);
 
     }
 
-    public func getCurrentOffset():Int64{
+     func getCurrentOffset():Int64{
         return this.currentOffset.load()
     }
 
 
-    //------
-
-    public func getRangeLeft():Int64{
+     func getRangeLeft():Int64{
         return startOffset + currentOffset.load()
     }
 
-    public func getContentLength():Int64{
+     func getContentLength():Int64{
         return contentLength
     }
 
-    public func getRangeRight():Int64{
-        return startOffset + contentLength - 1;
+     func getRangeRight():Int64{
+        return startOffset + contentLength - 1
     }
-
-
-    //------
 
 
     public func resetBlock():Unit{
-        //------
+        this.currentOffset.store(0)
     }
 
-
-    //------
-
-
-    //------
 }

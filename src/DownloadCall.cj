@@ -8,8 +8,8 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     private static let TAG:String = "DownloadCall"
     static let MAX_COUNT_RETRY_FOR_PRECONDITION_FAILEDA:Int64 = 1
-    public let task:DownloadTask
-    public let asyncExecuted:Bool
+     let task:DownloadTask
+     let asyncExecuted:Bool
     let blockChainList:ArrayList<DownloadChain>
     var cache:Option<DownloadCache>
     var canceled:Bool
@@ -32,26 +32,19 @@ public class DownloadCall <: Equatable<DownloadCall>{
     }
 
 
-    public static func create(task:DownloadTask,asyncExecuted:Bool,store:DownloadStore){
+     static func create(task:DownloadTask,asyncExecuted:Bool,store:DownloadStore){
         return DownloadCall(task, asyncExecuted, store)
     }
 
 
-    //......
 
-
-
-
-    public func isCanceled():Bool{
+     func isCanceled():Bool{
         return  canceled
     }
 
 
-    //......
 
-
-
-    public func execute():Unit{
+     func execute():Unit{
         //currentThread = Thread.currentThread();
         var retry:Bool = false
         var retryCount:Int64 = 0
@@ -59,7 +52,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         let okDownload:OkDownload = OkDownload.withs()
         let fileStrategy:ProcessFileStrategy = okDownload.processFileStrategy()
         //inspect task start
-
         inspectTaskStart()
 
         do{
@@ -91,25 +83,16 @@ public class DownloadCall <: Equatable<DownloadCall>{
              if (canceled){
                 break
              }
-            // ready cache.
-            let cachea:DownloadCache = createCache(info)
-            this.cache = cachea
-
             // 2. remote check.
             let remoteCheck:BreakpointRemoteCheck = createRemoteCheck(info)
             try {
                 remoteCheck.check()
-
-
-
-            } catch (e:IOException) {
-                //------
-
+            } catch (e:ReadWriteException) {
                 break
             }
-
-
-
+               // ready cache.
+            let cachea:DownloadCache = createCache(info)
+            this.cache = cachea
             if(!Util.isEmpty(task.getRedirectLocation())){
                 cache.getOrThrow().setRedirectLocation(task.getRedirectLocation())
             }
@@ -119,7 +102,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
             try{
                  if (remoteCheck.isResumable()) {
                          // 5. local check
-
                     let localCheck:BreakpointLocalCheck = createLocalCheck(info,remoteCheck.getInstanceLength())
                     localCheck.check()
                     if(localCheck.isDirty()) {
@@ -132,7 +114,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
                          okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
                     }
                  }else{
-                    //------
 
                  }
             }catch(e:IOException){
@@ -180,7 +161,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         var cause:EndCause = EndCause.COMPLETED
         var realCause:Option<Exception> = Option<Exception>.None
         if (cache.getOrThrow().isServerCanceled() || cache.getOrThrow().isUnknownError() || cache.getOrThrow().isPreconditionFailed()) {
-            // error
             //------
         } else if (cache.getOrThrow().isFileBusyAfterRun()) {
             //------
@@ -199,10 +179,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
 
       private func inspectTaskEnd(cache:DownloadCache,cause:EndCause,realCause:Option<Exception>){
-        // match(cause){
-        //     case EndCause.CANCELED =>  throw IllegalAccessException("can't recognize cancelled on here")
-        //     case _ => println("cause not cancel")
-        // }
+
         synchronized(m){
             if (canceled){
                 return
@@ -213,10 +190,8 @@ public class DownloadCall <: Equatable<DownloadCall>{
         match(cause){
             case EndCause.COMPLETED =>
                 store.markFileClear(task.getId())
-                //OkDownload.withs().processFileStrategy().completeProcessStream(cache.getOutputStream(), task)
             case _ =>  println("cause not complete")
         }
-        //OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, cause, realCause)
         OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, realCause)
 
     }
@@ -259,13 +234,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         startBlocks(blockChainList)
 
     }
-
-    //------
-
-
-
-    //------
-
 
 
     func startBlocks(tasks:ArrayList<DownloadChain>):Unit{
@@ -348,36 +316,31 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck,failedCause:ResumeFailedCause):Unit{
         Util.assembleBlock(task, info, remoteCheck.getInstanceLength(),remoteCheck.isAcceptRange())
-        //OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task, info, failedCause)
         OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
 
     }
 
 
 
-    public func equalsTask(thatTask:DownloadTask):Bool{
+     func equalsTask(thatTask:DownloadTask):Bool{
         return this.task == thatTask
     }
 
 
 
-    public func getFile():Option<File>{
+     func getFile():Option<File>{
         return this.task.getFile()
     }
 
 
     public operator func ==(anothor: DownloadCall): Bool{
         return true
-        //------
-
     }
 
 
 
     public operator func !=(anothor: DownloadCall): Bool{
         return false
-        //------
-
     }
 
 }

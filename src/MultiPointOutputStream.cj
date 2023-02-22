@@ -60,11 +60,11 @@ public class MultiPointOutputStream {
         }
     }
 
-    public init(task:DownloadTask,info:BreakpointInfo,store:DownloadStore){
+     init(task:DownloadTask,info:BreakpointInfo,store:DownloadStore){
         this(task, info, store, Option<()->Unit>.None)
     }
 
-    public func write(blockIndex:Int64,bytes:Array<UInt8>,length:Int64){
+     func write(blockIndex:Int64,bytes:Array<UInt8>,length:Int64){
         synchronized(m){
             if(canceled){
                 return
@@ -81,37 +81,32 @@ public class MultiPointOutputStream {
     }
 
 
-    //------
 
 
 
 
 
-    //------
 
 
     let doneState:StreamsState = StreamsState()
 
-    public func done(blockIndex:Int64):Unit{
-        //------
+     func done(blockIndex:Int64):Unit{
 
         close(blockIndex)
     }
 
-    //------
 
 
 
 
 
-    public func inspectComplete(blockIndex:Int64):Unit{
+     func inspectComplete(blockIndex:Int64):Unit{
         let blockInfo:Option<BlockInfo> =  info.getBlock(blockIndex)
         // if (!Util.isCorrectFull(blockInfo.getOrThrow().getCurrentOffset(), blockInfo.getOrThrow().getContentLength())) {
         //     throw IOException("The current offset on block-info isn't update correct, "+ blockInfo.getOrThrow().getCurrentOffset().toString() + " != " + blockInfo.getOrThrow().getContentLength().toString()+ " on " + blockIndex.toString())
         // }
     }
 
-    //------
 
 
 
@@ -126,43 +121,23 @@ public class MultiPointOutputStream {
         }
     }
 
-    //------
 
 
 
-    public func setRequireStreamBlocks(requireStreamBlocks:ArrayList<Int64>):Unit{
+     func setRequireStreamBlocks(requireStreamBlocks:ArrayList<Int64>):Unit{
         this.requireStreamBlocks = requireStreamBlocks
     }
 
 
-    public func catchBlockConnectException(blockIndex:Int64){
+     func catchBlockConnectException(blockIndex:Int64){
         noMoreStreamList.append(blockIndex)
     }
 
 
     let state:StreamsState = StreamsState()
 
-    //------
-
-
-
-
-    //------
-
-
-
-    //------
-
-
-    //------
-
-
-    //------
-
-
 
     func flushProcess():Unit{
-        //------
 
     }
 
@@ -241,7 +216,6 @@ public class MultiPointOutputStream {
     }
 
 
-    //------
 
 
 }

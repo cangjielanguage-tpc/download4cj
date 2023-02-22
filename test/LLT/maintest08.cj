@@ -6,9 +6,13 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+var exception = Option<String>.None
+
+//目的 主要为了验证地址出错时候的情况
+
 main(){
 
-    var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.121212.js" //错误地址
+    var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.121212.js" // 地址不存在
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
 
@@ -20,22 +24,27 @@ main(){
 
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-        println("进来了")
     }else{
-        println("没进来")
     }
 
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
     try{
         task.execute(MyListen())
     }catch(e:Exception){
-        println(e.toString())
+        exception = e.toString()
     }
+
+    match(exception){
+        case Some(msg)=>
+            return 0
+        case _ =>
+            return 1
+    }
+
+
 }
 
 public class MyListen<: DownloadListener{

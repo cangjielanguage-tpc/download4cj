@@ -2,7 +2,6 @@ package okdownload
 
 public interface DownloadConnection {
 
-    //prop var NO_RESPONSE_CODE:Int64
 
     func addHeader(name:String,value:String):Unit
 

@@ -9,10 +9,9 @@ public class MockTaskForCompare <: IdentifiedTask {
     let parentFile:Option<Directory>
 
 
-    //------
 
 
-    public init(id:Int64,task:DownloadTask) {
+     init(id:Int64,task:DownloadTask) {
         this.id = id
         this.url =  task.getUrl()
         this.parentFile = task.getParentFile()
@@ -25,28 +24,28 @@ public class MockTaskForCompare <: IdentifiedTask {
     }
 
 
-    public func getId():Int64{
+     func getId():Int64{
         return id
     }
 
 
 
-    public func getUrl():String{
+     func getUrl():String{
         return url
     }
 
 
-    public func getProvidedPathFile():Option<File>{
+     func getProvidedPathFile():Option<File>{
         return providedPathFile.getOrThrow()
     }
 
 
-    public func getParentFile():Directory{
+     func getParentFile():Directory{
         return parentFile.getOrThrow()
     }
 
 
-    public func getFilename():Option<String>{
+     func getFilename():Option<String>{
         return filename
     }
 

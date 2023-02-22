@@ -15,40 +15,28 @@ public class DownloadTaskBuilder{
     private var isPreAllocateLength:Option<Bool>
 
     private var priority:Int64
-    public static let DEFAULT_READ_BUFFER_SIZE:Int64 = 4096
+     static let DEFAULT_READ_BUFFER_SIZE:Int64 = 4096
     private var readBufferSize:Int64 = DEFAULT_READ_BUFFER_SIZE
-    public static let DEFAULT_FLUSH_BUFFER_SIZE:Int64 = 16384
+     static let DEFAULT_FLUSH_BUFFER_SIZE:Int64 = 16384
     private var flushBufferSize:Int64 = DEFAULT_FLUSH_BUFFER_SIZE
 
-    public static let DEFAULT_SYNC_BUFFER_SIZE:Int64 = 65536
+     static let DEFAULT_SYNC_BUFFER_SIZE:Int64 = 65536
     private var syncBufferSize:Int64 = DEFAULT_SYNC_BUFFER_SIZE
-    public static let DEFAULT_SYNC_BUFFER_INTERVAL_MILLIS:Int64 = 2000
+     static let DEFAULT_SYNC_BUFFER_INTERVAL_MILLIS:Int64 = 2000
     private var syncBufferIntervalMillis:Int64 = DEFAULT_SYNC_BUFFER_INTERVAL_MILLIS
 
-    public static let DEFAULT_AUTO_CALLBACK_TO_UI_THREAD:Bool = true
+     static let DEFAULT_AUTO_CALLBACK_TO_UI_THREAD:Bool = true
     private var autoCallbackToUIThread:Bool = DEFAULT_AUTO_CALLBACK_TO_UI_THREAD
 
-    public static let DEFAULT_MIN_INTERVAL_MILLIS_CALLBACK_PROCESS:Int64 = 3000
+     static let DEFAULT_MIN_INTERVAL_MILLIS_CALLBACK_PROCESS:Int64 = 3000
     private var minIntervalMillisCallbackProcess:Int64 = DEFAULT_MIN_INTERVAL_MILLIS_CALLBACK_PROCESS
 
-    public static let DEFAULT_PASS_IF_ALREADY_COMPLETED:Bool = true
+     static let DEFAULT_PASS_IF_ALREADY_COMPLETED:Bool = true
     private var passIfAlreadyCompleted :Bool = DEFAULT_PASS_IF_ALREADY_COMPLETED
-    public static let DEFAULT_IS_WIFI_REQUIRED:Bool = false
+     static let DEFAULT_IS_WIFI_REQUIRED:Bool = false
     private var isWifiRequired :Bool = DEFAULT_IS_WIFI_REQUIRED
 
 
-
-
-    //----
-    // public init(url:String,parentPath:String,filename:String){
-    //     this(url,URL.parse(parentPath+filename))
-    //     if (Util.isEmpty(filename)) {
-    //         this.isFilenameFromResponse = true;
-    //     }else{
-    //         this.filename = filename;
-    //     }
-
-    // }
 
     public init(url:String,file:Directory){
         this.url = url
@@ -62,28 +50,6 @@ public class DownloadTaskBuilder{
     }
 
 
-    //------
-
-
-
-
-    //------
-
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-
-    //------
-
-
     public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
         if(minIntervalMillisCallbackProcess < 0){
             throw IllegalArgumentException("Value must be positive!")
@@ -93,60 +59,31 @@ public class DownloadTaskBuilder{
     }
 
 
-    //------
+
+
+    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
+        if (readBufferSize <= 0){
+            throw IllegalArgumentException("Value must be positive!")
+        }
+        this.readBufferSize = readBufferSize
+        return this
+    }
 
 
 
-    //------
-
-
-    // public func setPriority(priority:Int64):DownloadTaskBuilder{
-    //     this.priority = priority
-    //     return this
-    // }
-
-
-
-    // public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
-    //     if (readBufferSize <= 0){
-    //         throw IllegalArgumentException("Value must be positive!")
-    //     }
-    //     this.readBufferSize = readBufferSize
-    //     return this
-    // }
-
-
-
-    //  public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder{
-    //     if (flushBufferSize <= 0){
-    //         throw IllegalArgumentException("Value must be positive!")
-    //     }
-    //     this.flushBufferSize = flushBufferSize
-    //     return this
-    // }
-
-
-
-    //------
-
-
-
-
-    //------
-
+     public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder{
+        if (flushBufferSize <= 0){
+            throw IllegalArgumentException("Value must be positive!")
+        }
+        this.flushBufferSize = flushBufferSize
+        return this
+    }
 
 
     public func setFilename(filename:String):DownloadTaskBuilder{
         this.filename = filename
         return this
     }
-
-    // public func setPassIfAlreadyCompleted(passIfAlreadyCompleted:Bool):DownloadTaskBuilder{
-    //     this.passIfAlreadyCompleted = passIfAlreadyCompleted
-    //     return this
-    // }
-
-    //------
 
 
     public func build():DownloadTask{

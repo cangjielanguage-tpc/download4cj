@@ -6,5 +6,4 @@ public class PreError <: DownloadCache{
          super(Option<MultiPointOutputStream>.None)
          setUnknownError(realCause)
     }
-
 }

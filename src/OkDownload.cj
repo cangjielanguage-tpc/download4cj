@@ -30,44 +30,44 @@ public class OkDownload {
         this.monitor = Option<DownloadMonitor>.None
     }
 
-    public func downloadDispatcher():DownloadDispatcher{
+     func downloadDispatcher():DownloadDispatcher{
         return downloadDispatchers
     }
 
-    public func callbackDispatcher():CallbackDispatcher{
+     func callbackDispatcher():CallbackDispatcher{
         return callbackDispatchers
     }
 
-    public func breakpointStore():BreakpointStore{
+     func breakpointStore():BreakpointStore{
         return breakpointStores
     }
 
-    public func connectionFactory():DownloadConnectionFactory{
+     func connectionFactory():DownloadConnectionFactory{
         return connectionFactorys
     }
 
-    public func outputStreamFactory():DownloadOutputStreamFactory{
+     func outputStreamFactory():DownloadOutputStreamFactory{
         return outputStreamFactorys
     }
 
-    public func processFileStrategy():ProcessFileStrategy{
+     func processFileStrategy():ProcessFileStrategy{
         return processFileStrategys
     }
 
-    public func downloadStrategy():DownloadStrategy{
+     func downloadStrategy():DownloadStrategy{
         return downloadStrategys
     }
 
-    public func setMonitor(monitor:Option<DownloadMonitor>):Unit{
+     func setMonitor(monitor:Option<DownloadMonitor>):Unit{
         this.monitor = monitor
     }
 
-    public func getMonitor():Option<DownloadMonitor>{
+     func getMonitor():Option<DownloadMonitor>{
         return monitor
     }
 
 
-    public static func withs():OkDownload{
+     static func withs():OkDownload{
         if(let Some(i) = singleton){
 
         }else{
@@ -85,8 +85,5 @@ public class OkDownload {
 
         return singleton.getOrThrow()
     }
-
-
-    //------
 
 }

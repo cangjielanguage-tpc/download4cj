@@ -6,14 +6,12 @@ public class CallbackDispatcher {
 
    private let transmit:DownloadListener
 
-//------
 
-
-   public init(){
+    init(){
       this.transmit = DefaultTransmitListener()
    }
 
-   public func isFetchProcessMoment(task:DownloadTask):Bool{
+    func isFetchProcessMoment(task:DownloadTask):Bool{
         let minInterval:Int64 = task.getMinIntervalMillisCallbackProcess()
 
 
@@ -23,19 +21,7 @@ public class CallbackDispatcher {
    }
 
 
-   // public func endTasksWithError(errorCollection:ArrayList<DownloadTask>,realCause:Exception):Unit{
-   //    if(errorCollection.size <= 0){
-   //       return
-   //    }
-
-   //    for (task in errorCollection) {
-   //       //task.getListener().taskEnd(task, EndCause.ERROR, realCause)
-   //       task.getListener().taskEnd(task, realCause)
-   //    }
-   // }
-
-
-   public func endTasks(completedTaskCollection:ArrayList<DownloadTask>,sameTaskConflictCollection:ArrayList<DownloadTask>,fileBusyCollection:ArrayList<DownloadTask>){
+    func endTasks(completedTaskCollection:ArrayList<DownloadTask>,sameTaskConflictCollection:ArrayList<DownloadTask>,fileBusyCollection:ArrayList<DownloadTask>){
 
       if (completedTaskCollection.size == 0 && sameTaskConflictCollection.size == 0&& fileBusyCollection.size == 0) {
             return
@@ -56,16 +42,7 @@ public class CallbackDispatcher {
 
    }
 
-
-
-//------
-
-
-
-
-//......
-
-   public func dispatch():DownloadListener{
+    func dispatch():DownloadListener{
         return transmit
    }
 }
