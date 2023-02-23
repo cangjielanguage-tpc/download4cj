@@ -15,7 +15,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
 
-
+    //id
     private var id:Int64 //下载任务唯一id
     private let url:String  //下载url
     private let uri:URL ////下载url
