@@ -14,7 +14,7 @@ public class KeyToIdMap{
         this.idToKeyMap = idToKeyMap
     }
 
-    public func get(task:DownloadTask):Option<Int64>{
+     func get(task:DownloadTask):Option<Int64>{
         let genKey:String = generateKey(task)
         if(let Some(i) = keyToIdMap.get(genKey)){
             return i.getOrThrow()
@@ -24,12 +24,11 @@ public class KeyToIdMap{
     }
 
 
-    public func remove(id:Int64){
-        //------
+     func remove(id:Int64){
 
     }
 
-    public func add(task:DownloadTask,id:Int64):Unit{
+     func add(task:DownloadTask,id:Int64):Unit{
         let key:String = generateKey(task)
         keyToIdMap.put(key,id)
         idToKeyMap.put(id,key)

@@ -1,9 +1,15 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
+
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
+
+var i = 0
+
+//目的 主要为了验证循环同步下载
+
 
 main(){
 
@@ -21,19 +27,21 @@ main(){
 
         if (!Directory.exists(parentFilePath)) {
             parentFile = Directory.create(parentFilePath, recursive: true)
-            println("进来了")
         }else{
-            println("没进来")
         }
 
         let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
             .setFilename(filename)
-            // the minimal interval millisecond for callback progress
             .setMinIntervalMillisCallbackProcess(30)
-            // do re-download even if the task has already been completed in the past.
             .build()
 
         task.execute(MyListen())
+    }
+
+    if(i == 3){
+      return 0
+    }else{
+      return 1
     }
 
 }
@@ -106,6 +114,7 @@ public class MyListen<: DownloadListener{
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
          println("===============taskEnd===================")
          println("task.getId="+task.getId().toString())
+         i++
     }
 }
 

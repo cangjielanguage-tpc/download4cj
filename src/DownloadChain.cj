@@ -48,51 +48,40 @@ public class DownloadChain {
     }
 
 
-    public func getResponseContentLength():Int64{
+     func getResponseContentLength():Int64{
         return responseContentLength
     }
 
-    public func setResponseContentLength(responseContentLength:Int64):Unit{
+     func setResponseContentLength(responseContentLength:Int64):Unit{
         this.responseContentLength = responseContentLength
     }
 
 
-
-    //......
-
-
-    public func getTask():DownloadTask{
+     func getTask():DownloadTask{
         return task
     }
 
-    public func getInfo():BreakpointInfo{
+     func getInfo():BreakpointInfo{
         return this.info
     }
 
 
-    public func getBlockIndex():Int64{
+     func getBlockIndex():Int64{
         return blockIndex
     }
 
-    //------
 
-
-    public func getCache():DownloadCache{
+     func getCache():DownloadCache{
         return cache
     }
 
 
-    //------
-
-
-    public func getOutputStream():MultiPointOutputStream{
+     func getOutputStream():MultiPointOutputStream{
         return  this.cache.getOutputStream()
     }
 
-    //------
 
-
-    public func getConnectionOrCreate():DownloadConnection{
+     func getConnectionOrCreate():DownloadConnection{
         synchronized(m){
 
             if (cache.isInterrupt()){
@@ -121,11 +110,11 @@ public class DownloadChain {
     }
 
 
-    public func increaseCallbackBytes(increaseBytes:Int64):Unit{
+     func increaseCallbackBytes(increaseBytes:Int64):Unit{
         this.noCallbackIncreaseBytes += increaseBytes
     }
 
-    public func flushNoCallbackIncreaseBytes():Unit{
+     func flushNoCallbackIncreaseBytes():Unit{
          if (noCallbackIncreaseBytes == 0){
             return
          }
@@ -163,23 +152,21 @@ public class DownloadChain {
 
 
 
-    public func resetConnectForRetry():Unit{
-        //------
+     func resetConnectForRetry():Unit{
 
     }
 
-    public func releaseConnection():Unit{
+     func releaseConnection():Unit{
         synchronized(m){
             if(let Some(i) = connection){
                 i.release()
-                //Util.d(TAG, "release connection  connection.toString()  task[" + task.getId().toString()+ "] block[" + blockIndex.toString() + "]")
             }
             connection = Option<DownloadConnection>.None
         }
     }
 
 
-    public func processConnect():DownloadConnectionConnected{
+     func processConnect():DownloadConnectionConnected{
 
         if (cache.isInterrupt()){
             throw InterruptException.SIGNAL
@@ -193,9 +180,8 @@ public class DownloadChain {
 
 
 
-    public func processFetch():Int64{
+     func processFetch():Int64{
         if (cache.isInterrupt()){
-            //------
 
         }
 
@@ -206,7 +192,7 @@ public class DownloadChain {
 
 
 
-    public func loopFetch():Int64{
+     func loopFetch():Int64{
         if (fetchIndex == fetchInterceptorList.size) {
             // last one is fetch data interceptor
             fetchIndex--
@@ -219,7 +205,7 @@ public class DownloadChain {
     }
 
 
-    public func getDownloadStore():DownloadStore{
+     func getDownloadStore():DownloadStore{
         return store
     }
 

@@ -12,7 +12,7 @@ public class ConnectTrial{
     private var responseFilename:String
     private var responseCode:Int64
 
-    public init(task:DownloadTask,info:BreakpointInfo){
+     init(task:DownloadTask,info:BreakpointInfo){
         this.task = task
         this.info = info
         this.acceptRange = false
@@ -22,7 +22,7 @@ public class ConnectTrial{
         this.responseCode = 0
     }
 
-    public func executeTrial():Unit{
+     func executeTrial():Unit{
         var connection:DownloadConnection = OkDownload.withs().connectionFactory().create(task.getUrl())
         var isNeedTrialHeadMethod:Bool = false
         try{
@@ -75,40 +75,37 @@ public class ConnectTrial{
 
 
 
-    public func getInstanceLength():Int64{
+     func getInstanceLength():Int64{
         return this.instanceLength
     }
 
 
 
-    public func isAcceptRange():Bool{
+     func isAcceptRange():Bool{
         return this.acceptRange
     }
 
 
 
-    public func isChunked():Bool{
+     func isChunked():Bool{
         return this.instanceLength == Util.CHUNKED_CONTENT_LENGTH
     }
 
 
 
-    public func getResponseEtag():String{
+     func getResponseEtag():String{
         return responseEtag
     }
 
 
-    public func getResponseFilename():String{
+     func getResponseFilename():String{
         return responseFilename
     }
 
 
-    public func getResponseCode():Int64{
+     func getResponseCode():Int64{
         return responseCode
     }
-
-    //------
-
 
 
 
@@ -131,8 +128,7 @@ public class ConnectTrial{
     private static func findFilename(connected:DownloadConnectionConnected):String{
         let optStr:Option<String> = connected.getResponseHeaderField(Util.CONTENT_DISPOSITION)
         if(let Some(i) = optStr){
-            //return parseContentDisposition(optStr).getOrThrow()
-            return ""
+            return parseContentDisposition(optStr).getOrThrow()
         }else{
             return ""
         }
@@ -145,49 +141,64 @@ public class ConnectTrial{
 
 
 
-    // private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
+    private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
 
-    //     if(let Some(i) = contentDisposition){
+        if(let Some(i) = contentDisposition){
 
-    //     }else{
-    //         return Option<String>.None
-    //     }
+        }else{
+            return Option<String>.None
+        }
 
-    //     try{
+        try{
 
-    //         var fileName:Option<String> = Option<String>.None
-    //         var isM:Bool = false
-    //         match(CONTENT_DISPOSITION_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
-    //             case Some(r)
-    //                 => fileName = r.matchStr()
-    //             case None
-    //                 => isM = true
-    //         }
+            var fileName:Option<String> = Option<String>.None
+            var isM:Bool = false
 
-    //         if(isM){
-    //             match(CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matches(contentDisposition.getOrThrow())){
-    //                 case Some(r)
-    //                     => fileName = r.matchStr()
-    //                 case None
-    //                     => fileName = Option<String>.None
-    //              }
-    //         }
+            var m0 = CONTENT_DISPOSITION_QUOTED_PATTERN.matcher(contentDisposition.getOrThrow())
+            var matchData0 = m0.find()
+            match(matchData0){
+                case Some(s) =>
+                    if (s.groupNumber() > 0) {
+                        fileName = s.matchStr(1)
+                    }else{
+                        fileName = Option<String>.None
+                    }
+                case None =>
+                    isM = true
+                }
 
-    //         if(let Some(i) = fileName){
-    //             if(fileName.getOrThrow().contains("../")){
-    //                 throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
-    //             }
-    //         }
 
-    //         return fileName
+            if(isM){
 
-    //     }catch(ex:IllegalStateException){
+                var m = CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matcher(contentDisposition.getOrThrow())
+                var matchData = m.find()
+                match (matchData) {
+                case Some(s) =>
+                    if (s.groupNumber() > 0) {
+                        fileName = s.matchStr(1)
+                    }else{
+                        fileName = Option<String>.None
+                    }
+                case None =>
+                    fileName = Option<String>.None
+                }
+            }
 
-    //     }
+            if(let Some(i) = fileName){
+                if(fileName.getOrThrow().contains("../")){
+                    throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
+                }
+            }
 
-    //     return Option<String>.None
+            return fileName
 
-    // }
+        }catch(ex:IllegalStateException){
+
+        }
+
+        return Option<String>.None
+
+    }
 
 
 
@@ -209,9 +220,6 @@ public class ConnectTrial{
             return instanceLength
         }
 
-        //------
-
-
         return Util.CHUNKED_CONTENT_LENGTH
 
     }
@@ -222,22 +230,18 @@ public class ConnectTrial{
             return false
         }
 
-        //------
-
         return true
     }
 
 
 
     func trialHeadMethodForInstanceLength():Unit{
-        //------
 
     }
 
 
 
     private static func parseTransferEncoding(transferEncoding:Option<String>):Bool{
-        //------
 
         return true
 

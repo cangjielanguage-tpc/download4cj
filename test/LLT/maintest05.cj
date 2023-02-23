@@ -5,6 +5,10 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+var i = 0
+
+//目的 主要为了验证异步下载多个相同的
+
 main(){
 
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
@@ -15,9 +19,7 @@ main(){
 
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-        println("进来了")
     }else{
-        println("没进来")
     }
 
     var filename0 = "0.jpg"
@@ -27,42 +29,29 @@ main(){
     var filename4 = "4.jpg"
 
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename0)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task1:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename1)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
      let task2:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename2)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task3:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename3)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
     let task4:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename4)
-        // the minimal interval millisecond for callback progress
         .setMinIntervalMillisCallbackProcess(30)
-        // do re-download even if the task has already been completed in the past.
         .build()
 
     let tasklists:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
@@ -76,7 +65,11 @@ main(){
 
      DownloadTask.enqueues(tasks,MyListen())
      sleep(1000*1000*1000*8)
-     println("jieshu")
+     if(i == tasklists.size){
+        return 0
+     }else{
+        return 1
+     }
 }
 
 public class MyListen<: DownloadListener{
@@ -112,6 +105,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        i++
     }
 }
 

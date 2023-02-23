@@ -19,12 +19,12 @@ public class DownloadStrategy{
     private static let FOUR_CONNECTION_UPPER_LIMITA:Int64 = 100*1024*1024   //100
 
 
-    public func resumeAvailableResponseCheck(connected:DownloadConnectionConnected,blockIndex:Int64,info:BreakpointInfo):ResumeAvailableResponseCheck{
+     func resumeAvailableResponseCheck(connected:DownloadConnectionConnected,blockIndex:Int64,info:BreakpointInfo):ResumeAvailableResponseCheck{
         return ResumeAvailableResponseCheck(connected, blockIndex, info)
     }
 
 
-    public func determineBlockCount(task:DownloadTask,totalLengtha:Int64):Int64{
+     func determineBlockCount(task:DownloadTask,totalLengtha:Int64):Int64{
         if(let Some(i) = task.getSetConnectionCount()){
             if(i != 0){
                 return i
@@ -47,11 +47,10 @@ public class DownloadStrategy{
         return 5
     }
 
-    //------
 
 
 
-    public func inspectAnotherSameInfo(task:DownloadTask,info:BreakpointInfo,instanceLength:Int64):Bool{
+     func inspectAnotherSameInfo(task:DownloadTask,info:BreakpointInfo,instanceLength:Int64):Bool{
         if (!task.isFilenameFromResponse()){
             return false
         }
@@ -61,18 +60,16 @@ public class DownloadStrategy{
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
 
         if(let Some(i) = anotherInfo){
-            //------
 
         }else{
             return false
         }
-        //------
 
         return true
     }
 
 
-    public func isUseMultiBlock(isAcceptRange:Bool){
+     func isUseMultiBlock(isAcceptRange:Bool){
         // output stream not support seek
         if (!OkDownload.withs().outputStreamFactory().supportSeek()){
             return false
@@ -84,34 +81,48 @@ public class DownloadStrategy{
     private static let TMP_FILE_NAME_PATTERN:Regex = Regex(".*\\\\|/([^\\\\|/|?]*)\\??")
 
 
-    //------
-
-
-    public func validFilenameFromResponse(responseFileName:String,task:DownloadTask,info:BreakpointInfo):Unit{
+     func validFilenameFromResponse(responseFileName:String,task:DownloadTask,info:BreakpointInfo):Unit{
         if(Util.isEmpty(task.getFilename())){
-            //------
+            if(Util.isEmpty(responseFileName)){
+                  var filename = ""
+                  try{
+                     let lastIndex:Int64 = task.getUrl().lastIndexOf("/").getOrThrow()
+                     filename = task.getUrl().substring(lastIndex+1)
+                  }catch(e:Exception){
+                     println(e.toString())
+                  }
 
+                 if(Util.isEmpty(filename)){
+                    filename = Time.now().unixTimeStamp().nanoseconds().toString()
+                 }
+
+                  task.filenameHolder = FileNameHolder(filename)
+                  task.targetFile = task.getParentFile().createFile(filename)
+                  task.providedPathFile = task.getFile().getOrThrow()
+            }else{
+                //不为空 这个就是文件名
+                task.filenameHolder = FileNameHolder(responseFileName)
+                task.targetFile = task.getParentFile().createFile(responseFileName)
+                task.providedPathFile = task.getFile().getOrThrow()
+            }
         }
     }
 
 
 
-    //......
 
 
 
 
-   //......
 
 
 
 
-    public func validInfoOnCompleted(task:DownloadTask,store:DownloadStore):Unit{
-        //------
+     func validInfoOnCompleted(task:DownloadTask,store:DownloadStore):Unit{
 
     }
 
-    public func getPreconditionFailedCause(responseCode:Int64,isAlreadyProceed:Bool,info:BreakpointInfo,responseEtag:String):Option<ResumeFailedCause>{
+     func getPreconditionFailedCause(responseCode:Int64,isAlreadyProceed:Bool,info:BreakpointInfo,responseEtag:String):Option<ResumeFailedCause>{
         let localEtag:String = info.getEtag().getOrThrow()
         if(responseCode == Util.HTTP_PRECON_FAILED){
             return RESPONSE_PRECONDITION_FAILED
@@ -140,7 +151,7 @@ public class DownloadStrategy{
 
     }
 
-    public func isServerCanceled(responseCode:Int64,isAlreadyProceed:Bool):Bool{
+     func isServerCanceled(responseCode:Int64,isAlreadyProceed:Bool):Bool{
         if (responseCode != Util.HTTP_PARTIAL && responseCode != Util.HTTP_OK) {
             return true
         }

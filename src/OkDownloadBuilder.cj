@@ -12,7 +12,7 @@ public class OkDownloadBuilder {
     private var monitors:Option<DownloadMonitor>
 
 
-    public init(){
+     init(){
         this.downloadDispatchers = Option<DownloadDispatcher>.None
         this.callbackDispatchers = Option<CallbackDispatcher>.None
         this.downloadStores = Option<DownloadStore>.None
@@ -23,38 +23,9 @@ public class OkDownloadBuilder {
         this.monitors = Option<DownloadMonitor>.None
     }
 
-    //------
 
 
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-    public func build():OkDownload{
+     func build():OkDownload{
 
          if(let Some(i) = downloadDispatchers){
 

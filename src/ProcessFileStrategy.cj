@@ -5,14 +5,13 @@ public class ProcessFileStrategy {
 
     private let fileLock:FileLock = FileLock()
 
-    public func createProcessStream(task:DownloadTask,info:BreakpointInfo,store:DownloadStore):MultiPointOutputStream{
+     func createProcessStream(task:DownloadTask,info:BreakpointInfo,store:DownloadStore):MultiPointOutputStream{
         return MultiPointOutputStream(task,info,store)
     }
 
-    //------
 
 
-    public func discardProcess(task:DownloadTask):Unit{
+     func discardProcess(task:DownloadTask):Unit{
         let file:Option<File> = task.getFile()
         if(let Some(i) = file){
 
@@ -29,11 +28,10 @@ public class ProcessFileStrategy {
         }
     }
 
-    //------
 
 
 
-    public func isPreAllocateLength(task:DownloadTask):Bool{
+     func isPreAllocateLength(task:DownloadTask):Bool{
         var supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
         if(!supportSeek){
             return false

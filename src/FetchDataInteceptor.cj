@@ -13,7 +13,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
     private let dispatcher:CallbackDispatcher
 
 
-    public init(blockIndex:Int64,source:Source,outputStream:MultiPointOutputStream,task:DownloadTask){
+     init(blockIndex:Int64,source:Source,outputStream:MultiPointOutputStream,task:DownloadTask){
         this.blockIndex = blockIndex
         this.source = source
         this.readBuffer = Array<Byte>(task.getReadBufferSize(),{i => 0})

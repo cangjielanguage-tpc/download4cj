@@ -50,39 +50,6 @@ public class Test02{
         @Assert(FileInfo("download05/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg").length,38662)
     }
 
-    @TestCase
-    func testEnqueues02(): Unit {
-        var url:String = "http://imgsrc.baidu.com/forum/w%3D580"
-        let dir01=Directory.create("download01",recursive:true)
-        let dir02=Directory.create("download02",recursive:true)
-        let dir03=Directory.create("download03",recursive:true)
-        let dir04=Directory.create("download04",recursive:true)
-        let dir05=Directory.create("download05",recursive:true)
-        let task01:DownloadTask = DownloadTaskBuilder(url,dir01).build()
-        let task02:DownloadTask = DownloadTaskBuilder(url,dir02).build()
-        let task03:DownloadTask = DownloadTaskBuilder(url,dir03).build()
-        let task04:DownloadTask = DownloadTaskBuilder(url,dir04).build()
-        let task05:DownloadTask = DownloadTaskBuilder(url,dir05).build()
-
-        let tasks=Array<DownloadTask>([task01,task02,task03,task04,task05])
-        DownloadTask.enqueues(tasks,MyListen())
-
-        sleep(20*1000*1000*1000)
-        @Assert(File.exists("download01/w%3D580"),true)
-        @Assert(FileInfo("download01/w%3D580").length,0)
-
-        @Assert(File.exists("download02/w%3D580"),true)
-        @Assert(FileInfo("download02/w%3D580").length,0)
-
-        @Assert(File.exists("download03/w%3D580"),true)
-        @Assert(FileInfo("download03/w%3D580").length,0)
-
-        @Assert(File.exists("download04/w%3D580"),true)
-        @Assert(FileInfo("download04/w%3D580").length,0)
-
-        @Assert(File.exists("download05/w%3D580"),true)
-        @Assert(FileInfo("download05/w%3D580").length,0)
-    }
 
     @TestCase
     func testEnqueues03(): Unit {

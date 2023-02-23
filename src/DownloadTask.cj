@@ -38,10 +38,10 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     private let wifiRequired:Bool //需要wifi
     private let lastCallbackProcessTimestamp:AtomicInt64 //上次回调处理时间戳
     private var filenameFromResponse:Bool //文件名来自响应
-    private let filenameHolder:FileNameHolder
-    private let providedPathFile:Option<File> //提供的路径文件
-    private let directoryFile :Directory
-    private var targetFile :Option<File>
+    var filenameHolder:FileNameHolder
+    var providedPathFile:Option<File> //提供的路径文件
+    var directoryFile :Directory
+    var targetFile :Option<File>
     private var redirectLocation : String
     private var filename:Option<String>
 
@@ -80,26 +80,29 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
         if(Util.isEmpty(this.filename.getOrThrow())){
             //如果没设置名字，名字就从url里取
-            let lastIndex:Int64 = urla.lastIndexOf("/").getOrThrow()
-            this.filename = urla.substring(lastIndex+1)
+            // let lastIndex:Int64 = urla.lastIndexOf("/").getOrThrow()
+            // this.filename = urla.substring(lastIndex+1)
+            filenameHolder = FileNameHolder("")
+            targetFile = Option<File>.None
+            providedPathFile = Option<File>.None
         }else{
+            filenameHolder = FileNameHolder(this.filename.getOrThrow())
+            targetFile = directoryFile.createFile(this.filename.getOrThrow())
+            providedPathFile = targetFile.getOrThrow()
         }
 
 
-        filenameHolder = FileNameHolder(this.filename.getOrThrow())
-        targetFile = directoryFile.createFile(this.filename.getOrThrow())
-        providedPathFile = targetFile.getOrThrow()
 
         this.id = OkDownload.withs().breakpointStore().findOrCreateId(this)
 
     }
 
 
-    public func isFilenameFromResponse():Bool{
+    func isFilenameFromResponse():Bool{
         return filenameFromResponse
     }
 
-    public func getHeaderMapFields():Option<HashMap<String, ArrayList<String>>>{
+    func getHeaderMapFields():Option<HashMap<String, ArrayList<String>>>{
         return headerMapFields
     }
 
@@ -111,19 +114,10 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return filenameHolder.get()
     }
 
-    public func isPassIfAlreadyCompleted():Bool{
+    func isPassIfAlreadyCompleted():Bool{
         return passIfAlreadyCompleted
     }
 
-
-    //------
-
-
-
-
-    // public func getFilenameHolder():FileNameHolder{
-    //     return filenameHolder
-    // }
 
     public func getUri():URL{
         return uri
@@ -134,11 +128,11 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     }
 
 
-    public func setRedirectLocation(redirectUrl:String){
+     func setRedirectLocation(redirectUrl:String){
         this.redirectLocation = redirectUrl
     }
 
-    public func getRedirectLocation():String{
+     func getRedirectLocation():String{
         return redirectLocation
     }
 
@@ -146,11 +140,11 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return  providedPathFile
     }
 
-    public func getParentFile():Directory{
+    func getParentFile():Directory{
         return directoryFile
     }
 
-    public func getFile():Option<File>{
+     func getFile():Option<File>{
         let filenames:Option<String> = filenameHolder.get()
         if(let Some(i) = filenames){
 
@@ -175,26 +169,25 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return flushBufferSize
     }
 
-    public func getSyncBufferSize():Int64{
+     func getSyncBufferSize():Int64{
         return syncBufferSize
     }
 
-    public func getSyncBufferIntervalMills():Int64{
+     func getSyncBufferIntervalMills():Int64{
         return syncBufferIntervalMills
     }
 
-    //------
 
 
-    public func getMinIntervalMillisCallbackProcess():Int64{
+   public func getMinIntervalMillisCallbackProcess():Int64{
         return minIntervalMillisCallbackProcess
     }
 
-    public func getSetConnectionCount():Option<Int64>{
+    func getSetConnectionCount():Option<Int64>{
         return connectionCount
     }
 
-    public func getSetPreAllocateLength():Option<Bool>{
+     func getSetPreAllocateLength():Option<Bool>{
         return isPreAllocateLength
     }
 
@@ -205,17 +198,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
             return 0
         }
     }
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
 
 
     func getLastCallbackProcessTs():Int64{
@@ -229,23 +211,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     func setBreakpointInfo(info:BreakpointInfo):Unit{
         this.info = info
     }
-
-    //------
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
-
-
-
-    //------
 
 
 
@@ -269,23 +234,12 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     }
 
 
-    //......
 
-
-
-    //------
-
-
-
-    //......
-
-
-
-    public func getListener():DownloadListener{
+    func getListener():DownloadListener{
         return this.listener.getOrThrow()
     }
 
-    public func getPriority():Int64{
+    func getPriority():Int64{
         return priority
     }
 
@@ -293,14 +247,12 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
 
     public operator func ==(anothor: DownloadTask): Bool{
-        //------
 
         return true
     }
 
 
     public operator func !=(anothor: DownloadTask): Bool{
-        //------
 
         return false
     }
@@ -315,8 +267,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return  id.toString() + "@" + url + "@" + directoryFile.info.path.toString()+ "/" + filenameHolder.get().getOrThrow()
     }
 
-
-    //------
 
 
     public func mock(id:Int64):MockTaskForCompare{

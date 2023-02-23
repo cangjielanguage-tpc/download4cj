@@ -10,7 +10,7 @@ public class  BreakpointRemoteCheck {
     private let task:DownloadTask
     private let info:BreakpointInfo
 
-    public init(task:DownloadTask,info:BreakpointInfo){
+     init(task:DownloadTask,info:BreakpointInfo){
         this.task = task
         this.info = info
         this.acceptRange = false
@@ -20,48 +20,35 @@ public class  BreakpointRemoteCheck {
     }
 
 
-    public func toString():String{
+     func toString():String{
         return "acceptRange[" + acceptRange.toString() + "] resumable[" + resumable.toString() + "] failedCause[failedCause.getOrThrow().toString()instanceLength[" + instanceLength.toString() + "]"
     }
 
 
-    //------
 
 
 
-
-    public func getCauseOrThrow():ResumeFailedCause{
-        //------
-
+     func getCauseOrThrow():ResumeFailedCause{
         return this.failedCause.getOrThrow()
     }
 
-    public func isResumable():Bool{
+     func isResumable():Bool{
         return resumable
     }
 
-    public func isAcceptRange():Bool{
+     func isAcceptRange():Bool{
         return acceptRange
     }
 
-    public func getInstanceLength():Int64{
+     func getInstanceLength():Int64{
         return instanceLength
     }
 
 
-    public func check():Unit{
+     func check():Unit{
         let downloadStrategy:DownloadStrategy = OkDownload.withs().downloadStrategy()
-
-
-
         var connectTrial:ConnectTrial = createConnectTrial()
-
-
-
         connectTrial.executeTrial()
-
-
-
          let isAcceptRange:Bool = connectTrial.isAcceptRange()
          let isChunked:Bool = connectTrial.isChunked()
 

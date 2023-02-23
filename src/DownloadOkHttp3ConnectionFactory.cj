@@ -7,11 +7,6 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
     private var client:Option<OkHttpClient> = Option<OkHttpClient>.None
 
 
-
-    //------
-
-
-
     public func create(url:String):DownloadConnection{
         if(let Some(i) = client){
 
@@ -20,7 +15,6 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
                 if(let Some(j) = client){
 
                 }else{
-                    //这里面写逻辑
 
                     if(let Some(k) = clientBuilder){
                         client = k.build()

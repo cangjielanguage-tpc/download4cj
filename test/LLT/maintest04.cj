@@ -6,12 +6,13 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+//目的 主要为了验证文件大一点的情况
+
+var isComplete = false
+
 main(){
 
-
-
-        //var url:String = "http://imgsrc.baidu.com/forum/w%3D580"
-        var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+        var url:String = "https://cr8.197946.com/lenovobatterysetting.zip"
 
 
         let filename:String = "single-test"
@@ -21,18 +22,20 @@ main(){
 
         if (!Directory.exists(parentFilePath)) {
             parentFile = Directory.create(parentFilePath, recursive: true)
-            println("进来了")
         }else{
-            println("没进来")
         }
 
         let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            // the minimal interval millisecond for callback progress
             .setMinIntervalMillisCallbackProcess(30)
-            // do re-download even if the task has already been completed in the past.
             .build()
         task.execute(MyListen())
-        println("ConnectionCount="+task.getConnectionCount().toString())
+
+        if(isComplete && task.getConnectionCount()==3){
+            // 小于1M   1M-5M  5M-50M  50M-100M  大于100M
+            return 0
+        }else{
+            return 1
+        }
 
 
 }
@@ -70,6 +73,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
     }
 }
 

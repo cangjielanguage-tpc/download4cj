@@ -6,6 +6,14 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+var isComplete = false
+var mFileName = ""
+var mConnectionCount = 0
+var mUrl = ""
+
+//目的 主要为了验证一些配置参数
+
+
 main(){
 
     var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js"
@@ -20,19 +28,18 @@ main(){
 
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-        println("进来了")
     }else{
-        println("没进来")
     }
 
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
      task.execute(MyListen())
+     mFileName = task.getFilename().getOrThrow()
+     mConnectionCount = task.getConnectionCount()
+     mUrl = task.getUrl()
      println("taskId="+task.getId().toString())
      println("fileName="+task.getFilename().getOrThrow())
      println("url="+task.getUrl())
@@ -42,6 +49,12 @@ main(){
      println("FlushBufferSize="+task.getFlushBufferSize().toString())
      println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())
      println("ConnectionCount="+task.getConnectionCount().toString())
+
+     if(isComplete && "single-test.js".equals(mFileName) && mConnectionCount == 1 && "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js".equals(mUrl)){
+        return 0
+     }else{
+        return 1
+     }
 }
 
 public class MyListen<: DownloadListener{
@@ -77,6 +90,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
     }
 }
 

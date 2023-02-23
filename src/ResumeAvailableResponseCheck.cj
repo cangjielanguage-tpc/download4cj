@@ -12,7 +12,7 @@ public class ResumeAvailableResponseCheck {
         this.blockIndex = blockIndex
     }
 
-    public func inspect():Unit{
+     func inspect():Unit{
         let blockInfo:BlockInfo = info.getBlock(blockIndex).getOrThrow()
         let code:Int64 = connected.getResponseCode()
         var newEtag:Option<String> = connected.getResponseHeaderField(Util.ETAG)
@@ -22,7 +22,6 @@ public class ResumeAvailableResponseCheck {
             newEtag = ""
         }
         let resumeFailedCause:Option<ResumeFailedCause> = OkDownload.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag.getOrThrow())
-        //------
 
         let isServerCancelled:Bool =  OkDownload.withs().downloadStrategy().isServerCanceled(code, blockInfo.getCurrentOffset() != 0)
         if (isServerCancelled) {

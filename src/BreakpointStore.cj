@@ -12,11 +12,8 @@ public interface BreakpointStore{
 
     func remove(id:Int64):Unit
 
-    //func getResponseFilename(url:String):Option<String>
-
     func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>
 
     func isOnlyMemoryCache():Bool
 
-    //func isFileDirty(id:Int64):Bool
 }

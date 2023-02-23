@@ -28,7 +28,7 @@ public class Test01{
         var url:String = "https://nodejs.org/dist"
         let dir=Directory.create("download",recursive:true)
         let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
-        @Assert(File.exists("download/dist"),true)
+        @Assert(File.exists("download/dist"),false)
         var flag=1
         try{
             task.execute(MyListen())

@@ -26,7 +26,6 @@ public open class DownloadCache {
         this.realCause = Option<IOException>.None
     }
 
-    //------
 
 
     func getOutputStream():MultiPointOutputStream{
@@ -40,7 +39,7 @@ public open class DownloadCache {
 
 
     func setRedirectLocation(redirectLocation:String):Unit{
-        //------
+
 
     }
 
@@ -52,28 +51,28 @@ public open class DownloadCache {
         return preconditionFailed
     }
 
-    public func isUserCanceled():Bool{
+     func isUserCanceled():Bool{
         return userCanceled
     }
 
-    public func isServerCanceled():Bool{
+     func isServerCanceled():Bool{
         return serverCanceled
     }
 
 
 
-    public func isUnknownError():Bool{
+     func isUnknownError():Bool{
         return unknownError
     }
 
 
-    public func isFileBusyAfterRun():Bool{
+     func isFileBusyAfterRun():Bool{
         return fileBusyAfterRun
     }
 
 
 
-      public func isPreAllocateFailed():Bool{
+       func isPreAllocateFailed():Bool{
         return preAllocateFailed
     }
 
@@ -85,57 +84,56 @@ public open class DownloadCache {
 
 
 
-    //------
 
 
-    public func isInterrupt():Bool{
+
+     func isInterrupt():Bool{
          return preconditionFailed || userCanceled || serverCanceled || unknownError
                 || fileBusyAfterRun || preAllocateFailed
     }
 
 
-    public func setPreconditionFailed(realCause:IOException):Unit{
-        //------
+     func setPreconditionFailed(realCause:IOException):Unit{
 
     }
 
 
 
     func setUserCanceled():Unit{
-        //------
-    }
-
-
-
-    public func setFileBusyAfterRun():Unit{
-        //------
 
     }
 
 
 
-    public func setServerCanceled(realCause:IOException):Unit{
-        //------
+     func setFileBusyAfterRun():Unit{
 
-    }
-
-
-    public func setUnknownError(realCause:IOException):Unit{
-        //------
 
     }
 
 
 
-    public func setPreAllocateFailed(realCause:IOException):Unit{
-        //------
+     func setServerCanceled(realCause:IOException):Unit{
+
+
+    }
+
+
+     func setUnknownError(realCause:IOException):Unit{
+
 
     }
 
 
 
-    public func catchException(e:IOException):Unit{
-        //------
+     func setPreAllocateFailed(realCause:IOException):Unit{
+
+
+    }
+
+
+
+     func catchException(e:IOException):Unit{
+
 
     }
 

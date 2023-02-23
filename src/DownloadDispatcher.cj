@@ -23,7 +23,7 @@ public class DownloadDispatcher{
 
     var store:Option<DownloadStore>
 
-    public init(){
+     init(){
         this(ArrayList<DownloadCall>(),ArrayList<DownloadCall>(),ArrayList<DownloadCall>(),ArrayList<DownloadCall>())
     }
 
@@ -36,19 +36,19 @@ public class DownloadDispatcher{
         this.store = Option<DownloadStore>.None
     }
 
-    public func setDownloadStore(store:DownloadStore):Unit{
+     func setDownloadStore(store:DownloadStore):Unit{
         this.store = store
     }
 
 
 
-    public func enqueue(tasks:Array<DownloadTask>):Unit{
+     func enqueue(tasks:Array<DownloadTask>):Unit{
         skipProceedCallCount.fetchAdd(1)
         enqueueLocked(tasks)
         skipProceedCallCount.fetchSub(1)
     }
 
-    public func enqueue(task:DownloadTask):Unit{
+     func enqueue(task:DownloadTask):Unit{
         skipProceedCallCount.fetchAdd(1)
         enqueueLocked(task)
         skipProceedCallCount.fetchSub(1)
@@ -89,19 +89,6 @@ public class DownloadDispatcher{
                 //let errorList:ArrayList<DownloadTask> = ArrayList<DownloadTask>(taskList)
                 //OkDownload.withs().callbackDispatcher().endTasksWithError(errorList, e)
             }
-
-            // if(originReadyAsyncCallSize != readyAsyncCalls.size){
-            //     readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
-            //         if(rht.getPriority() < lht.getPriority()){
-            //             return Ordering.GT
-            //         }
-            //         if(rht.getPriority() > lht.getPriority()){
-            //             return Ordering.LT
-            //         }
-            //         return Ordering.EQ
-            //     },stable:true)
-            // }
-
         }
     }
 
@@ -116,17 +103,6 @@ public class DownloadDispatcher{
             }
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             enqueueIgnorePriority(task)
-            // if(originReadyAsyncCallSize != readyAsyncCalls.size){
-            //     readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
-            //         if(rht.getPriority() < lht.getPriority()){
-            //             return Ordering.GT
-            //         }
-            //         if(rht.getPriority() > lht.getPriority()){
-            //             return Ordering.LT
-            //         }
-            //         return Ordering.EQ
-            //     },stable:true)
-            // }
         }
     }
 
@@ -141,7 +117,6 @@ public class DownloadDispatcher{
                 call.execute()
             }
         } else {
-            // priority
             readyAsyncCalls.append(call)
         }
     }
@@ -150,7 +125,7 @@ public class DownloadDispatcher{
 
 
 
-    public func execute(task:DownloadTask):Unit{
+     func execute(task:DownloadTask):Unit{
         let call:DownloadCall
         synchronized (m) {
             if (inspectCompleted(task)) {
@@ -164,28 +139,6 @@ public class DownloadDispatcher{
         }
         call.execute()
     }
-
-
-    //......
-
-
-    //......
-
-
-
-
-    //......
-
-
-
-    //......
-
-
-
-
-
-
-
 
 
 
@@ -219,7 +172,7 @@ public class DownloadDispatcher{
 
 
 
-    public func isFileConflictAfterRun(task:DownloadTask):Bool{
+     func isFileConflictAfterRun(task:DownloadTask):Bool{
         synchronized(m){
             Util.d(TAG, "is file conflict after run: " + task.getId().toString())
             let file:Option<File> = task.getFile()
@@ -234,12 +187,9 @@ public class DownloadDispatcher{
                     continue
                 }
 
-                //------
-
             }
 
             for(asyncCall in runningAsyncCalls){
-                //------
 
             }
 
@@ -277,27 +227,9 @@ public class DownloadDispatcher{
     }
 
 
-
-
-    //......
-
-
-
-
-    //------
-
-
-
-
-   //......
-
-
     private func runningAsyncSize():Int64{
         return runningAsyncCalls.size - flyingCanceledAsyncCallCount.load()
     }
-
-
-
 
 
 

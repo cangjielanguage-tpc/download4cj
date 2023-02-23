@@ -54,6 +54,8 @@ public class DownloadTaskBuilder{
 }
 ```
 
+### class DownloadTask
+
 ```cangjie
 public class DownloadTask{
 
@@ -118,6 +120,12 @@ public class DownloadTask{
      */
     public func getFlushBufferSize():Int64{
 
+    /*获取回调时间间隔数
+     *
+     * 返回值 Int64类型  下载进度回调的时间间隔数，单位毫秒
+     */
+    public func getMinIntervalMillisCallbackProcess():Int64{
+
     /* 获取下载时候的连接数
      *
      * 返回值Int64类型,获取下载连接数
@@ -127,8 +135,11 @@ public class DownloadTask{
 }
 ```
 
+### interface DownloadListener
+
+
 ```cangjie
-public class DownloadListener{
+public interface DownloadListener{
 
     /* 任务刚开始的回调
      *
@@ -224,34 +235,42 @@ public class DownloadListener{
 // EXEC: ./main
 
 
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
+
+
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+
+var isComplete = false
+
+//目的 主要为了验证同步下载
+
 main(){
 
-    var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+        var url:String = "https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe"
 
-    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
-    let filenamePre:String = "single-test"
-    let filename = filenamePre+FileEnds
+        let parentFilePath:Path = Path("./fileDownLoad")
+        var parentFile:Option<Directory> = Option<Directory>.None
 
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
-    }
+        if (!Directory.exists(parentFilePath)) {
+            parentFile = Directory.create(parentFilePath, recursive: true)
+        }else{
+        }
 
-    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-         .setFilename(filename)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
+        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+            .setMinIntervalMillisCallbackProcess(30)
+            .build()
+        task.execute(MyListen())
+        if(isComplete){
+            return 0
+        }else{
+            return 1
+        }
 
-     task.execute(MyListen())
 }
-
 
 public class MyListen<: DownloadListener{
 
@@ -286,6 +305,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
     }
 }
 
@@ -293,12 +313,15 @@ public class MyListen<: DownloadListener{
 
 ```cangjie
 
-FILE   : maintest01.cj
-[02-07 17:40:42] INFO - CMD    : ./main
-[02-07 17:40:42] INFO - FILE   : maintest01.cj
-[02-07 17:40:45] INFO - Stdout : 进来了
-[02-07 17:40:45] INFO - Stdout : 下载成功
-[02-07 17:40:45] INFO - return : 0
+[02-15 21:50:10] INFO - FILE   : maintest01.cj
+[02-15 21:50:13] INFO - CMD    : ./main
+[02-15 21:50:13] INFO - FILE   : maintest01.cj
+[02-15 21:50:57] INFO - return : 0
+[02-15 21:50:57] INFO -  >>=============================================<<
+[02-15 21:50:57] INFO -
+[02-15 21:50:57] INFO -
+[02-15 21:50:57] INFO -
+[02-15 21:50:57] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
 
 ```
 
@@ -314,17 +337,24 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
+//目的 主要为了验证异步下载单个
+
+
+var isComplete = false
+
+
 main(){
 
-    var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
-
+    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
+
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
 
     let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
+
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
     }else{
@@ -335,7 +365,13 @@ main(){
          .setMinIntervalMillisCallbackProcess(30)
          .build()
 
-    task.enqueue(MyListen())
+     task.enqueue(MyListen())
+     sleep(1000*1000*1000*3)
+     if(isComplete){
+        return 0
+     }else{
+        return 1
+     }
 }
 
 
@@ -372,6 +408,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
     }
 }
 
@@ -380,207 +417,16 @@ public class MyListen<: DownloadListener{
 ```cangjie
 
 FILE   : maintest06.cj
-[02-07 17:42:16] INFO - CMD    : ./main
-[02-07 17:42:16] INFO - FILE   : maintest06.cj
-[02-07 17:42:19] INFO - Stdout : 进来了
-[02-07 17:42:19] INFO - Stdout : 下载成功
-[02-07 17:42:19] INFO - return : 0
+
+[02-15 21:53:00] INFO - FILE   : maintest06.cj
+[02-15 21:53:03] INFO - CMD    : ./main
+[02-15 21:53:03] INFO - FILE   : maintest06.cj
+[02-15 21:53:06] INFO - return : 0
+[02-15 21:53:06] INFO -  >>=============================================<<
+[02-15 21:53:06] INFO -
+[02-15 21:53:06] INFO -
+[02-15 21:53:06] INFO -
+[02-15 21:53:06] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### 1 需求场景分析
-
-一个可靠、灵活、快速和强大的下载引擎
-
-#### 2 三方库对外提供的特性
-
-（1） 支持单线程多线程同步下载
-
-#### 3 License分析
-
- Apache 2.0 license
-
-|  Permissions   | Limitations  |
-|  ----  | ----  |
-| Commercial use | Liability |
-| Modification  | Warranty |
-| Distribution  |   |
-| Private use   |   |
-
-#### 4 依赖分析
-
-依赖
-
-仓颉版okhttp
-
-
-#### 5 特性设计文档
-
-##### 5.1 核心特性1
-
-###### 5.1.1 特性介绍
-
-    okdwonload多线程同步下载
-
-###### 5.1.2 实现方案
-
-    首先创建一个下载任务对象DownloadTask，然后对下载任务对象进行一层封装，封装成DownloadCall，然后在DownloadCall中进行下载前的校验，校验通过后，根据下载策略，通过判断下载的文件的
-    大小，会分配一定数量的线程去分片下载这个任务，也就是说会对文件进行多片下载，前提是服务端支持和客户端的输出流支持seek.然后就是多个线程去分片下载对应的流数据和输出流分别从指定的seek点
-    写入文件。下载的时候是通过okhttp去下载。
-
-###### 5.1.3 接口设计
-
-
-💡 DownloadTaskBuilder DownloadTask的任务构建对象
-
-| 成员函数 | 入参 | 返回值 | 作用描述 |
-| --- | --- |  --- | --- |
-| init   | url:String,file:Directory | DownloadTaskBuilder | 用于构造DownloadTaskBuilder对象 |
-| setFilename   | filename:String | DownloadTaskBuilder | 用于设置下载文件的名称 |
-| setMinIntervalMillisCallbackProcess   | minIntervalMillisCallbackProcess:Int64 | DownloadTaskBuilder | 设置进度回调的时间间隔 |
-| setReadBufferSize   | readBufferSize:Int64 | DownloadTaskBuilder | 设置读取缓存大小|
-| setFlushBufferSize   |flushBufferSize:Int64 | DownloadTaskBuilder | 设置刷新缓冲大小 |
-| build   | 无 | DownloadTask | 用于构造DownloadTask对象 |
-
-
-💡 DownloadTask 任务对象类
-
-| 成员函数 | 入参 | 返回值 | 作用描述 |
-| --- | --- | --- | --- |
-| execute   | listener:DownloadListener | Unit | 用于执行同步下载 |
-| enqueue   | listener:DownloadListener | Unit | 用于执行异步下载 |
-| enqueues   | tasks:Array<DownloadTask>，listener:DownloadListener | Unit | 用于执行异步下载多个任务 |
-| getId   | 无 | Int64 | 获取任务的Id|
-| getFilename   | 无 | Option<String> | 获取文件名 |
-| getUrl   | 无 | String | 获取文件下载路径 |
-| getUri   | 无 | URL | 获取下载下来的文件的父文件夹 |
-| getProvidedPathFile   | 无 | File | 获取下载后的文件 |
-| getReadBufferSize   | 无 | Int64 | 获取读取文件的缓存大小 |
-| getFlushBufferSize   | 无 | Int64 | 获取刷新的缓冲大小 |
-| getConnectionCount   | 无 | Int64 | 获取下载时候的连接数 |
-
-
-
-💡 DownloadListener 下载任务回调接口类
-
-| 成员函数 | 入参 | 返回值 | 作用描述 |
-| --- | --- | --- | --- |
-| taskStart   | task:DownloadTask | Unit | 任务刚开始的回调 |
-| connectTrialStart   | task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务开始尝试连接的回调|
-| connectTrialEnd   | task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>> | Unit | 任务结束尝试连接的回调 |
-| downloadFromBeginning   | task:DownloadTask | Unit | 从开始下载的回调 |
-| downloadFromBreakpoint   | task:DownloadTask | Unit | 从断点处下载的回调 |
-| connectStart   | task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接开始的回调 |
-| connectEnd   | task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>> | Unit | 连接结束的回调 |
-| fetchStart   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 开始获取进度的回调 |
-| fetchProgress   | task:DownloadTask,blockIndex:Int64,increaseBytes:Int64 | Unit | 获取进度的回调 |
-| fetchEnd   | task:DownloadTask,blockIndex:Int64,contentLength:Int64 | Unit | 获取进度结束的回调 |
-| taskEnd   | task:DownloadTask,realCause:Option<Exception> | Unit | 任务结束的回调 |
-
-
-###### 5.1.4 展示示例
-```cangjie
-okdwonload同步下载案例:
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
-
-from okdownload import okdownload.*
-from std import collection.*
-from std import fs.*
-
-main(){
-
-    var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
-    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
-    //println("FileEnds="+FileEnds)
-
-    let filenamePre:String = "single-test"
-    let filename = filenamePre+FileEnds
-
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
-    }
-
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
-    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-         .setFilename(filename)
-         // the minimal interval millisecond for callback progress
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-
-     task.execute(MyListen())
-     //task.enqueue(MyListen())
-}
-
-
-
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
-    }
-
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func downloadFromBeginning(task:DownloadTask):Unit{
-    }
-
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
-    }
-
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-    }
-
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-    }
-}
-
-
-
-
-```
-
-#### 🚀 6 架构图
-
-<img alt="" src="./assets/okdownloadclassrelation.png" style="display: inline-block;" width=60%/>
-<img alt="" src="./assets/okdownloadclassshuoming.png" style="display: inline-block;" width=60%/>
 

@@ -2,7 +2,7 @@ package okdownload
 
 public class IllegalStateException <: Exception {
 
-    public init(message:String){
+     init(message:String){
         super(message)
     }
 }

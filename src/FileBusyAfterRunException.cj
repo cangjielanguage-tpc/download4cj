@@ -6,5 +6,5 @@ public class FileBusyAfterRunException <: Exception {
         super("File busy after run")
     }
 
-    public static let SIGNAL:FileBusyAfterRunException = FileBusyAfterRunException()
+    static let SIGNAL:FileBusyAfterRunException = FileBusyAfterRunException()
 }

@@ -2,22 +2,21 @@ package okdownload
 
 public abstract class IdentifiedTask{
 
-    static public let EMPTY_URL: String = ""
-    static public let EMPTY_FILEPATH : String = "" //文件路径为空
+    static  let EMPTY_URL: String = ""
+    static  let EMPTY_FILEPATH : String = "" //文件路径为空
 
-    public func getId(): Int64
+     func getId(): Int64
 
-    public func getUrl(): String
+     func getUrl(): String
 
     protected func getProvidedPathFile():Option<File>
 
-    public func getParentFile():Directory
+     func getParentFile():Directory
 
-    public func getFilename():Option<String>
+     func getFilename():Option<String>
 
 
-    public func compareIgnoreId(another : IdentifiedTask):Bool{
-        //------
+     func compareIgnoreId(another : IdentifiedTask):Bool{
 
         return true
     }

@@ -4,30 +4,17 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
 
     private static let TAG:String = "BreakpointInterceptor"
-    //var doneCount:AtomicInt64 = AtomicInt64(0)
 
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>{
         let connected:DownloadConnectionConnected =  chain.processConnect()
         let info:BreakpointInfo = chain.getInfo()
-        //totalBlockCount = info.getBlockCount()
         if(chain.getCache().isInterrupt()){
             throw InterruptException.SIGNAL
         }
-
-
         if(info.getBlockCount() == 1 && !info.isChunked()){
-             // only one block to download this resource
-            // use this block response header instead of trial result if they are different.
-
-
             let blockInstanceLength:Int64 = getExactContentLengthRangeFrom0(connected)
             let infoInstanceLength:Int64 =  info.getTotalLength()
-            if (blockInstanceLength > 0 && blockInstanceLength != infoInstanceLength) {
-                //------
-
-            }
         }
-        // update for connected.
         let store:DownloadStore = chain.getDownloadStore()
         try {
             if (!store.update(info)) {
@@ -56,12 +43,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         try {
             while (true) {
                 processFetchLength = chain.loopFetch()
-                //if (processFetchLength == -1) {
                 if (processFetchLength <= 0) {
-                    //doneCount.fetchAdd(1)
-                    // if(doneCount.load() == totalBlockCount){
-                    //     break
-                    // }
                     break
                 }
                 fetchLength += processFetchLength
@@ -69,7 +51,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         }catch(e:Exception){
             println("reason="+e.message.toString())
         }finally{
-            // finish
             chain.flushNoCallbackIncreaseBytes()
             if (!chain.getCache().isUserCanceled()){
                  outputStream.done(blockIndex)
@@ -77,9 +58,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         }
 
         if (isNotChunked) {
-            // local persist data check.
             outputStream.inspectComplete(blockIndex)
-            // response content length check.
             if (fetchLength != contentLength) {
                 throw  ReadWriteException("Fetch-length isn't equal to the response content-length, "+ fetchLength.toString() + "!= " + contentLength.toString())
             }
@@ -105,7 +84,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             }
         }
         if (contentLength < 0) {
-            //------
             let contentLengthField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_LENGTH)
             if (!Util.isEmpty(contentLengthField)) {
                 contentLength = Int64.parse(contentLengthField.getOrThrow())
@@ -117,23 +95,11 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
 
     static func getRangeRightFromContentRange(contentRange:String):Int64{
-        //  match(CONTENT_RANGE_RIGHT_VALUE.matches(contentRange)){
-        //     case Some(r)
-        //         =>
-        //         println("xxxxxxx03"+r.matchStr())
-        //         return Int64.parse(r.matchStr())
-        //     case None
-        //         =>
-        //         println("xxxxxxx04")
-        //         return -1
-        // }
-
          let r = CONTENT_RANGE_RIGHT_VALUE.matcher(contentRange)
          let matchDataArray:Option<Array<MatchData>> = r.findAll()
                 match(matchDataArray){
                     case Some(md)
                         =>
-                        //println("xxxxxxx031"+md.matchStr().toString())
                         return Int64.parse(md.get(0).getOrThrow().matchStr(1))
                     case None
                         =>

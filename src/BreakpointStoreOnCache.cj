@@ -17,14 +17,11 @@ public class BreakpointStoreOnCache <: DownloadStore{
     private let sortedOccupiedIds:ArrayList<Int64>
     private let fileDirtyList:ArrayList<Int64>
 
-    public init(){
+     init(){
         this(HashMap<Int64,Option<BreakpointInfo>>(),ArrayList<Int64>(),HashMap<String, String>())
     }
 
-    //------
-
-
-    public init(storedInfos:HashMap<Int64,Option<BreakpointInfo>>,fileDirtyList:ArrayList<Int64>,responseFilenameMap:HashMap<String, String>){
+     init(storedInfos:HashMap<Int64,Option<BreakpointInfo>>,fileDirtyList:ArrayList<Int64>,responseFilenameMap:HashMap<String, String>){
         this.unStoredTasks = HashMap<Int64,Option<IdentifiedTask>>()
         this.storedInfos = storedInfos
         this.fileDirtyList = fileDirtyList
@@ -218,16 +215,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         return true
     }
 
-
-    //------
-
-
-
-    //------
-
-
-
-    public static let FIRST_ID:Int64 = 1
+     static let FIRST_ID:Int64 = 1
 
     func allocateId():Int64{
         synchronized(m){

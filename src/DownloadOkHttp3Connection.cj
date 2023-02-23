@@ -66,7 +66,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getRequestProperty(key:String):String{
-        //------
 
         return ""
     }
@@ -102,7 +101,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func setRequestMethod(method:String):Bool{
-        //......
         return true
     }
 

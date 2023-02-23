@@ -1,10 +1,13 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
+
+//目的 主要为了验证异步下载多个不相同的
+
+var i = 0
 
 main(){
 
@@ -27,25 +30,17 @@ main(){
 
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-        println("进来了")
     }else{
-        println("没进来")
     }
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
-    //let parentFile:File = File(parentFilePath,OpenOption.Create(true))
     let task2:DownloadTask = DownloadTaskBuilder(url2, parentFile.getOrThrow())
          .setFilename(filename2)
-         // the minimal interval millisecond for callback progress
          .setMinIntervalMillisCallbackProcess(30)
-         // do re-download even if the task has already been completed in the past.
          .build()
 
 
@@ -57,7 +52,11 @@ main(){
 
      DownloadTask.enqueues(tasks,MyListen())
      sleep(1000*1000*1000*60)
-     println("jieshu")
+     if(i == 2){
+        return 0
+     }else{
+        return 1
+     }
 }
 
 
@@ -94,6 +93,7 @@ public class MyListen<: DownloadListener{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        i++
     }
 }
 

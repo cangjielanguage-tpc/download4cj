@@ -15,7 +15,6 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
                 }
                 return chain.processConnect()
             }catch (e:IOException) {
-                //------
 
                 throw e
             }
@@ -29,7 +28,6 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
         try {
             return chain.processFetch()
         } catch (e:IOException) {
-            //------
 
             throw e
         }
