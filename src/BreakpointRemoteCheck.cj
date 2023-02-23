@@ -57,7 +57,7 @@ public class  BreakpointRemoteCheck {
          let responseFilename:String =  connectTrial.getResponseFilename()
          let responseCode:Int64 =  connectTrial.getResponseCode()
 
-         downloadStrategy.validFilenameFromResponse(responseFilename, task, info)
+         downloadStrategy.validFilenameFromResponse(responseFilename, task)
          info.setChunked(isChunked)
          info.setEtag(responseEtag)
 

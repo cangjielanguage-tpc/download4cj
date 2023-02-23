@@ -62,7 +62,7 @@ public class ConnectTrial{
                  responseHeader = HashMap<String, ArrayList<String>>()
              }
              listener.connectTrialEnd(task, responseCode, responseHeader.getOrThrow())
-             isNeedTrialHeadMethod = isNeedTrialHeadMethodForInstanceLength(instanceLength,connected)
+             isNeedTrialHeadMethod = isNeedTrialHeadMethodForInstanceLength(instanceLength)
         }finally {
             connection.release()
         }
@@ -224,7 +224,7 @@ public class ConnectTrial{
 
     }
 
-    func isNeedTrialHeadMethodForInstanceLength(oldInstanceLength:Int64,connected:DownloadConnectionConnected):Bool{
+    func isNeedTrialHeadMethodForInstanceLength(oldInstanceLength:Int64):Bool{
         if (oldInstanceLength != Util.CHUNKED_CONTENT_LENGTH) {
             // the instance length already has certain value.
             return false
@@ -239,13 +239,6 @@ public class ConnectTrial{
 
     }
 
-
-
-    private static func parseTransferEncoding(transferEncoding:Option<String>):Bool{
-
-        return true
-
-    }
 
 
 

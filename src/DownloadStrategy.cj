@@ -65,6 +65,10 @@ public class DownloadStrategy{
             return false
         }
 
+         if (anotherInfo.getOrThrow().getTotalLength() != instanceLength) {
+            return false
+        }
+
         return true
     }
 
@@ -81,7 +85,7 @@ public class DownloadStrategy{
     private static let TMP_FILE_NAME_PATTERN:Regex = Regex(".*\\\\|/([^\\\\|/|?]*)\\??")
 
 
-     func validFilenameFromResponse(responseFileName:String,task:DownloadTask,info:BreakpointInfo):Unit{
+     func validFilenameFromResponse(responseFileName:String,task:DownloadTask):Unit{
         if(Util.isEmpty(task.getFilename())){
             if(Util.isEmpty(responseFileName)){
                   var filename = ""
@@ -118,9 +122,6 @@ public class DownloadStrategy{
 
 
 
-     func validInfoOnCompleted(task:DownloadTask,store:DownloadStore):Unit{
-
-    }
 
      func getPreconditionFailedCause(responseCode:Int64,isAlreadyProceed:Bool,info:BreakpointInfo,responseEtag:String):Option<ResumeFailedCause>{
         let localEtag:String = info.getEtag().getOrThrow()

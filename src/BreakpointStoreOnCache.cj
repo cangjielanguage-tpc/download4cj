@@ -74,8 +74,12 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
 
     public func onSyncToFilesystemSuccess(info:BreakpointInfo,blockIndex:Int64,increaseLength:Int64):Unit{
-        //------
-
+        let onCacheOne:Option<BreakpointInfo> = this.storedInfos.get(info.id).getOrThrow()
+         if(refEq(info, onCacheOne.getOrThrow())){
+            onCacheOne.getOrThrow().getBlock(blockIndex).getOrThrow().increaseCurrentOffset(increaseLength)
+         }else{
+            throw ReadWriteException("Info not on store!")
+         }
     }
 
     public func update(breakpointInfo:BreakpointInfo):Bool{
@@ -102,8 +106,10 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
 
     public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit{
-        //------
-
+         match(cause){
+            case EndCause.COMPLETED =>  remove(id)
+            case _ => return
+        }
     }
 
 
@@ -127,9 +133,14 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
 
     public func markFileClear(id:Int64):Bool{
-        //------
-
-        return true
+         synchronized (m2) {
+            try{
+                fileDirtyList.remove(id)
+            }catch(e:Exception){
+                return false
+            }
+            return true
+        }
     }
 
 
@@ -138,8 +149,9 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
 
     public func remove(id:Int64):Unit{
-        //------
-
+        synchronized(m){
+            storedInfos.remove(id)
+        }
     }
 
 
@@ -198,7 +210,9 @@ public class BreakpointStoreOnCache <: DownloadStore{
                         if(refEq(j,ignored)){
                             continue
                         }
-                        //------
+                        if(j.isSameFrom(task)){
+                            return info
+                        }
 
 
                     }else{
@@ -210,7 +224,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
         return  Option<BreakpointInfo>.None
     }
 
-    //------
     public func isOnlyMemoryCache():Bool{
         return true
     }

@@ -76,10 +76,7 @@ public class DownloadDispatcher{
                 let sameTaskConflictList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 let fileBusyList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 for(task in taskList){
-                    if (inspectCompleted(task, completedTaskList)){
-                        continue
-                    }
-                    if (inspectForConflict(task, sameTaskConflictList, fileBusyList)){
+                    if (inspectCompleted(task)){
                         continue
                     }
                     enqueueIgnorePriority(task)
@@ -98,9 +95,7 @@ public class DownloadDispatcher{
             if (inspectCompleted(task)){
                 return
             }
-            if (inspectForConflict(task)){
-                return
-            }
+
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             enqueueIgnorePriority(task)
         }
@@ -131,9 +126,7 @@ public class DownloadDispatcher{
             if (inspectCompleted(task)) {
                 return
             }
-            if(inspectForConflict(task)){
-                return
-            }
+
             call = DownloadCall.create(task, false, store.getOrThrow())
             runningSyncCalls.append(call)
         }
@@ -142,12 +135,10 @@ public class DownloadDispatcher{
 
 
 
-    func inspectCompleted(task:DownloadTask):Bool{
-        return inspectCompleted(task,None<ArrayList<DownloadTask>>)
-    }
+
 
     //检查是否完成
-    func inspectCompleted(task:DownloadTask,completedCollection:Option<ArrayList<DownloadTask>>):Bool{
+    func inspectCompleted(task:DownloadTask):Bool{
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
         let isOnlyMemoryCache = store.isOnlyMemoryCache()
         if(task.isPassIfAlreadyCompleted() && !isOnlyMemoryCache){
@@ -201,30 +192,12 @@ public class DownloadDispatcher{
 
 
 
-    private func inspectForConflict(task:DownloadTask):Bool{
-        return inspectForConflict(task, Option<ArrayList<DownloadTask>>.None, Option<ArrayList<DownloadTask>>.None)
-    }
 
 
-    private func inspectForConflict(task:DownloadTask,sameTaskList:Option<ArrayList<DownloadTask>>,fileBusyList:Option<ArrayList<DownloadTask>>):Bool{
-        return inspectForConflict(task, readyAsyncCalls, sameTaskList, fileBusyList)
-                || inspectForConflict(task, runningAsyncCalls, sameTaskList, fileBusyList)
-                || inspectForConflict(task, runningSyncCalls, sameTaskList, fileBusyList)
-    }
 
-    func inspectForConflict(task:DownloadTask,calls:ArrayList<DownloadCall>,sameTaskList:Option<ArrayList<DownloadTask>>,fileBusyList:Option<ArrayList<DownloadTask>>):Bool{
-        let callbackDispatcher:CallbackDispatcher = OkDownload.withs().callbackDispatcher()
-        let iterator:Iterator<DownloadCall> = calls.iterator()
-        while(true){
-            var optCall:Option<DownloadCall> = iterator.next()
-            match(optCall){
-                case Some(v)=>v
-                    //------
-                case None => break
-            }
-        }
-        return false
-    }
+
+
+
 
 
     private func runningAsyncSize():Int64{

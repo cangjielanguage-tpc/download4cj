@@ -99,4 +99,34 @@ public class BreakpointInfo {
         return filenameHolder.get()
     }
 
+    public func isSameFrom(task:DownloadTask):Bool{
+        if(!parentFile.getOrThrow().info.path.toString().equals(task.getParentFile().info.path.toString())){
+            return false
+        }
+        if(!url.equals(task.getUrl())){
+            return false
+        }
+        let otherFilename:Option<String> = task.getFilename()
+        if(let Some(i) = otherFilename){
+            if(i.equals(filenameHolder.get().getOrThrow())){
+                return true
+            }
+        }
+        if(taskOnlyProvidedParentPath){
+            if(!task.isFilenameFromResponse()){
+                return false
+            }
+            var tempa = false
+            var tempb = false
+            if(let Some(i) = otherFilename){
+                tempa = false
+                tempb = i.equals(filenameHolder.get().getOrThrow())
+            }else{
+                tempa = true
+            }
+            return tempa||tempb
+        }
+        return false
+    }
+
 }

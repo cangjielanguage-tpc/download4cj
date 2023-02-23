@@ -40,4 +40,8 @@ public class BlockInfo {
         this.currentOffset.store(0)
     }
 
+      public func increaseCurrentOffset(increaseLength:Int64):Unit{
+        this.currentOffset.fetchAdd(increaseLength)
+    }
+
 }

@@ -15,7 +15,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
 
-
+    //id
     private var id:Int64 //下载任务唯一id
     private let url:String  //下载url
     private let uri:URL ////下载url
@@ -248,13 +248,20 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     public operator func ==(anothor: DownloadTask): Bool{
 
-        return true
+         if(this.id == anothor.id){
+            return true
+         }
+        return  compareIgnoreId(anothor)
     }
 
 
     public operator func !=(anothor: DownloadTask): Bool{
 
-        return false
+        if(this.id == anothor.id){
+            return false
+         }
+        let res:Bool = compareIgnoreId(anothor)
+        return !res
     }
 
 
