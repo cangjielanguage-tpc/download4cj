@@ -248,13 +248,20 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     public operator func ==(anothor: DownloadTask): Bool{
 
-        return true
+         if(this.id == anothor.id){
+            return true
+         }
+        return  compareIgnoreId(anothor)
     }
 
 
     public operator func !=(anothor: DownloadTask): Bool{
 
-        return false
+        if(this.id == anothor.id){
+            return false
+         }
+        let res:Bool = compareIgnoreId(anothor)
+        return !res
     }
 
 

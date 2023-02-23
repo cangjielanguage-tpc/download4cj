@@ -92,6 +92,25 @@ public class Util{
 
      static func parseContentLengthFromContentRange(contentRange:Option<String>):Int64{
 
+         var isContentRangeEmpty:Bool = true
+        if(let Some(i) = contentRange){
+            isContentRangeEmpty = false
+        }
+        if(isContentRangeEmpty || contentRange.getOrThrow().size == 0){
+            return CHUNKED_CONTENT_LENGTH
+        }
+        try{
+            var matchArray:Option<Array<MatchData>> = CONTENT_LENGTH_FROM_CONTENT_RANGE_PATTERN.matcher(contentRange.getOrThrow()).findAll()
+            if(let Some(i) = matchArray){
+                if(i.size > 1){
+                    let rangeStart:Int64 = Int64.parse(i.get(0).getOrThrow().matchStr())
+                    let rangeEnd:Int64 = Int64.parse(i.get(1).getOrThrow().matchStr())
+                    return rangeEnd - rangeStart + 1
+                }
+            }
+        }catch(e:Exception){
+            Util.d("Util", "parse content-length from content-range failed " + e.toString())
+        }
         return CHUNKED_CONTENT_LENGTH
     }
 
@@ -138,7 +157,10 @@ public class Util{
             var optKey:Option<String> = itera.next()
             match(optKey){
                 case Some(v)=>
-                     println("")
+                      let values:ArrayList<String> = userHeaderField.get(v).getOrThrow()
+                    for(value in values){
+                        connection.addHeader(v, value)
+                    }
                 case None => break
             }
         }

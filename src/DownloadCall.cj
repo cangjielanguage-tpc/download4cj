@@ -108,7 +108,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
                         Util.d(TAG, "breakpoint invalid: download from beginning because of local check is dirty "+task.getId().toString()+" "+localCheck.toString())
                          // 6. assemble block data
                         fileStrategy.discardProcess(task)
-                        assembleBlockAndCallbackFromBeginning(info,remoteCheck,localCheck.getCauseOrThrow())
+                        assembleBlockAndCallbackFromBeginning(info,remoteCheck)
                     }else{
                          //okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
                          okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
@@ -169,7 +169,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
         } else {
             cause = EndCause.COMPLETED
         }
-         inspectTaskEnd(cache.getOrThrow(), cause, realCause)
+         inspectTaskEnd(cause, realCause)
     }
 
     private func inspectTaskStart():Unit{
@@ -178,7 +178,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
     }
 
 
-      private func inspectTaskEnd(cache:DownloadCache,cause:EndCause,realCause:Option<Exception>){
+      private func inspectTaskEnd(cause:EndCause,realCause:Option<Exception>){
 
         synchronized(m){
             if (canceled){
@@ -314,7 +314,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
     }
 
 
-    func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck,failedCause:ResumeFailedCause):Unit{
+    func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck):Unit{
         Util.assembleBlock(task, info, remoteCheck.getInstanceLength(),remoteCheck.isAcceptRange())
         OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
 
@@ -334,13 +334,20 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
 
     public operator func ==(anothor: DownloadCall): Bool{
-        return true
+         if(this.task.getId() == anothor.task.getId()){
+            return true
+        }else{
+            return false
+        }
     }
 
 
 
     public operator func !=(anothor: DownloadCall): Bool{
-        return false
+         if(this.task.getId() == anothor.task.getId()){
+            return false
+        }else{
+            return true
+        }
     }
-
 }
