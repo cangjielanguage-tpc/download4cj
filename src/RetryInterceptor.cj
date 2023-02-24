@@ -9,13 +9,10 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
         while(true){
             try{
                 if(cache.isInterrupt()){
-                     //----
-                     //throw InterruptException.SIGNAL
-                     //----
+                    throw InterruptException.SIGNAL
                 }
                 return chain.processConnect()
             }catch (e:IOException) {
-
                 throw e
             }
         }
@@ -28,7 +25,6 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
         try {
             return chain.processFetch()
         } catch (e:IOException) {
-
             throw e
         }
     }

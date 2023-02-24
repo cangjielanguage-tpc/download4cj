@@ -45,7 +45,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     private var redirectLocation : String
     private var filename:Option<String>
 
-    public DownloadTask(urla:String,uria:URL,prioritya:Int64,readBufferSizea:Int64,flushBufferSizea:Int64,syncBufferSizea:Int64,
+    DownloadTask(urla:String,uria:URL,prioritya:Int64,readBufferSizea:Int64,flushBufferSizea:Int64,syncBufferSizea:Int64,
     syncBufferIntervalMillsa:Int64,autoCallbackToUIThreada:Bool,minIntervalMillisCallbackProcessa:Int64,
     headerMapFieldsa:HashMap<String, ArrayList<String>>,filename:Option<String>,passIfAlreadyCompleted:Bool,wifiRequired:Bool,
     filenameFromResponses:Option<Bool>,connectionCount:Int64,isPreAllocateLength:Option<Bool>){

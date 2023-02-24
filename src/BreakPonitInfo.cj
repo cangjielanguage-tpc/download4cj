@@ -99,7 +99,7 @@ public class BreakpointInfo {
         return filenameHolder.get()
     }
 
-    public func isSameFrom(task:DownloadTask):Bool{
+    func isSameFrom(task:DownloadTask):Bool{
         if(!parentFile.getOrThrow().info.path.toString().equals(task.getParentFile().info.path.toString())){
             return false
         }

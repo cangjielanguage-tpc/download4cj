@@ -27,28 +27,28 @@ class DownloadTaskBuilder
      * 参数 String类型 要下载的文件的url
      * 参数 Directory类型 把下载下来的文件放到哪个目录下
      */
-    public init(url:String,file:Directory){
+    public init(url:String,file:Directory)
 
     /* 用于设置下载文件的名称
      *
      * 参数 String类型 设置给下载下来的文件的名字
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setFilename(filename:String):DownloadTaskBuilder{
+    public func setFilename(filename:String):DownloadTaskBuilder
 
     /* 设置进度回调的时间间隔
      *
      * 参数 Int64类型 下载的时候多少毫秒进行一次回调
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
+    public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder
 
     /* 设置读取缓存大小
      *
      * 参数 Int64类型 下载的时候的读取缓冲的大小
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
+    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder
 
     /*
      * 设置刷新缓冲大小
@@ -61,7 +61,7 @@ class DownloadTaskBuilder
      *
      * 返回值 DownloadTask类型 构建的DownloadTask对象
      */
-    public func build():DownloadTask{
+    public func build():DownloadTask
 
 ```
 
@@ -72,7 +72,7 @@ class DownloadTask
      *
      * 参数 DownloadListener类型 下载的时候的监听类
      */
-    public func execute(listener:DownloadListener){
+    public func execute(listener:DownloadListener)
 
     /*
      * 获取任务的Id
@@ -84,49 +84,55 @@ class DownloadTask
      *
      * 返回值 Option<String>类型 获得文件的名字
      */
-    public func getFilename():Option<String>{
+    public func getFilename():Option<String>
 
     /* 获取文件下载路径
      *
      * 返回值 String类型 获取文件的下载url路径
      */
-    public func getUrl():String{
+    public func getUrl():String
 
     /* 获取下载下来的文件的父文件夹
      *
      * 返回值 URL类型 文件的文件夹对应的URL
      */
-    public func getUri():URL{
+    public func getUri():URL
 
     /* 获取下载后的文件
      *
      * 返回值 File类型 下载后的文件对象
      */
-    public func getProvidedPathFile():File{
+    public func getProvidedPathFile():File
 
     /* 获取读取文件的缓存大小
      *
      * 返回值 Int64类型 获取下载时候的读取缓冲大小
      */
-    public func getReadBufferSize():Int64{
+    public func getReadBufferSize():Int64
 
     /* 获取刷新的缓冲大小
      *
      * 返回值 Int64类型 获取下载写入时候的冲刷缓冲大小
      */
-    public func getFlushBufferSize():Int64{
+    public func getFlushBufferSize():Int64
 
     /*获取回调时间间隔数
      *
      * 返回值 Int64类型  下载进度回调的时间间隔数，单位毫秒
      */
-    public func getMinIntervalMillisCallbackProcess():Int64{
+    public func getMinIntervalMillisCallbackProcess():Int64
 
     /* 获取下载时候的连接数
      *
      * 返回值Int64类型,获取下载连接数
      */
-    public func getConnectionCount():Int64{
+    public func getConnectionCount():Int64
+
+    /* 下载任务对象的toString方法
+     *
+     * 返回值String类型,下载任务对象对应的String
+     */
+    public func toString():String
 
 ```
 interface DownloadListener
@@ -716,4 +722,427 @@ public class MyListen<: DownloadListener{
 
 
 ```
+
+## 其他接口
+
+### 介绍
+
+    这些接口在内部流程中使用, 无需调用者操作, 也有可能随迭代修改其实现，请按需谨慎使用。
+
+### 主要接口
+
+#### RetryInterceptor
+
+```cangjie
+/*
+ * 重试拦截器
+ */
+public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
+    /*
+     * 重试拦截器
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     */
+    public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
+    /*
+     * 触发获取下载文件数据
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Int64  最后下载完成后文件的长度
+     */
+    public func interceptFetch(chain:DownloadChain):Int64
+}
+```
+
+#### BreakpointInterceptor
+
+```cangjie
+/*
+ * 每一个块Block下载时候的断点拦截器
+ */
+public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch
+    /*
+     * 拦截器执行的时候对断点信息的检查
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     */
+    public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
+    /*
+     * 循环下载文件的方法
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Int64  最后下载完成后文件的长度
+     */
+    public func interceptFetch(chain:DownloadChain):Int64
+}
+```
+
+#### HeaderInterceptor
+
+```cangjie
+/*
+ * 每一个块Block下载时候的请求头拦截器
+ */
+public class HeaderInterceptor <: InterceptorConnect{
+    /*
+     * 拦截器执行的时候对请求头的处理
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     */
+    public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
+}
+```
+
+#### CallServerInterceptor
+
+```cangjie
+/*
+ * 每一个块Block的执行请求拦截器
+ */
+public class CallServerInterceptor <: InterceptorConnect{
+    /*
+     * 执行网络请求处理
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     */
+    public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
+}
+```
+
+#### FetchDataInterceptor
+
+```cangjie
+/*
+ * 请求网络获取文件数据的方法
+ */
+public class FetchDataInterceptor <: InterceptorFetch {
+    /*
+     * 执行网络请求处理
+     * @param 类型 DownloadChain 下载的块对象
+     * @return 类型 Int64 每一次read获取到的字节数
+     */
+    public func interceptFetch(chain:DownloadChain):Int64
+}
+```
+
+#### DownloadUriOutputStream
+
+```cangjie
+/*
+ * 下载文件时候的OutputStream管理类
+ */
+public class DownloadUriOutputStream <: DownloadOutputStream{
+    /*
+     * 写文件的方法
+     * @param 类型 Array<UInt8> 要写的文件内容
+     * @param 类型 Int64 从哪里写起
+     * @param 类型 Int64 写多少长度
+     */
+    public func write(b:Array<UInt8>,off:Int64,len:Int64)
+    /*
+     * 关闭流的方法
+     */
+    public func close():Unit
+    /*
+     * 刷新流的方法
+     */
+    public func flushAndSync():Unit
+    /*
+     * 让文件指定某个位置开始写
+     * @param 类型 Int64 指定开始写的位置
+     */
+    public func seek(offset:Int64):Unit
+    /*
+     * 指定文件长度
+     * @param 类型 Int64 文件长度
+     */
+    public func setLength(newLength:Int64):Unit
+}
+```
+
+#### DownloadUriOutputStreamFactory
+
+```cangjie
+/*
+ * 创建DownloadUriOutputStream类的工厂类
+ */
+public class FetchDataInterceptor <: InterceptorFetch {
+    /*
+     * 创建DownloadUriOutputStream对象
+     * @param 类型 File 对于的要写的文件
+     * @param 类型 Int64 输出流的flushBufferSize
+     * @return 类型 DownloadOutputStream DownloadOutputStream对象
+     */
+    public func create(file:File,flushBufferSize:Int64):DownloadOutputStream
+    /*
+     * 创建DownloadUriOutputStream对象
+     * @param 类型 URL 对于的要写的文件的URL
+     * @param 类型 Int64 输出流的flushBufferSize
+     * @return 类型 DownloadOutputStream DownloadOutputStream对象
+     */
+    public func create(url:URL,flushBufferSize:Int64):DownloadOutputStream
+    /*
+     * 是否支持seek
+     * @return 类型 Bool true支持seek false不支持seek
+     */
+    public func supportSeek():Bool
+}
+
+```
+
+#### DownloadOkHttp3Connection
+
+```cangjie
+/*
+ * okhttp的连接核心类
+ */
+public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectionConnected{
+    /*
+     * 添加请求头
+     * @param 类型 String 请求头的key
+     * @param 类型 String 请求头的value
+     */
+    public func addHeader(name:String,value:String):Unit
+    /*
+     * 执行okhttp请求
+     * @return 类型 DownloadConnectionConnected okhttp请求的连接对象
+     */
+    public func execute():DownloadConnectionConnected
+    /*
+     * 释放okhttp请求的资源
+     */
+    public func release():Unit
+    /*
+     * 获取所有请求头
+     * @return 类型 HashMap<String, ArrayList<String>> 请求头的key value对
+     */
+    public func getRequestProperties():HashMap<String, ArrayList<String>>
+    /*
+     * 根据单个key获取所对应的请求头
+     * @param 类型 String 请求头的key
+     * @return 类型 String 对于的请求头的value
+     */
+    public func getRequestProperty(key:String):String
+    /*
+     * 获取响应码
+     * @return 类型 Int64 请求的响应码
+     */
+    public func getResponseCode():Int64
+    /*
+     * 获取请求的流
+     * @return 类型 Source okhttp请求的读取流
+     */
+    public func getInputStream():Source
+    /*
+     * 设置请求方式
+     * @param 类型 String 请求的方式
+     * @return 类型 Bool true支持成功 false表示失败
+     */
+    public func setRequestMethod(method:String):Bool
+    /*
+     * 获取响应头
+     * @return 类型 Option<HashMap<String,ArrayList<String>>> 获取响应头的key value对
+     */
+    public func getResponseHeaderFields():Option<HashMap<String,ArrayList<String>>>
+    /*
+     * 根据响应头的key获取响应头的value
+     * @param 类型 String 响应头的key
+     * @return 类型 Option<String> 对应的响应头的value
+     */
+    public func getResponseHeaderField(name:String):Option<String>
+    /*
+     * 获取重定向地址
+     * @return 类型 Option<String> 重定向的地址
+     */
+    public func getRedirectLocation():Option<String>
+}
+
+```
+
+#### DownloadOkHttp3ConnectionFactory
+
+```cangjie
+/*
+ * okhttp连接的工厂类
+ */
+public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
+    /*
+     * 根据url获取okhttp的连接对象
+     * @param 类型 String url
+     * @return 类型 DownloadConnection okhttp的连接对象
+     */
+    public func create(url:String):DownloadConnection
+}
+```
+
+#### DownloadCall
+
+```cangjie
+/*
+ * 下载的请求类
+ */
+public class DownloadCall <: Equatable<DownloadCall>{
+    /*
+     * 判断两个连接请求是否一样
+     * @param 类型 DownloadCall 另一个连接请求
+     * @return 类型 Bool true为一样 false不一样
+     */
+    public operator func ==(anothor: DownloadCall): Bool
+    /*
+     * 判断两个连接请求是否不一样
+     * @param 类型 DownloadCall 另一个连接请求
+     * @return 类型 Bool true不一样 false一样
+     */
+    public operator func !=(anothor: DownloadCall): Bool
+}
+```
+
+#### FileNameHolder
+
+```cangjie
+/*
+ * 文件名持有类
+ */
+public class FileNameHolder <: Hashable & Equatable<FileNameHolder> {
+    /*
+     * 判断两个持有类的文件名是否一样
+     * @param 类型 FileNameHolder 另一个文件名持有类对象
+     * @return 类型 Bool true为一样 false不一样
+     */
+    public operator func ==(holder: FileNameHolder): Bool
+    /*
+     * 判断两个持有类的文件名是否不一样
+     * @param 类型 FileNameHolder 另一个文件名持有类对象
+     * @return 类型 Bool true不一样 false一样
+     */
+    public operator func !=(holder: FileNameHolder): Bool
+    /*
+     * 文件名持有类对象的hashCode
+     * @return 类型 Int64 文件名持有类对象的hashCode值
+     */
+    public func hashCode(): Int64
+}
+```
+
+#### DownloadTask
+
+```cangjie
+/*
+ * 下载任务类
+ */
+public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>{
+    /*
+     * 获取下载任务对象对于的hashCode值
+     * @return 类型 Int64 下载任务对象对于的hashCode值
+     */
+    public func hashCode(): Int64
+    /*
+     * 判断两个下载任务对象是否一样
+     * @param 类型 DownloadTask 另一个下载任务对象
+     * @return 类型 Bool true一样 false不一样
+     */
+    public operator func ==(anothor: DownloadTask): Bool
+    /*
+     * 判断两个下载任务对象是否不一样
+     * @param 类型 DownloadTask 另一个下载任务对象
+     * @return 类型 Bool true不一样 false一样
+     */
+    public operator func !=(anothor: DownloadTask): Bool
+    /*
+     * 根据taskid模仿一个task
+     * @param 类型 Int64 下载任务的id
+     * @return 类型 MockTaskForCompare 模仿的下载任务task
+     */
+    public func mock(id:Int64):MockTaskForCompare
+}
+```
+
+#### BreakpointStoreOnCache
+
+```cangjie
+/*
+ * 断点存储缓存类
+ */
+public class BreakpointStoreOnCache <: DownloadStore{
+    /*
+     * 获取对应id的断点对象
+     * @param 类型 Int64 断点对象的id
+     * @return 类型 Option<BreakpointInfo> 断点对象
+     */
+    public func get(id:Int64):Option<BreakpointInfo>
+    /*
+     * 创建或者插入断点
+     * @param 类型 DownloadTask 人物类对象
+     * @return 类型 BreakpointInfo 断点信息对象
+     */
+    public func createAndInsert(task:DownloadTask):BreakpointInfo
+    /*
+     * 断点任务开始时候的方法
+     * @param 类型 Int64 断点的id
+     */
+    public func onTaskStart(id:Int64):Unit
+     /*
+     * 断点信息同步文件
+     * @param 类型 BreakpointInfo 断点信息
+     * @param 类型 Int64 下载块的索引
+     * @param 类型 Int64 增加的文件长度
+     */
+    public func onSyncToFilesystemSuccess(info:BreakpointInfo,blockIndex:Int64,increaseLength:Int64):Unit
+    /*
+     * 替换断点信息
+     * @param 类型 BreakpointInfo 要替换的断点对象
+     * @return 类型 Bool true替换成功 false替换失败
+     */
+    public func update(breakpointInfo:BreakpointInfo):Bool
+    /*
+     * 断点任务结束后的方法
+     * @param 类型 Int64 断点id
+     * @param 类型 EndCause 结束类型
+     * @param 类型 Option<Exception> 异常原因
+     */
+    public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit
+     /*
+     * 任务结束后的id获取断点信息
+     * @param 类型 Int64 断点的id
+     * @return 类型 Option<BreakpointInfo> 返回的断点对象
+     */
+    public func getAfterCompleted(id:Int64):Option<BreakpointInfo>
+    /*
+     * 标记脏文件
+     * @param 类型 Int64 断点信息的id
+     * @return 类型 Bool true脏文件 false不是脏文件
+     */
+    public func markFileDirty(id:Int64):Bool
+    /*
+     * 根据id清除标记的脏文件
+     * @param 类型 Int64 断点信息的id
+     * @return 类型 Bool true移除成功 false移除失败
+     */
+    public func markFileClear(id:Int64):Bool
+     /*
+     * 根据id删除断点信息
+     * @param 类型 Int64 断点信息的id
+     */
+    public func remove(id:Int64):Unit
+    /*
+     * 找到对于下载任务的断点信息id
+     * @param 类型 DownloadTask 下载任务
+     * @return 类型 Int64 断点信息的id
+     */
+    public func findOrCreateId(task:DownloadTask):Int64
+    /*
+     * 找到文件名字一样任务的断点信息
+     * @param 类型 DownloadTask 下载任务
+     * @param 类型 BreakpointInfo 对比的断点信息
+     * @return 类型 Option<BreakpointInfo> 找到的断点信息
+     */
+    public func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>
+    /*
+     * 是否只支持内存缓存
+     * @return 类型 Bool true只支持内存缓存 false不是
+     */
+    public func isOnlyMemoryCache():Bool
+}
+```
+
+
+
 

@@ -6,14 +6,13 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     let out:BufferedOutputStream
     let fos:File
 
-     init(uri:URL,bufferSize:Int64){
+    init(uri:URL,bufferSize:Int64){
         this.fos = File(uri.toString(),OpenOption.Open(true,true))
         this.out = BufferedOutputStream(fos,bufferSize)
     }
 
 
     public func write(b:Array<UInt8>,off:Int64,len:Int64){
-        //println("再往文件里write   len= "+ len.toString()+" off="+off.toString()+" Array<UInt8>="+b.size.toString())
         out.write(b)
     }
 
