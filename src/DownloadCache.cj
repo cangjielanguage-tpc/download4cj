@@ -30,7 +30,6 @@ public open class DownloadCache {
 
     func getOutputStream():MultiPointOutputStream{
         if(let Some(i) = outputStream){
-
         }else{
             throw IllegalArgumentException()
         }
@@ -100,14 +99,13 @@ public open class DownloadCache {
 
 
     func setUserCanceled():Unit{
-
+        this.userCanceled = true
     }
 
 
 
      func setFileBusyAfterRun():Unit{
-
-
+        this.fileBusyAfterRun = true
     }
 
 

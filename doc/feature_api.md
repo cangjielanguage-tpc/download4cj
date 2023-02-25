@@ -1,7 +1,7 @@
 ## okdownload 库
 
 ### 介绍
-可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载 参考地址 https://github.com/lingochamp/okdownload.git
+可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载 参考地址 https://github.com/lingochamp/okdownload.git
 
 ### 1 提供文件的同步下载和异步下载的功能
 
@@ -33,6 +33,7 @@ class DownloadTaskBuilder
      *
      * 参数 String类型 设置给下载下来的文件的名字
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 注意：文件名优先用户自己设置的，如果用户没设置会去取请求返回的，如果都没有，就去截取url,截取失败随机生成
      */
     public func setFilename(filename:String):DownloadTaskBuilder
 
@@ -226,10 +227,6 @@ interface DownloadListener
 ##### 1.1.1.1 示例
 
 ```cangjie
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
 
 from okdownload import okdownload.*
 from std import collection.*
@@ -455,6 +452,7 @@ class DownloadTaskBuilder
      *
      * 参数 String类型 设置给下载下来的文件的名字
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 注意：文件名优先用户自己设置的，如果用户没设置会去取请求返回的，如果都没有，就去截取url,截取失败随机生成
      */
     public func setFilename(filename:String):DownloadTaskBuilder{
 
@@ -488,10 +486,6 @@ class DownloadTask
 ##### 1.2.1.1 示例
 
 ```cangjie
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
 
 from okdownload import okdownload.*
 from std import collection.*
@@ -593,9 +587,6 @@ public class MyListen<: DownloadListener{
 ##### 1.2.1.2 示例
 
 ```cangjie
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
 
 from okdownload import okdownload.*
 from std import collection.*
@@ -1052,6 +1043,96 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
      * @return 类型 MockTaskForCompare 模仿的下载任务task
      */
     public func mock(id:Int64):MockTaskForCompare
+}
+```
+
+#### DefaultTransmitListener
+
+```cangjie
+/*
+ * 内部默认监听类
+ */
+public class DefaultTransmitListener <: DownloadListener {
+    /*
+     * 任务刚开始的回调
+     * @param 类型 DownloadTask类型 下载的任务对象
+     */
+    func taskStart(task:DownloadTask)
+
+    /*
+     * 任务开始尝试连接的回调
+     * @param 类型 DownloadTask下载的任务对象
+     * @param 类型 HashMap<String, ArrayList<String>> 请求的header
+     */
+    func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>)
+
+    /*
+     * 任务结束尝试连接的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 请求返回的响应码
+     * @param 类型 HashMap<String, ArrayList<String>> 响应的haeder
+     */
+    func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
+
+    /*
+     * 从开始下载的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     */
+    func downloadFromBeginning(task:DownloadTask)
+
+    /*
+     * 从断点处下载的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     */
+    func downloadFromBreakpoint(task:DownloadTask)
+
+    /*
+     * 连接开始的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 对应的分块index
+     * @param 类型 HashMap<String, ArrayList<String>> 请求的请求头
+     */
+    func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>)
+
+    /*
+     * 连接结束的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 对应的分块index
+     * @param 类型 Int64 请求返回的响应码
+     * @param 类型 HashMap<String, ArrayList<String>> 响应的haeder
+     */
+    func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
+
+    /*
+     * 开始获取进度的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 对应的分块index
+     * @param 类型 Int64 下载的内容长度
+     */
+    func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
+
+    /*
+     * 获取进度的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 对应的分块index
+     * @param 类型 Int64 下载增加的部分字节数
+     */
+    func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64)
+
+    /*
+     * 获取进度结束的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Int64 对应的分块index
+     * @param 类型 Int64 下载的内容长度
+     */
+    func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
+
+    /*
+     * 任务结束的回调
+     * @param 类型 DownloadTask 下载的任务对象
+     * @param 类型 Option<Exception> 造成异常结束的原因
+     */
+    func taskEnd(task:DownloadTask,realCause:Option<Exception>)
 }
 ```
 

@@ -25,8 +25,7 @@ public class ResumeAvailableResponseCheck {
 
         let isServerCancelled:Bool =  OkDownload.withs().downloadStrategy().isServerCanceled(code, blockInfo.getCurrentOffset() != 0)
         if (isServerCancelled) {
-            // server cancelled, end task.
-            //throw ServerCanceledException(code, blockInfo.getCurrentOffset())
+            throw ServerCanceledException(code, blockInfo.getCurrentOffset())
         }
     }
 

@@ -14,7 +14,6 @@ public class HeaderInterceptor <: InterceptorConnect{
 
         var isUserHeaderEmpty:Bool = true
         if(let Some(i) = userHeader){
-            //不为空
             isUserHeaderEmpty = false
             Util.addUserRequestHeaderField(userHeader.getOrThrow(), connection)
         }
@@ -27,7 +26,6 @@ public class HeaderInterceptor <: InterceptorConnect{
         let blockIndex:Int64 = chain.getBlockIndex()
         let blockInfo:Option<BlockInfo> =  info.getBlock(blockIndex)
         if(let Some(i) = blockInfo){
-
         }else{
             throw ReadWriteException("No block-info found on " + blockIndex.toString())
         }
@@ -37,11 +35,6 @@ public class HeaderInterceptor <: InterceptorConnect{
         connection.addHeader(Util.RANGE, range)
         Util.d(TAG, "AssembleHeaderRange (" + task.getId().toString() + ") block(" + blockIndex.toString() + ") "+ "downloadFrom(" + blockInfo.getOrThrow().getRangeLeft().toString() + ") currentOffset("  + blockInfo.getOrThrow().getCurrentOffset().toString() + ")")
 
-        // add etag if exist
-        let etag:String = info.getEtag().getOrThrow()
-        // if(!Util.isEmpty(etag)){
-        //     connection.addHeader(Util.IF_MATCH, etag)
-        // }
 
         if (chain.getCache().isInterrupt()) {
             throw InterruptException.SIGNAL
@@ -56,7 +49,6 @@ public class HeaderInterceptor <: InterceptorConnect{
 
         var responseHeaderFields:Option<HashMap<String,ArrayList<String>>> = connected.getResponseHeaderFields()
         if(let Some(i) = responseHeaderFields){
-
         }else{
             responseHeaderFields = HashMap<String,ArrayList<String>>()
         }

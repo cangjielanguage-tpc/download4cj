@@ -1,7 +1,7 @@
 package okdownload
 
 public class BlockInfo {
-    //
+
     private let startOffset:Int64
     private let contentLength:Int64
     private let currentOffset:AtomicInt64

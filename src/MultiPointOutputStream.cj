@@ -69,14 +69,8 @@ public class MultiPointOutputStream {
             if(canceled){
                 return
             }
-            //println("mult0000")
             outputStream(blockIndex).write(bytes, 0, length)
-            //println("mult00014")
             outputStreamMap.get(blockIndex).getOrThrow().flushAndSync()
-            //allNoSyncLength.fetchAdd(length)
-            //noSyncLengthMap.get(blockIndex).getOrThrow().fetchAdd(length)
-            //println("mult00015")
-            //inspectAndPersist()
         }
     }
 
@@ -94,20 +88,6 @@ public class MultiPointOutputStream {
 
         close(blockIndex)
     }
-
-
-
-
-
-
-     func inspectComplete(blockIndex:Int64):Unit{
-        let blockInfo:Option<BlockInfo> =  info.getBlock(blockIndex)
-        // if (!Util.isCorrectFull(blockInfo.getOrThrow().getCurrentOffset(), blockInfo.getOrThrow().getContentLength())) {
-        //     throw IOException("The current offset on block-info isn't update correct, "+ blockInfo.getOrThrow().getCurrentOffset().toString() + " != " + blockInfo.getOrThrow().getContentLength().toString()+ " on " + blockIndex.toString())
-        // }
-    }
-
-
 
 
     func close(blockIndex:Int64):Unit{
@@ -137,17 +117,12 @@ public class MultiPointOutputStream {
     let state:StreamsState = StreamsState()
 
 
-    func flushProcess():Unit{
-
-    }
-
     private var firstOutputStream:Bool = true
 
     func outputStream(blockIndex:Int64):DownloadOutputStream{
         synchronized(m){
             var outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
             if(let Some(i) = outputStream){
-                //非空
             }else{
                 var uri:URL
                 let isFileScheme:Bool = Util.isUriFileScheme(task.getUri())
@@ -167,11 +142,9 @@ public class MultiPointOutputStream {
                         }
                     }
                     try{
-                        //File.create(file.getOrThrow().info.path)
                         parentFile.createFile(file.getOrThrow().info.path.fileName.getOrThrow())
                         Util.d(TAG, "Create new file: " + file.getOrThrow().info.path.fileName.getOrThrow())
                     }catch(e:Exception){
-
                     }
                     uri = URL.parse(file.getOrThrow().info.path.toString())
                 }else{
@@ -184,7 +157,6 @@ public class MultiPointOutputStream {
                         // seek to target point
                         outputStream.getOrThrow().seek(seekPoint)
                         Util.d(TAG, "Create output stream write from (" + task.getId().toString()+ ") block(" + blockIndex.toString() + ") " + seekPoint.toString())
-                    }else{
                     }
                 }
 

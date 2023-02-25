@@ -15,7 +15,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
 
-    //id
     private var id:Int64 //下载任务唯一id
     private let url:String  //下载url
     private let uri:URL ////下载url
@@ -80,8 +79,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
         if(Util.isEmpty(this.filename.getOrThrow())){
             //如果没设置名字，名字就从url里取
-            // let lastIndex:Int64 = urla.lastIndexOf("/").getOrThrow()
-            // this.filename = urla.substring(lastIndex+1)
             filenameHolder = FileNameHolder("")
             targetFile = Option<File>.None
             providedPathFile = Option<File>.None
@@ -147,13 +144,11 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
      func getFile():Option<File>{
         let filenames:Option<String> = filenameHolder.get()
         if(let Some(i) = filenames){
-
         }else{
             return Option<File>.None
         }
 
         if(let Some(i) = targetFile){
-
         }else{
             targetFile = File(directoryFile.info.path.toString()+filenames.getOrThrow(),OpenOption.Open(true,true)); //targetFile就是下载的目标文件
         }
@@ -193,7 +188,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     public func getConnectionCount():Int64{
         if(let Some(i) = info){
-            return i.getBlockCount();
+            return i.getBlockCount()
         }else{
             return 0
         }

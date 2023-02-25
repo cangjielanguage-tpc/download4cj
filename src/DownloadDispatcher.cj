@@ -23,7 +23,7 @@ public class DownloadDispatcher{
 
     var store:Option<DownloadStore>
 
-     init(){
+    init(){
         this(ArrayList<DownloadCall>(),ArrayList<DownloadCall>(),ArrayList<DownloadCall>(),ArrayList<DownloadCall>())
     }
 
@@ -83,8 +83,6 @@ public class DownloadDispatcher{
                 }
                 OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
             }catch(e:Exception){
-                //let errorList:ArrayList<DownloadTask> = ArrayList<DownloadTask>(taskList)
-                //OkDownload.withs().callbackDispatcher().endTasksWithError(errorList, e)
             }
         }
     }
@@ -141,62 +139,13 @@ public class DownloadDispatcher{
     func inspectCompleted(task:DownloadTask):Bool{
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
         let isOnlyMemoryCache = store.isOnlyMemoryCache()
-        if(task.isPassIfAlreadyCompleted() && !isOnlyMemoryCache){
-         //那就要判断有没有已经下载好文件了
-
-        //if(task.isPassIfAlreadyCompleted() && StatusUtil.isCompleted(task)){
-            //是否已结束
-            //如果文件名不正常，为空就没结束 应该这个意思
-
-            //------
-
-            //OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None);
-            //目前这里进不来因为isOnlyMemoryCache
-            // OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, Option<Exception>.None)
-
-            // return true
-        }
-
-        return false
-    }
-
-
-
-
-     func isFileConflictAfterRun(task:DownloadTask):Bool{
-        synchronized(m){
-            Util.d(TAG, "is file conflict after run: " + task.getId().toString())
-            let file:Option<File> = task.getFile()
-            if(let Some(i) = file){
-
-            }else{
-                return false
-            }
-
-            for(syncCall in runningSyncCalls){
-                if(syncCall.isCanceled() || (refEq(syncCall.task,task))){
-                    continue
-                }
-
-            }
-
-            for(asyncCall in runningAsyncCalls){
-
-            }
-
-             return false
+        //目前是isOnlyMemoryCache true 根据规则true的时候为false
+        if(isOnlyMemoryCache){
+            return false
+        }else{
+            return true
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
 

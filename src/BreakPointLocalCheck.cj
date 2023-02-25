@@ -55,11 +55,9 @@ public class BreakpointLocalCheck {
         let uri:URL = task.getUri()
         let file:Option<File> = task.getFile()
         if(let Some(i) = file){
-
         }else{
             return false
         }
-
         if(File.exists(file.getOrThrow().info.path)){
             return true
         }else{

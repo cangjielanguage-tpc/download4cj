@@ -84,16 +84,11 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
     public func getInputStream():Source{
         if(let Some(i) = response){
-
         }else{
             throw  ReadWriteException("Please invoke execute first!")
         }
-
         let body:Option<ResponseBody> = response.getOrThrow().getBody()
         if(let Some(i) = body){
-            // let stream = ByteArrayStream()
-            // while (i.getSource().read(stream, 4096) > 0) {}
-            // return stream
             return i.getSource()
         }else{
             throw  ReadWriteException("no body found on response!")
@@ -146,8 +141,11 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
     public func getRedirectLocation():Option<String>{
         let priorRes:Option<Response> = response.getOrThrow().getPrevResponse()
-        //------
+         if(let Some(i) = priorRes){
+            if(response.getOrThrow().isSuccess() && i.isRedirect()){
+                return response.getOrThrow().getRequest().getUrl().toString()
+            }
+        }
         return Option<String>.None
-
     }
 }

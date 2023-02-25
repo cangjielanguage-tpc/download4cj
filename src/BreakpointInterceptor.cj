@@ -67,7 +67,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             }
         }
         if (isNotChunked) {
-            outputStream.inspectComplete(blockIndex)
             if (fetchLength != contentLength) {
                 throw  ReadWriteException("Fetch-length isn't equal to the response content-length, "+ fetchLength.toString() + "!= " + contentLength.toString())
             }

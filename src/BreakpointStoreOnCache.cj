@@ -37,14 +37,19 @@ public class BreakpointStoreOnCache <: DownloadStore{
             match(optKey){
                 case Some(v)=>
                     let info:Option<BreakpointInfo> =  storedInfos.get(v).getOrThrow()
-                    //------
-
+                    if(let Some(j) = info){
+                        sortedOccupiedIds.append(j.id)
+                    }
                 case None => break
             }
         }
         sortedOccupiedIds.sortBy({rht:Int64,lht:Int64 =>
-            //------
-
+            if(rht < lht){
+                return Ordering.LT
+            }
+            if(rht > lht){
+                return Ordering.GT
+            }
             return Ordering.EQ
         },stable:true)
     }
@@ -68,7 +73,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func onTaskStart(id:Int64):Unit{
-
+        //对标库空实现
     }
 
 
@@ -92,11 +97,12 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
         let onCacheOne:Option<BreakpointInfo> = this.storedInfos.get(breakpointInfo.id).getOrThrow()
         if(let Some(i) = onCacheOne){
-             if(refEq(i,breakpointInfo)){
+            if(refEq(i,breakpointInfo)){
                 return true
-             }
-            //------
-
+            }
+            synchronized(m){
+                this.storedInfos.put(breakpointInfo.id, breakpointInfo)
+            }
              return true
         }else{
              return false
@@ -168,8 +174,11 @@ public class BreakpointStoreOnCache <: DownloadStore{
                match(optKey){
                     case Some(v)=>
                        let info:Option<BreakpointInfo> =  storedInfos.get(v).getOrThrow()
-                       //------
-
+                       if(let Some(j) = info){
+                          if(j.isSameFrom(task)){
+                             return j.id
+                          }
+                       }
                     case None => break
                }
             }
@@ -180,8 +189,13 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 match(optKey){
                     case Some(v)=>
                        let another:Option<IdentifiedTask> =  unStoredTasks.get(v).getOrThrow()
-                     //------
-
+                        if(let Some(k) = another){
+                            if(k.compareIgnoreId(task)){
+                                return k.getId()
+                            }
+                        }else{
+                         continue
+                        }
                     case None => break
                 }
            }
@@ -213,8 +227,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
                         if(j.isSameFrom(task)){
                             return info
                         }
-
-
                     }else{
                         continue
                     }
@@ -228,7 +240,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         return true
     }
 
-     static let FIRST_ID:Int64 = 1
+    static let FIRST_ID:Int64 = 1
 
     func allocateId():Int64{
         synchronized(m){
@@ -242,7 +254,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 if(let Some(j) = curIdObj){
 
                 }else{
-                    //为空
                     index = i
                     newId = preId + 1
                     break

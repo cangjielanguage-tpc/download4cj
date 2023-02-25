@@ -61,9 +61,6 @@ public class  BreakpointRemoteCheck {
          info.setChunked(isChunked)
          info.setEtag(responseEtag)
 
-         if (OkDownload.withs().downloadDispatcher().isFileConflictAfterRun(task)) {
-             throw FileBusyAfterRunException.SIGNAL
-         }
          let resumeFailedCause:Option<ResumeFailedCause> = downloadStrategy.getPreconditionFailedCause(responseCode, info.getTotalOffset() != 0, info,responseEtag)
 
          if(let Some(i) = resumeFailedCause){
@@ -89,7 +86,6 @@ public class  BreakpointRemoteCheck {
             // for the range:0-0, because of values on response header is valid we pass it.
             return true
         }
-
         return false
     }
 

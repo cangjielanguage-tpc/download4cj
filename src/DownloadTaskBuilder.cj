@@ -54,8 +54,8 @@ public class DownloadTaskBuilder{
         if(minIntervalMillisCallbackProcess < 0){
             throw IllegalArgumentException("Value must be positive!")
         }
-        this.minIntervalMillisCallbackProcess = minIntervalMillisCallbackProcess;
-        return this;
+        this.minIntervalMillisCallbackProcess = minIntervalMillisCallbackProcess
+        return this
     }
 
 
