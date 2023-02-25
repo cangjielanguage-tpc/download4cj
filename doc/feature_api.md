@@ -24,43 +24,44 @@ class DownloadTaskBuilder
 ```cangjie
     /* 用于构造DownloadTaskBuilder对象
      *
-     * 参数 String类型 要下载的文件的url
-     * 参数 Directory类型 把下载下来的文件放到哪个目录下
+     * 参数 url - 要下载的文件的url
+     * 参数 file - 把下载下来的文件放到哪个目录下
      */
     public init(url:String,file:Directory)
 
     /* 用于设置下载文件的名称
      *
-     * 参数 String类型 设置给下载下来的文件的名字
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 参数 filename - 设置给下载下来的文件的名字
+     * 返回值 - 返回一个DownloadTaskBuilder
      * 注意：文件名优先用户自己设置的，如果用户没设置会去取请求返回的，如果都没有，就去截取url,截取失败随机生成
      */
     public func setFilename(filename:String):DownloadTaskBuilder
 
     /* 设置进度回调的时间间隔
      *
-     * 参数 Int64类型 下载的时候多少毫秒进行一次回调
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 参数 minIntervalMillisCallbackProcess - 下载的时候多少毫秒进行一次回调
+     * 返回值 - 返回一个DownloadTaskBuilder
      */
     public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder
 
     /* 设置读取缓存大小
      *
-     * 参数 Int64类型 下载的时候的读取缓冲的大小
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 参数 readBufferSize - 下载的时候的读取缓冲的大小
+     * 返回值 - 返回一个DownloadTaskBuilder
      */
     public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder
 
     /*
      * 设置刷新缓冲大小
-     * 参数 Int64类型 刷缓冲的大小
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     *
+     * 参数 flushBufferSize - 刷缓冲的大小
+     * 返回值 - 返回一个DownloadTaskBuilder
      */
     public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder
 
      /* 用于构造DownloadTask对象
      *
-     * 返回值 DownloadTask类型 构建的DownloadTask对象
+     * 返回值 - 返回一个DownloadTask
      */
     public func build():DownloadTask
 
@@ -71,67 +72,67 @@ class DownloadTask
 ```cangjie
     /* 用于执行同步下载
      *
-     * 参数 DownloadListener类型 下载的时候的监听类
+     * 参数 listener - 下载的时候的监听类
      */
     public func execute(listener:DownloadListener)
 
     /*
      * 获取任务的Id
-     * 返回值 Int64类型 任务的id
+     * 返回值 - 返回任务的id
      */
     public func getId():Int64
 
     /* 获取文件名
      *
-     * 返回值 Option<String>类型 获得文件的名字
+     * 返回值 - 返回文件的名字
      */
     public func getFilename():Option<String>
 
     /* 获取文件下载路径
      *
-     * 返回值 String类型 获取文件的下载url路径
+     * 返回值 - 返回文件的下载url路径
      */
     public func getUrl():String
 
     /* 获取下载下来的文件的父文件夹
      *
-     * 返回值 URL类型 文件的文件夹对应的URL
+     * 返回值 - 返回文件的文件夹对应的URL
      */
     public func getUri():URL
 
     /* 获取下载后的文件
      *
-     * 返回值 File类型 下载后的文件对象
+     * 返回值 - 返回下载后的文件对象
      */
     public func getProvidedPathFile():File
 
     /* 获取读取文件的缓存大小
      *
-     * 返回值 Int64类型 获取下载时候的读取缓冲大小
+     * 返回值 - 返回获取下载时候的读取缓冲大小
      */
     public func getReadBufferSize():Int64
 
     /* 获取刷新的缓冲大小
      *
-     * 返回值 Int64类型 获取下载写入时候的冲刷缓冲大小
+     * 返回值 - 返回下载写入时候的冲刷缓冲大小
      */
     public func getFlushBufferSize():Int64
 
     /*获取回调时间间隔数
      *
-     * 返回值 Int64类型  下载进度回调的时间间隔数，单位毫秒
+     * 返回值 - 返回下载进度回调的时间间隔数，单位毫秒
      */
     public func getMinIntervalMillisCallbackProcess():Int64
 
     /* 获取下载时候的连接数
      *
-     * 返回值Int64类型,获取下载连接数
+     * 返回值 - 返回下载连接数
      */
     public func getConnectionCount():Int64
 
     /* 下载任务对象的toString方法
      *
-     * 返回值String类型,下载任务对象对应的String
+     * 返回值 - 返回下载任务对象对应的String
      */
     public func toString():String
 
@@ -142,82 +143,82 @@ interface DownloadListener
 
 /* 任务刚开始的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func taskStart(task:DownloadTask)
 
     /* 任务开始尝试连接的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 HashMap<String, ArrayList<String>>类型 请求的header
+     * 参数 task - 下载的任务对象
+     * 参数 requestHeaderFields - 请求的header
      */
     func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>)
 
     /* 任务结束尝试连接的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 请求返回的响应码
-     * 参数 HashMap<String, ArrayList<String>>类型 响应的haeder
+     * 参数 task - 下载的任务对象
+     * 参数 responseCode - 请求返回的响应码
+     * 参数 responseHeaderFields - 响应的haeder
      */
     func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
 
     /* 从开始下载的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func downloadFromBeginning(task:DownloadTask)
 
     /* 从断点处下载的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func downloadFromBreakpoint(task:DownloadTask)
 
     /* 连接开始的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 对应的分块index
-     * 参数 HashMap<String, ArrayList<String>>类型 请求的请求头
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 requestHeaderFields - 请求的请求头
      */
     func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>)
 
     /* 连接结束的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 对应的分块index
-     * 参数 Int64类型 请求返回的响应码
-     * 参数 HashMap<String, ArrayList<String>>类型 响应的haeder
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 responseCode - 请求返回的响应码
+     * 参数 responseHeaderFields - 响应的haeder
      */
     func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
 
     /* 开始获取进度的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 对应的分块index
-     * 参数 Int64类型 下载的内容长度
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 contentLength - 下载的内容长度
      */
     func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
 
     /* 获取进度的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 对应的分块index
-     * 参数 Int64类型 下载增加的部分字节数
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 increaseBytes - 下载增加的部分字节数
      */
     func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64)
 
     /* 获取进度结束的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Int64类型 对应的分块index
-     * 参数 Int64类型 下载的内容长度
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 contentLength - 下载的内容长度
      */
     func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
 
     /* 任务结束的回调
      *
-     * 参数 DownloadTask类型 下载的任务对象
-     * 参数 Option<Exception>类型 造成异常结束的原因
+     * 参数 task - 下载的任务对象
+     * 参数 realCause - 造成异常结束的原因
      */
     func taskEnd(task:DownloadTask,realCause:Option<Exception>)
 
@@ -232,124 +233,67 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
-
-//目的 主要为了验证循环同步下载
-
 var isComplete = false
 
 main(){
-
-
-        var url:String = "https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe"
-        let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-        var FileEnds = url.substring(lastIndex)
-
-        let filenamePre:String = "single-test"
-        let filename = filenamePre+FileEnds
-
-        let parentFilePath:Path = Path("./fileDownLoad")
-        var parentFile:Option<Directory> = Option<Directory>.None
-
-        if (!Directory.exists(parentFilePath)) {
-            parentFile = Directory.create(parentFilePath, recursive: true)
-        }else{
-        }
-
-        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            .setFilename(filename)
-            .setMinIntervalMillisCallbackProcess(30)
-            .setReadBufferSize(4096)
-            .setFlushBufferSize(16384)
-            .build()
-
-        task.execute(MyListen())
-
-        println("taskId="+task.getId().toString())
-        println("fileName="+task.getFilename().getOrThrow())
-        println("url="+task.getUrl())
-        println("uri="+task.getUri().toString())
-        println("ProvidedPathFile="+task.getProvidedPathFile().getOrThrow().info.path.toString())
-        println("ReadBufferSize="+task.getReadBufferSize().toString())
-        println("FlushBufferSize="+task.getFlushBufferSize().toString())
-        println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())
-        println("ConnectionCount="+task.getConnectionCount().toString())
-
-        if(isComplete){
-          return 0
-        }else{
-          return 1
-        }
+    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
+    var FileEnds = url.substring(lastIndex)
+    let filenamePre:String = "single-test"
+    let filename = filenamePre+FileEnds
+    let parentFilePath:Path = Path("./fileDownLoad")
+    var parentFile:Option<Directory> = Option<Directory>.None
+    if (!Directory.exists(parentFilePath)) {
+        parentFile = Directory.create(parentFilePath, recursive: true)
+    }
+    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+        .setFilename(filename)
+        .setMinIntervalMillisCallbackProcess(30)
+        .setReadBufferSize(4096)
+        .setFlushBufferSize(16384)
+        .build()
+    task.execute(MyListen())
+    if(isComplete){
+        println(isComplete)
+        return 0
+    }else{
+        return 1
+    }
 
 }
 
 public class MyListen<: DownloadListener{
     public func taskStart(task:DownloadTask):Unit{
-        println("==================taskStart=======================")
-        println("task.getId="+task.getId().toString())
     }
+
     public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-         println("==================connectTrialStart=======================")
-         println("requestHeaderFields="+requestHeaderFields.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-         println("===============connectTrialEnd===================")
-         println("responseCode="+responseCode.toString())
-         println("responseHeaderFields="+responseHeaderFields.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func downloadFromBeginning(task:DownloadTask):Unit{
-         println("===============downloadFromBeginning===================")
-         println("task.getId="+task.getId().toString())
     }
 
     public func downloadFromBreakpoint(task:DownloadTask):Unit{
-         println("===============downloadFromBreakpoint===================")
-         println("task.getId="+task.getId().toString())
-
     }
 
     public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-         println("===============connectStart===================")
-         println("blockIndex="+blockIndex.toString())
-         println("requestHeaderFields="+requestHeaderFields.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-         println("===============connectEnd===================")
-         println("blockIndex="+blockIndex.toString())
-         println("responseCode="+responseCode.toString())
-         println("requestHeaderFields="+requestHeaderFields.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-         println("===============fetchStart===================")
-         println("blockIndex="+blockIndex.toString())
-         println("contentLength="+contentLength.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-     //     println("===============fetchProgress===================")
-     //     println("blockIndex="+blockIndex.toString())
-     //     println("increaseBytes="+increaseBytes.toString())
-     //     println("task.getId="+task.getId().toString())
     }
 
     public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-         println("===============fetchEnd===================")
-         println("blockIndex="+blockIndex.toString())
-         println("contentLength="+contentLength.toString())
-         println("task.getId="+task.getId().toString())
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-         println("===============taskEnd===================")
-         println("task.getId="+task.getId().toString())
          isComplete = true
     }
 }
@@ -361,67 +305,7 @@ public class MyListen<: DownloadListener{
 
 ```shell
 
-[02-17 11:17:49] INFO - Stdout : ==================taskStart=======================
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ==================connectTrialStart=======================
-[02-17 11:17:49] INFO - Stdout : requestHeaderFields=[(Range, [bytes=0-0])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============connectTrialEnd===================
-[02-17 11:17:49] INFO - Stdout : responseCode=206
-[02-17 11:17:49] INFO - Stdout : responseHeaderFields=[(Connection, [Keep-Alive]), (Keep-Alive, [timeout=5, max=100]), (Content-Type, [application/x-msdownload]), (Last-Modified, [Fri, 20 May 2022 01:43:18 GMT]), (Content-Range, [bytes 0-0/1862488]), (Content-Length, [1]), (Date, [Fri, 17 Feb 2023 03:17:47 GMT]), (Server, [LiteSpeed]), (Alt-Svc, [h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============downloadFromBeginning===================
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============connectStart===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=0
-[02-17 11:17:49] INFO - Stdout : requestHeaderFields=[(User-Agent, [OkDownload/1.0.7]), (Range, [bytes=0-931243])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============connectStart===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=1
-[02-17 11:17:49] INFO - Stdout : requestHeaderFields=[(User-Agent, [OkDownload/1.0.7]), (Range, [bytes=931244-1862487])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============connectEnd===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=0
-[02-17 11:17:49] INFO - Stdout : responseCode=206
-[02-17 11:17:49] INFO - Stdout : requestHeaderFields=[(Connection, [Keep-Alive]), (Keep-Alive, [timeout=5, max=100]), (Content-Type, [application/x-msdownload]), (Last-Modified, [Fri, 20 May 2022 01:43:18 GMT]), (Content-Range, [bytes 0-931243/1862488]), (Content-Length, [931244]), (Date, [Fri, 17 Feb 2023 03:17:47 GMT]), (Server, [LiteSpeed])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============fetchStart===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=0
-[02-17 11:17:49] INFO - Stdout : contentLength=931244
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============connectEnd===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=1
-[02-17 11:17:49] INFO - Stdout : responseCode=206
-[02-17 11:17:49] INFO - Stdout : requestHeaderFields=[(Connection, [Keep-Alive]), (Keep-Alive, [timeout=5, max=100]), (Content-Type, [application/x-msdownload]), (Last-Modified, [Fri, 20 May 2022 01:43:18 GMT]), (Content-Range, [bytes 931244-1862487/1862488]), (Content-Length, [931244]), (Date, [Fri, 17 Feb 2023 03:17:48 GMT]), (Server, [LiteSpeed]), (Alt-Svc, [h3=":443"; ma=2592000, h3-29=":443"; ma=2592000, h3-Q050=":443"; ma=2592000, h3-Q046=":443"; ma=2592000, h3-Q043=":443"; ma=2592000, quic=":443"; ma=2592000; v="43,46"])]
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============fetchStart===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=1
-[02-17 11:17:49] INFO - Stdout : contentLength=931244
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============fetchEnd===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=0
-[02-17 11:17:49] INFO - Stdout : contentLength=931244
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============fetchEnd===================
-[02-17 11:17:49] INFO - Stdout : blockIndex=1
-[02-17 11:17:49] INFO - Stdout : contentLength=931244
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-[02-17 11:17:49] INFO - Stdout : ===============taskEnd===================
-[02-17 11:17:49] INFO - Stdout : task.getId=1
-
-
-
-[02-17 11:17:49] INFO - Stdout : taskId=1
-[02-17 11:17:49] INFO - Stdout : fileName=single-test.exe
-[02-17 11:17:49] INFO - Stdout : url=https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe
-[02-17 11:17:49] INFO - Stdout : uri=/home/hhs/ok-download/ci_test/test_temp/run/maintest15_cj_1676603863_843329/./fileDownLoad
-[02-17 11:17:49] INFO - Stdout : ProvidedPathFile=/home/hhs/ok-download/ci_test/test_temp/run/maintest15_cj_1676603863_843329/./fileDownLoad/single-test.exe
-[02-17 11:17:49] INFO - Stdout : ReadBufferSize=4096
-[02-17 11:17:49] INFO - Stdout : FlushBufferSize=16384
-[02-17 11:17:49] INFO - Stdout : MinIntervalMillisCallbackProcess=30
-[02-17 11:17:49] INFO - Stdout : ConnectionCount=2
-[02-17 11:17:49] INFO - return : 0
-
+true
 
 ```
 
@@ -436,29 +320,29 @@ class DownloadTaskBuilder
 ```cangjie
     /* 用于构造DownloadTaskBuilder对象
      *
-     * 参数 String类型 要下载的文件的url
-     * 参数 Directory类型 把下载下来的文件放到哪个目录下
+     * 参数 url - 要下载的文件的url
+     * 参数 file - 把下载下来的文件放到哪个目录下
      */
     public init(url:String,file:Directory){
 
     /* 设置进度回调的时间间隔
      *
-     * 参数 Int64类型 下载的时候多少毫秒进行一次回调
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 参数 minIntervalMillisCallbackProcess - 下载的时候多少毫秒进行一次回调
+     * 返回值 - 返回一个DownloadTaskBuilder
      */
     public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
 
     /* 用于设置下载文件的名称
      *
-     * 参数 String类型 设置给下载下来的文件的名字
-     * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
+     * 参数 filename - 设置给下载下来的文件的名字
+     * 返回值 - 返回一个DownloadTaskBuilder
      * 注意：文件名优先用户自己设置的，如果用户没设置会去取请求返回的，如果都没有，就去截取url,截取失败随机生成
      */
     public func setFilename(filename:String):DownloadTaskBuilder{
 
      /* 用于构造DownloadTask对象
      *
-     * 返回值 DownloadTask类型 构建的DownloadTask对象
+     * 返回值 - 返回一个DownloadTask
      */
     public func build():DownloadTask{
 
@@ -470,14 +354,14 @@ class DownloadTask
 
      /* 用于执行异步下载
      *
-     * 参数 DownloadListener类型 下载的时候的监听类
+     * 参数 listener - 下载的时候的监听类
      */
     public func enqueue(listener:DownloadListener){
 
     /* 用于执行异步下载多个任务
      *
-     * 参数 Array<DownloadTask>类型 要下载的任务的数组
-     * 参数 DownloadListener类型 下载的时候的监听类
+     * 参数 tasks - 要下载的任务的数组
+     * 参数 listener - 下载的时候的监听类
      */
     public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
 
@@ -491,37 +375,27 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
-//目的 主要为了验证异步下载单个
-
-
 var isComplete = false
 
-
 main(){
-
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
-
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
-
     let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
-
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
     }
-
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
      task.enqueue(MyListen())
      sleep(1000*1000*1000*3)
      if(isComplete){
+        println(isComplete)
         return 0
      }else{
         return 1
@@ -571,15 +445,8 @@ public class MyListen<: DownloadListener{
 执行结果如下：
 
 ```shell
-[02-15 22:20:48] INFO - FILE   : maintest06.cj
-[02-15 22:20:51] INFO - CMD    : ./main
-[02-15 22:20:51] INFO - FILE   : maintest06.cj
-[02-15 22:20:54] INFO - return : 0
-[02-15 22:20:54] INFO -  >>=============================================<<
-[02-15 22:20:54] INFO -
-[02-15 22:20:54] INFO -
-[02-15 22:20:54] INFO -
-[02-15 22:20:54] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
+
+true
 
 ```
 
@@ -594,53 +461,38 @@ from std import fs.*
 
 var i = 0
 
-//目的 主要为了验证异步下载多个相同的
-
 main(){
-
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-
-
     let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
-
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
     }
-
     var filename0 = "0.jpg"
     var filename1 = "1.jpg"
     var filename2 = "2.jpg"
     var filename3 = "3.jpg"
     var filename4 = "4.jpg"
-
-
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename0)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
     let task1:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename1)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
      let task2:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename2)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
     let task3:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename3)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
     let task4:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
         .setFilename(filename4)
         .setMinIntervalMillisCallbackProcess(30)
         .build()
-
     let tasklists:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
     tasklists.append(task)
     tasklists.append(task1)
@@ -648,11 +500,10 @@ main(){
     tasklists.append(task3)
     tasklists.append(task4)
     let tasks:Array<DownloadTask> = Array<DownloadTask>(tasklists)
-
-
      DownloadTask.enqueues(tasks,MyListen())
      sleep(1000*1000*1000*8)
      if(i == tasklists.size){
+        println(i)
         return 0
      }else{
         return 1
@@ -701,16 +552,7 @@ public class MyListen<: DownloadListener{
 
 ```shell
 
-[02-15 22:24:27] INFO - FILE   : maintest05.cj
-[02-15 22:24:31] INFO - CMD    : ./main
-[02-15 22:24:31] INFO - FILE   : maintest05.cj
-[02-15 22:24:39] INFO - return : 0
-[02-15 22:24:39] INFO -  >>=============================================<<
-[02-15 22:24:39] INFO -
-[02-15 22:24:39] INFO -
-[02-15 22:24:39] INFO -
-[02-15 22:24:39] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
-
+5
 
 ```
 
@@ -731,14 +573,14 @@ public class MyListen<: DownloadListener{
 public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
     /*
      * 重试拦截器
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回网络请求的连接对象
      */
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
     /*
      * 触发获取下载文件数据
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Int64  最后下载完成后文件的长度
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回最后下载完成后文件的长度
      */
     public func interceptFetch(chain:DownloadChain):Int64
 }
@@ -753,14 +595,14 @@ public class RetryInterceptor <: InterceptorConnect & InterceptorFetch{
 public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch
     /*
      * 拦截器执行的时候对断点信息的检查
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回网络请求的连接对象
      */
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
     /*
      * 循环下载文件的方法
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Int64  最后下载完成后文件的长度
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回最后下载完成后文件的长度
      */
     public func interceptFetch(chain:DownloadChain):Int64
 }
@@ -775,8 +617,8 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch
 public class HeaderInterceptor <: InterceptorConnect{
     /*
      * 拦截器执行的时候对请求头的处理
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回网络请求的连接对象
      */
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
 }
@@ -791,8 +633,8 @@ public class HeaderInterceptor <: InterceptorConnect{
 public class CallServerInterceptor <: InterceptorConnect{
     /*
      * 执行网络请求处理
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Option<DownloadConnectionConnected> 网络请求的连接对象
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回网络请求的连接对象
      */
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>
 }
@@ -807,8 +649,8 @@ public class CallServerInterceptor <: InterceptorConnect{
 public class FetchDataInterceptor <: InterceptorFetch {
     /*
      * 执行网络请求处理
-     * @param 类型 DownloadChain 下载的块对象
-     * @return 类型 Int64 每一次read获取到的字节数
+     * 参数 chain - 下载的块对象
+     * 返回值 - 返回每一次read获取到的字节数
      */
     public func interceptFetch(chain:DownloadChain):Int64
 }
@@ -823,9 +665,9 @@ public class FetchDataInterceptor <: InterceptorFetch {
 public class DownloadUriOutputStream <: DownloadOutputStream{
     /*
      * 写文件的方法
-     * @param 类型 Array<UInt8> 要写的文件内容
-     * @param 类型 Int64 从哪里写起
-     * @param 类型 Int64 写多少长度
+     * 参数 b - 要写的文件内容
+     * 参数 off - 从哪里写起
+     * 参数 len - 写多少长度
      */
     public func write(b:Array<UInt8>,off:Int64,len:Int64)
     /*
@@ -838,12 +680,12 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     public func flushAndSync():Unit
     /*
      * 让文件指定某个位置开始写
-     * @param 类型 Int64 指定开始写的位置
+     * 参数 offset - 指定开始写的位置
      */
     public func seek(offset:Int64):Unit
     /*
      * 指定文件长度
-     * @param 类型 Int64 文件长度
+     * 参数 newLength - 文件长度
      */
     public func setLength(newLength:Int64):Unit
 }
@@ -858,21 +700,21 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
 public class FetchDataInterceptor <: InterceptorFetch {
     /*
      * 创建DownloadUriOutputStream对象
-     * @param 类型 File 对于的要写的文件
-     * @param 类型 Int64 输出流的flushBufferSize
-     * @return 类型 DownloadOutputStream DownloadOutputStream对象
+     * 参数 file - 对于的要写的文件
+     * 参数 flushBufferSize - 输出流的flushBufferSize
+     * 返回值 - 返回一个DownloadOutputStream
      */
     public func create(file:File,flushBufferSize:Int64):DownloadOutputStream
     /*
      * 创建DownloadUriOutputStream对象
-     * @param 类型 URL 对于的要写的文件的URL
-     * @param 类型 Int64 输出流的flushBufferSize
-     * @return 类型 DownloadOutputStream DownloadOutputStream对象
+     * 参数 url - 对于的要写的文件的URL
+     * 参数 flushBufferSize - 输出流的flushBufferSize
+     * 返回值 - 返回一个DownloadOutputStream
      */
     public func create(url:URL,flushBufferSize:Int64):DownloadOutputStream
     /*
      * 是否支持seek
-     * @return 类型 Bool true支持seek false不支持seek
+     * 返回值 - true支持seek false不支持seek
      */
     public func supportSeek():Bool
 }
@@ -888,13 +730,13 @@ public class FetchDataInterceptor <: InterceptorFetch {
 public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectionConnected{
     /*
      * 添加请求头
-     * @param 类型 String 请求头的key
-     * @param 类型 String 请求头的value
+     * 参数 name - 请求头的key
+     * 参数 value - 请求头的value
      */
     public func addHeader(name:String,value:String):Unit
     /*
      * 执行okhttp请求
-     * @return 类型 DownloadConnectionConnected okhttp请求的连接对象
+     * 返回值 - 返回okhttp请求的连接对象
      */
     public func execute():DownloadConnectionConnected
     /*
@@ -903,45 +745,45 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     public func release():Unit
     /*
      * 获取所有请求头
-     * @return 类型 HashMap<String, ArrayList<String>> 请求头的key value对
+     * 返回值 - 返回请求头的key value对
      */
     public func getRequestProperties():HashMap<String, ArrayList<String>>
     /*
      * 根据单个key获取所对应的请求头
-     * @param 类型 String 请求头的key
-     * @return 类型 String 对于的请求头的value
+     * 参数 key - 请求头的key
+     * 返回值 - 返回对应请求头的value
      */
     public func getRequestProperty(key:String):String
     /*
      * 获取响应码
-     * @return 类型 Int64 请求的响应码
+     * 返回值 - 返回请求的响应码
      */
     public func getResponseCode():Int64
     /*
      * 获取请求的流
-     * @return 类型 Source okhttp请求的读取流
+     * 返回值 - 返回okhttp请求的读取流
      */
     public func getInputStream():Source
     /*
      * 设置请求方式
-     * @param 类型 String 请求的方式
-     * @return 类型 Bool true支持成功 false表示失败
+     * 参数 method - 请求的方式
+     * 返回值 - true支持成功 false表示失败
      */
     public func setRequestMethod(method:String):Bool
     /*
      * 获取响应头
-     * @return 类型 Option<HashMap<String,ArrayList<String>>> 获取响应头的key value对
+     * 返回值 - 返回响应头的key value对
      */
     public func getResponseHeaderFields():Option<HashMap<String,ArrayList<String>>>
     /*
      * 根据响应头的key获取响应头的value
-     * @param 类型 String 响应头的key
-     * @return 类型 Option<String> 对应的响应头的value
+     * 参数 name - 响应头的key
+     * 返回值 - 返回对应的响应头的value
      */
     public func getResponseHeaderField(name:String):Option<String>
     /*
      * 获取重定向地址
-     * @return 类型 Option<String> 重定向的地址
+     * 返回值 - 返回重定向的地址
      */
     public func getRedirectLocation():Option<String>
 }
@@ -957,8 +799,8 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
     /*
      * 根据url获取okhttp的连接对象
-     * @param 类型 String url
-     * @return 类型 DownloadConnection okhttp的连接对象
+     * 参数 url - 下载的url路径
+     * 返回值 - 返回okhttp的连接对象
      */
     public func create(url:String):DownloadConnection
 }
@@ -973,14 +815,14 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
 public class DownloadCall <: Equatable<DownloadCall>{
     /*
      * 判断两个连接请求是否一样
-     * @param 类型 DownloadCall 另一个连接请求
-     * @return 类型 Bool true为一样 false不一样
+     * 参数 anothor - 另一个连接请求
+     * 返回值 - true为一样 false不一样
      */
     public operator func ==(anothor: DownloadCall): Bool
     /*
      * 判断两个连接请求是否不一样
-     * @param 类型 DownloadCall 另一个连接请求
-     * @return 类型 Bool true不一样 false一样
+     * 参数 anothor - 另一个连接请求
+     * 返回值 - true不一样 false一样
      */
     public operator func !=(anothor: DownloadCall): Bool
 }
@@ -995,19 +837,19 @@ public class DownloadCall <: Equatable<DownloadCall>{
 public class FileNameHolder <: Hashable & Equatable<FileNameHolder> {
     /*
      * 判断两个持有类的文件名是否一样
-     * @param 类型 FileNameHolder 另一个文件名持有类对象
-     * @return 类型 Bool true为一样 false不一样
+     * 参数 holder - 另一个文件名持有类对象
+     * 返回值 - true为一样 false不一样
      */
     public operator func ==(holder: FileNameHolder): Bool
     /*
      * 判断两个持有类的文件名是否不一样
-     * @param 类型 FileNameHolder 另一个文件名持有类对象
-     * @return 类型 Bool true不一样 false一样
+     * 参数 holder - 另一个文件名持有类对象
+     * 返回值 - true不一样 false一样
      */
     public operator func !=(holder: FileNameHolder): Bool
     /*
      * 文件名持有类对象的hashCode
-     * @return 类型 Int64 文件名持有类对象的hashCode值
+     * 返回值 - 返回文件名持有类对象的hashCode值
      */
     public func hashCode(): Int64
 }
@@ -1022,25 +864,25 @@ public class FileNameHolder <: Hashable & Equatable<FileNameHolder> {
 public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>{
     /*
      * 获取下载任务对象对于的hashCode值
-     * @return 类型 Int64 下载任务对象对于的hashCode值
+     * 返回值 - 返回下载任务对象对应的hashCode值
      */
     public func hashCode(): Int64
     /*
      * 判断两个下载任务对象是否一样
-     * @param 类型 DownloadTask 另一个下载任务对象
-     * @return 类型 Bool true一样 false不一样
+     * 参数 anothor - 另一个下载任务对象
+     * 返回值 - true一样 false不一样
      */
     public operator func ==(anothor: DownloadTask): Bool
     /*
      * 判断两个下载任务对象是否不一样
-     * @param 类型 DownloadTask 另一个下载任务对象
-     * @return 类型 Bool true不一样 false一样
+     * 参数 anothor - 另一个下载任务对象
+     * 返回值 - true不一样 false一样
      */
     public operator func !=(anothor: DownloadTask): Bool
     /*
      * 根据taskid模仿一个task
-     * @param 类型 Int64 下载任务的id
-     * @return 类型 MockTaskForCompare 模仿的下载任务task
+     * 参数 id - 下载任务的id
+     * 返回值 - 返回模仿的下载任务task
      */
     public func mock(id:Int64):MockTaskForCompare
 }
@@ -1055,82 +897,82 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 public class DefaultTransmitListener <: DownloadListener {
     /*
      * 任务刚开始的回调
-     * @param 类型 DownloadTask类型 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func taskStart(task:DownloadTask)
 
     /*
      * 任务开始尝试连接的回调
-     * @param 类型 DownloadTask下载的任务对象
-     * @param 类型 HashMap<String, ArrayList<String>> 请求的header
+     * 参数 task - 下载的任务对象
+     * 参数 requestHeaderFields - 请求的header
      */
     func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>)
 
     /*
      * 任务结束尝试连接的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 请求返回的响应码
-     * @param 类型 HashMap<String, ArrayList<String>> 响应的haeder
+     * 参数 task - 下载的任务对象
+     * 参数 responseCode - 请求返回的响应码
+     * 参数 responseHeaderFields - 响应的haeder
      */
     func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
 
     /*
      * 从开始下载的回调
-     * @param 类型 DownloadTask 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func downloadFromBeginning(task:DownloadTask)
 
     /*
      * 从断点处下载的回调
-     * @param 类型 DownloadTask 下载的任务对象
+     * 参数 task - 下载的任务对象
      */
     func downloadFromBreakpoint(task:DownloadTask)
 
     /*
      * 连接开始的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 对应的分块index
-     * @param 类型 HashMap<String, ArrayList<String>> 请求的请求头
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 requestHeaderFields - 请求的请求头
      */
     func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>)
 
     /*
      * 连接结束的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 对应的分块index
-     * @param 类型 Int64 请求返回的响应码
-     * @param 类型 HashMap<String, ArrayList<String>> 响应的haeder
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 responseCode - 请求返回的响应码
+     * 参数 responseHeaderFields - 响应的haeder
      */
     func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
 
     /*
      * 开始获取进度的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 对应的分块index
-     * @param 类型 Int64 下载的内容长度
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 contentLength - 下载的内容长度
      */
     func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
 
     /*
      * 获取进度的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 对应的分块index
-     * @param 类型 Int64 下载增加的部分字节数
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 increaseBytes - 下载增加的部分字节数
      */
     func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64)
 
     /*
      * 获取进度结束的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Int64 对应的分块index
-     * @param 类型 Int64 下载的内容长度
+     * 参数 task - 下载的任务对象
+     * 参数 blockIndex - 对应的分块index
+     * 参数 contentLength - 下载的内容长度
      */
     func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
 
     /*
      * 任务结束的回调
-     * @param 类型 DownloadTask 下载的任务对象
-     * @param 类型 Option<Exception> 造成异常结束的原因
+     * 参数 task - 下载的任务对象
+     * 参数 realCause - 造成异常结束的原因
      */
     func taskEnd(task:DownloadTask,realCause:Option<Exception>)
 }
@@ -1145,80 +987,80 @@ public class DefaultTransmitListener <: DownloadListener {
 public class BreakpointStoreOnCache <: DownloadStore{
     /*
      * 获取对应id的断点对象
-     * @param 类型 Int64 断点对象的id
-     * @return 类型 Option<BreakpointInfo> 断点对象
+     * 参数 id - 断点对象的id
+     * 返回值 - 返回断点信息对象
      */
     public func get(id:Int64):Option<BreakpointInfo>
     /*
      * 创建或者插入断点
-     * @param 类型 DownloadTask 人物类对象
-     * @return 类型 BreakpointInfo 断点信息对象
+     * 参数 task - 任务类对象
+     * 返回值 - 返回断点信息对象
      */
     public func createAndInsert(task:DownloadTask):BreakpointInfo
     /*
      * 断点任务开始时候的方法
-     * @param 类型 Int64 断点的id
+     * 参数 id - 断点的id
      */
     public func onTaskStart(id:Int64):Unit
      /*
      * 断点信息同步文件
-     * @param 类型 BreakpointInfo 断点信息
-     * @param 类型 Int64 下载块的索引
-     * @param 类型 Int64 增加的文件长度
+     * 参数 info - 断点信息
+     * 参数 blockIndex - 下载块的索引
+     * 参数 increaseLength - 增加的文件长度
      */
     public func onSyncToFilesystemSuccess(info:BreakpointInfo,blockIndex:Int64,increaseLength:Int64):Unit
     /*
      * 替换断点信息
-     * @param 类型 BreakpointInfo 要替换的断点对象
-     * @return 类型 Bool true替换成功 false替换失败
+     * 参数 breakpointInfo - 要替换的断点对象
+     * 返回值 - true替换成功 false替换失败
      */
     public func update(breakpointInfo:BreakpointInfo):Bool
     /*
      * 断点任务结束后的方法
-     * @param 类型 Int64 断点id
-     * @param 类型 EndCause 结束类型
-     * @param 类型 Option<Exception> 异常原因
+     * 参数 id - 断点id
+     * 参数 cause - 结束类型
+     * 参数 exception - 异常原因
      */
     public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit
      /*
      * 任务结束后的id获取断点信息
-     * @param 类型 Int64 断点的id
-     * @return 类型 Option<BreakpointInfo> 返回的断点对象
+     * 参数 id - 断点的id
+     * 返回值 - 返回的断点对象
      */
     public func getAfterCompleted(id:Int64):Option<BreakpointInfo>
     /*
      * 标记脏文件
-     * @param 类型 Int64 断点信息的id
-     * @return 类型 Bool true脏文件 false不是脏文件
+     * 参数 id - 断点信息的id
+     * 返回值 - true脏文件 false不是脏文件
      */
     public func markFileDirty(id:Int64):Bool
     /*
      * 根据id清除标记的脏文件
-     * @param 类型 Int64 断点信息的id
-     * @return 类型 Bool true移除成功 false移除失败
+     * 参数 id - 断点信息的id
+     * 返回值 - true移除成功 false移除失败
      */
     public func markFileClear(id:Int64):Bool
      /*
      * 根据id删除断点信息
-     * @param 类型 Int64 断点信息的id
+     * 参数 id - 断点信息的id
      */
     public func remove(id:Int64):Unit
     /*
      * 找到对于下载任务的断点信息id
-     * @param 类型 DownloadTask 下载任务
-     * @return 类型 Int64 断点信息的id
+     * 参数 task - 下载任务
+     * 返回值 - 返回断点信息的id
      */
     public func findOrCreateId(task:DownloadTask):Int64
     /*
      * 找到文件名字一样任务的断点信息
-     * @param 类型 DownloadTask 下载任务
-     * @param 类型 BreakpointInfo 对比的断点信息
-     * @return 类型 Option<BreakpointInfo> 找到的断点信息
+     * 参数 task - 下载任务
+     * 参数 ignored - 对比的断点信息
+     * 返回值 - 返回找到的断点信息
      */
     public func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>
     /*
      * 是否只支持内存缓存
-     * @return 类型 Bool true只支持内存缓存 false不是
+     * 返回值 - true只支持内存缓存 false不是
      */
     public func isOnlyMemoryCache():Bool
 }

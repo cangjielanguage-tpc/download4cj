@@ -110,28 +110,22 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
-
 var isComplete = false
-
-//目的 主要为了验证同步下载
 
 main(){
 
-        var url:String = "https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe"
-
+        var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
         let parentFilePath:Path = Path("./fileDownLoad")
         var parentFile:Option<Directory> = Option<Directory>.None
-
         if (!Directory.exists(parentFilePath)) {
             parentFile = Directory.create(parentFilePath, recursive: true)
-        }else{
         }
-
         let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
             .setMinIntervalMillisCallbackProcess(30)
             .build()
         task.execute(MyListen())
         if(isComplete){
+            println(isComplete)
             return 0
         }else{
             return 1
@@ -181,17 +175,7 @@ public class MyListen<: DownloadListener{
 
 ```shell
 
-
-[02-15 21:50:10] INFO - FILE   : maintest01.cj
-[02-15 21:50:13] INFO - CMD    : ./main
-[02-15 21:50:13] INFO - FILE   : maintest01.cj
-[02-15 21:50:57] INFO - return : 0
-[02-15 21:50:57] INFO -  >>=============================================<<
-[02-15 21:50:57] INFO -
-[02-15 21:50:57] INFO -
-[02-15 21:50:57] INFO -
-[02-15 21:50:57] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
-
+true
 
 ```
 
@@ -203,37 +187,28 @@ from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
 
-//目的 主要为了验证异步下载单个
-
-
 var isComplete = false
-
 
 main(){
 
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
-
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
-
     let parentFilePath:Path = Path("./fileDownLoad0")
     var parentFile:Option<Directory> = Option<Directory>.None
-
     if (!Directory.exists(parentFilePath)) {
         parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
     }
-
     let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
          .setFilename(filename)
          .setMinIntervalMillisCallbackProcess(30)
          .build()
-
      task.enqueue(MyListen())
      sleep(1000*1000*1000*3)
      if(isComplete){
+        println(isComplete)
         return 0
      }else{
         return 1
@@ -285,15 +260,7 @@ public class MyListen<: DownloadListener{
 
 ```shell
 
-[02-15 21:53:00] INFO - FILE   : maintest06.cj
-[02-15 21:53:03] INFO - CMD    : ./main
-[02-15 21:53:03] INFO - FILE   : maintest06.cj
-[02-15 21:53:06] INFO - return : 0
-[02-15 21:53:06] INFO -  >>=============================================<<
-[02-15 21:53:06] INFO -
-[02-15 21:53:06] INFO -
-[02-15 21:53:06] INFO -
-[02-15 21:53:06] INFO -   TestSuiteTask: Total: 1, PASS: 1, FAIL: 0
+true
 
 ```
 
