@@ -113,8 +113,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
                          //okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
                          okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
                     }
-                 }else{
-
                  }
             }catch(e:IOException){
                 cache.getOrThrow().setUnknownError(e)
@@ -153,7 +151,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         }
 
         if(let Some(i) = cache){
-
         }else{
             return
         }
@@ -161,11 +158,13 @@ public class DownloadCall <: Equatable<DownloadCall>{
         var cause:EndCause = EndCause.COMPLETED
         var realCause:Option<Exception> = Option<Exception>.None
         if (cache.getOrThrow().isServerCanceled() || cache.getOrThrow().isUnknownError() || cache.getOrThrow().isPreconditionFailed()) {
-            //------
+            cause = EndCause.ERROR
+            realCause = cache.getOrThrow().getRealCause()
         } else if (cache.getOrThrow().isFileBusyAfterRun()) {
-            //------
+            cause = EndCause.FILE_BUSY
         } else if (cache.getOrThrow().isPreAllocateFailed()) {
-            //------
+            cause = EndCause.PRE_ALLOCATE_FAILED
+            realCause = cache.getOrThrow().getRealCause()
         } else {
             cause = EndCause.COMPLETED
         }
@@ -243,7 +242,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         try{
             for(i in 0..tasks.size){
                 let fut : Future<Unit> = spawn{ =>
-
                     let task:DownloadChain = tasks.get(i).getOrThrow()
                     if(task.isFinished()){
                         throw  IllegalAccessException("The chain has been finished!")
@@ -251,7 +249,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
                     try{
                         task.start()
                     }catch(e:Exception){
-
                     }finally{
                         task.finished.store(true)
                         task.releaseConnectionAsync()
@@ -280,24 +277,12 @@ public class DownloadCall <: Equatable<DownloadCall>{
                     if(task.getTask().getId() == blockChain.getTask().getId()){
                         isRight = true
                         break
-                    }else{
-
                     }
                 }
                 return isRight
             }
         )
     }
-
-
-
-
-
-
-
-
-
-
 
 
     func createLocalCheck(info:BreakpointInfo,responseInstanceLength:Int64):BreakpointLocalCheck{

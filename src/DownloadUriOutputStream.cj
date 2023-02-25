@@ -33,7 +33,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
 
 
     public func setLength(newLength:Int64):Unit{
-
+        //空实现
     }
 
 }

@@ -231,14 +231,6 @@ public interface DownloadListener{
 
 ```
 
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
-
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
@@ -328,10 +320,6 @@ public class MyListen<: DownloadListener{
 ####  异步下载
 
 ```
-
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
 
 from okdownload import okdownload.*
 from std import collection.*

@@ -26,10 +26,6 @@ public class ConnectTrial{
         var connection:DownloadConnection = OkDownload.withs().connectionFactory().create(task.getUrl())
         var isNeedTrialHeadMethod:Bool = false
         try{
-
-            if(!Util.isEmpty(info.getEtag())){
-                //connection.addHeader(Util.IF_MATCH, info.getEtag().getOrThrow())
-            }
             connection.addHeader(Util.RANGE, "bytes=0-0")
             let userHeader:Option<HashMap<String,ArrayList<String>>> = task.getHeaderMapFields()
             if(let Some(i) = userHeader){
@@ -43,34 +39,22 @@ public class ConnectTrial{
 
             if(let Some(i) = connected.getRedirectLocation()){
                   task.setRedirectLocation(connected.getRedirectLocation().getOrThrow())
-            }else{
-
             }
-
-
-            //Util.d(TAG, "task[" + task.getId().toString() + "] redirect location: "+ task.getRedirectLocation())
             this.responseCode = connected.getResponseCode()
-
             this.acceptRange = isAcceptRanges(connected)
             this.instanceLength = findInstanceLength(connected)
             this.responseEtag = findEtag(connected)
             this.responseFilename = findFilename(connected)
-             var responseHeader: Option<HashMap<String, ArrayList<String>>> = connected.getResponseHeaderFields()
-             if(let Some(i) = responseHeader){
-
-             }else{
+            var responseHeader: Option<HashMap<String, ArrayList<String>>> = connected.getResponseHeaderFields()
+            if(let Some(i) = responseHeader){
+            }else{
                  responseHeader = HashMap<String, ArrayList<String>>()
-             }
+            }
              listener.connectTrialEnd(task, responseCode, responseHeader.getOrThrow())
              isNeedTrialHeadMethod = isNeedTrialHeadMethodForInstanceLength(instanceLength)
         }finally {
             connection.release()
         }
-
-        if (isNeedTrialHeadMethod) {
-            trialHeadMethodForInstanceLength()
-        }
-
     }
 
 
@@ -144,16 +128,12 @@ public class ConnectTrial{
     private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
 
         if(let Some(i) = contentDisposition){
-
         }else{
             return Option<String>.None
         }
-
         try{
-
             var fileName:Option<String> = Option<String>.None
             var isM:Bool = false
-
             var m0 = CONTENT_DISPOSITION_QUOTED_PATTERN.matcher(contentDisposition.getOrThrow())
             var matchData0 = m0.find()
             match(matchData0){
@@ -166,10 +146,7 @@ public class ConnectTrial{
                 case None =>
                     isM = true
                 }
-
-
             if(isM){
-
                 var m = CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matcher(contentDisposition.getOrThrow())
                 var matchData = m.find()
                 match (matchData) {
@@ -183,21 +160,15 @@ public class ConnectTrial{
                     fileName = Option<String>.None
                 }
             }
-
             if(let Some(i) = fileName){
                 if(fileName.getOrThrow().contains("../")){
                     throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
                 }
             }
-
             return fileName
-
         }catch(ex:IllegalStateException){
-
         }
-
         return Option<String>.None
-
     }
 
 
@@ -214,14 +185,11 @@ public class ConnectTrial{
 
 
     private static func findInstanceLength(connected:DownloadConnectionConnected):Int64{
-
         let instanceLength:Int64 = parseContentRangeFoInstanceLength(connected.getResponseHeaderField(Util.CONTENT_RANGE))
         if (instanceLength != Util.CHUNKED_CONTENT_LENGTH){
             return instanceLength
         }
-
         return Util.CHUNKED_CONTENT_LENGTH
-
     }
 
     func isNeedTrialHeadMethodForInstanceLength(oldInstanceLength:Int64):Bool{
@@ -229,32 +197,24 @@ public class ConnectTrial{
             // the instance length already has certain value.
             return false
         }
-
         return true
     }
 
-
-
-    func trialHeadMethodForInstanceLength():Unit{
-
-    }
 
 
 
 
     private static func parseContentRangeFoInstanceLength(contentRange:Option<String>):Int64{
         if(let Some(i) = contentRange){
-
         }else{
             return Util.CHUNKED_CONTENT_LENGTH
         }
-
         let session: Array<String> = contentRange.getOrThrow().split("/")
         if(session.size >= 2){
             try {
                 return Int64.parse(session[1])
             } catch (e:Exception) {
-                //Util.w(TAG, "parse instance length failed with " + contentRange.getOrThrow().toString())
+                Util.d(TAG, "parse instance length failed with " + contentRange.getOrThrow().toString())
             }
         }
          return -1

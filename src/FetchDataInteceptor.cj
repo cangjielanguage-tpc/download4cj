@@ -34,41 +34,17 @@ public class FetchDataInterceptor <: InterceptorFetch {
 
         var fetchLength:Int64 = source.read(stream,task.getReadBufferSize())
 
-        //println("maxHeapSize="+MemoryInfo.maxHeapSize.toString()+"-------allocatedHeapSize="+MemoryInfo.allocatedHeapSize.toString()+"------heapPhysicalMemory="+MemoryInfo.heapPhysicalMemory.toString())
-
-        //var fetchLength:Int64 = 0
-
-        // let logger: SimpleLogger = SimpleLogger()
-        // var s = File("./stdout1.log", OpenOption.CreateOrAppend)
-        // logger.setOutput(s)
-        // logger.log(LogLevel.OFF, "在读文件fetchLength="+fetchLength.toString())
-
-
         if(fetchLength <= 0){
             return fetchLength
         }
 
+        // write to file
         outputStream.write(blockIndex, stream.readToEnd(), fetchLength)
 
-         //outputStream.write(blockIndex, readBuffer, fetchLength)
-
-
-        // if (fetchLength < -1) {
-        //     return fetchLength
-        // }
-
-        // write to file
-
-
-        // let logger2: SimpleLogger = SimpleLogger()
-        // var s2 = File("./stdout2.log", OpenOption.CreateOrAppend)
-        // logger2.setOutput(s2)
-        // logger2.log(LogLevel.OFF, "在写文件write write")
 
         chain.increaseCallbackBytes(fetchLength)
 
         if (this.dispatcher.isFetchProcessMoment(task)) {
-            //println("进来了啊啊啊啊")
             chain.flushNoCallbackIncreaseBytes()
         }
 

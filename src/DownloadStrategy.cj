@@ -29,8 +29,6 @@ public class DownloadStrategy{
             if(i != 0){
                 return i
             }
-        }else{
-
         }
         if (totalLengtha < ONE_CONNECTION_UPPER_LIMITA) {
             return 1
@@ -60,7 +58,6 @@ public class DownloadStrategy{
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
 
         if(let Some(i) = anotherInfo){
-
         }else{
             return false
         }

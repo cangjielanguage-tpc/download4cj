@@ -88,9 +88,7 @@ public class DownloadChain {
                 throw InterruptException.SIGNAL
             }
             if(let Some(i) = connection){
-
             }else{
-                //为空
                 var url:String = ""
                 let redirectLocation:Option<String> = cache.getRedirectLocation()
                 if(let Some(j) = redirectLocation){
@@ -152,8 +150,9 @@ public class DownloadChain {
 
 
 
-     func resetConnectForRetry():Unit{
-
+    func resetConnectForRetry():Unit{
+        connectIndex = 1
+        releaseConnection()
     }
 
      func releaseConnection():Unit{

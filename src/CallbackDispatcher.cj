@@ -27,18 +27,15 @@ public class CallbackDispatcher {
             return
       }
 
-      // for (task in completedTaskCollection) {
-      //    //task.getListener().taskEnd(task, EndCause.COMPLETED, Option<Exception>.None)
-      //    task.getListener().taskEnd(task, Option<Exception>.None)
-      // }
-      // for (task in sameTaskConflictCollection) {
-      //    //task.getListener().taskEnd(task, EndCause.SAME_TASK_BUSY, Option<Exception>.None)
-      //    task.getListener().taskEnd(task, Option<Exception>.None)
-      // }
-      // for (task in fileBusyCollection) {
-      //    //task.getListener().taskEnd(task, EndCause.FILE_BUSY, Option<Exception>.None)
-      //    task.getListener().taskEnd(task, Option<Exception>.None)
-      // }
+      for (task in completedTaskCollection) {
+         task.getListener().taskEnd(task, Option<Exception>.None)
+      }
+      for (task in sameTaskConflictCollection) {
+         task.getListener().taskEnd(task, Option<Exception>.None)
+      }
+      for (task in fileBusyCollection) {
+         task.getListener().taskEnd(task, Option<Exception>.None)
+      }
 
    }
 

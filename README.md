@@ -85,7 +85,6 @@
 git clone https://gitee.com/HW-PLLab/ok-download.git
 地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 ok-download 根目录下
 python3 ci_test/main.py build
-python3 ci_test/main.py test
 ```
 
 #### Windows编译
@@ -106,9 +105,6 @@ python3 ci_test/main.py test
 ####  同步下载示例
 
 ```
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
 
 from okdownload import okdownload.*
 from std import collection.*
@@ -202,9 +198,6 @@ public class MyListen<: DownloadListener{
 ####  异步下载示例
 
 ```
-// EXEC: cjc %import-path %L %l %f
-// EXEC: ./main
-
 
 from okdownload import okdownload.*
 from std import collection.*
