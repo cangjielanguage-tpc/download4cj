@@ -6,5 +6,5 @@ public class InterruptException <: Exception {
         super("Interrupted")
     }
 
-    public static let SIGNAL:InterruptException = InterruptException()
+    static let SIGNAL:InterruptException = InterruptException()
 }

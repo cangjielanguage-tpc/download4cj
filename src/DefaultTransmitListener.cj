@@ -60,16 +60,6 @@ public class DefaultTransmitListener <: DownloadListener {
     }
 
 
-
-
-
-
-
-
-    //------
-
-
-
      func inspectDownloadFromBeginning(task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause):Unit{
         let monitor:Option<DownloadMonitor> = OkDownload.withs().getMonitor()
         if(let Some(i) = monitor){

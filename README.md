@@ -13,7 +13,7 @@
 
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/> 介绍
-可靠、灵活、快速和强大的下载引擎。0.0.1版本提供同步下载  0.0.2提供异步下载
+可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载
 参考地址 https://github.com/lingochamp/okdownload.git
 
 ### 特性
@@ -79,11 +79,25 @@
 
 ### 编译
 
+#### Linux编译
+
 ```
 git clone https://gitee.com/HW-PLLab/ok-download.git
 地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 ok-download 根目录下
 python3 ci_test/main.py build
 python3 ci_test/main.py test
+```
+
+#### Windows编译
+
+```
+1.获取最新tag的okdownload代码
+2.配置依赖库
+  (1)在src同级目录下创建okhttp文档，根据okdownload/module.json文件中指定的okhttp版本获取okhttp代码
+  (2)根据okhttp库介绍编译okhttp库
+3.编译ok-download
+  (1)切换到okdownload下，即src同级目录，执行如下命令，提示success即表示编译成功
+     cpm build
 ```
 
 

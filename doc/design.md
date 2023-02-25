@@ -15,41 +15,41 @@ public class DownloadTaskBuilder{
      * 参数 String类型 要下载的文件的url
      * 参数 Directory类型 把下载下来的文件放到哪个目录下
      */
-    public init(url:String,file:Directory){
+    public init(url:String,file:Directory)
 
     /* 用于设置下载文件的名称
      *
      * 参数 String类型 设置给下载下来的文件的名字
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setFilename(filename:String):DownloadTaskBuilder{
+    public func setFilename(filename:String):DownloadTaskBuilder
 
     /* 设置进度回调的时间间隔
      *
      * 参数 Int64类型 下载的时候多少毫秒进行一次回调
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
+    public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder
 
     /* 设置读取缓存大小
      *
      * 参数 Int64类型 下载的时候的读取缓冲的大小
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder{
+    public func setReadBufferSize(readBufferSize:Int64):DownloadTaskBuilder
 
     /* 设置刷新缓冲大小
      *
      * 参数 Int64类型 刷缓冲的大小
      * 返回值 DownloadTaskBuilder类型 构建DownloadTask的构建类
      */
-    public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder{
+    public func setFlushBufferSize(flushBufferSize:Int64):DownloadTaskBuilder
 
     /* 用于构造DownloadTask对象
      *
      * 返回值 DownloadTask类型 构建的DownloadTask对象
      */
-    public func build():DownloadTask{
+    public func build():DownloadTask
 
 }
 ```
@@ -63,74 +63,74 @@ public class DownloadTask{
      *
      * 参数 DownloadListener类型 下载的时候的监听类
      */
-    public func execute(listener:DownloadListener){
+    public func execute(listener:DownloadListener)
 
     /* 用于执行异步下载
      *
      * 参数 DownloadListener类型 下载的时候的监听类
      */
-    public func enqueue(listener:DownloadListener){
+    public func enqueue(listener:DownloadListener)
 
     /* 用于执行异步下载多个任务
      *
      * 参数 Array<DownloadTask>类型 要下载的任务的数组
      * 参数 DownloadListener类型 下载的时候的监听类
      */
-    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
+    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener)
 
     /* 获取任务的Id
      *
      * 返回值 Int64类型 任务的id
      */
-    public func getId():Int64{
+    public func getId():Int64
 
     /* 获取文件名
      *
      * 返回值 Option<String>类型 获得文件的名字
      */
-    public func getFilename():Option<String>{
+    public func getFilename():Option<String>
 
     /* 获取文件下载路径
      *
      * 返回值 String类型 获取文件的下载url路径
      */
-    public func getUrl():String{
+    public func getUrl():String
 
     /* 获取下载下来的文件的父文件夹
      *
      * 返回值 URL类型 文件的文件夹对应的URL
      */
-    public func getUri():URL{
+    public func getUri():URL
 
     /* 获取下载后的文件
      *
      * 返回值 File类型 下载后的文件对象
      */
-    public func getProvidedPathFile():File{
+    public func getProvidedPathFile():File
 
     /* 获取读取文件的缓存大小
      *
      * 返回值 Int64类型 获取下载时候的读取缓冲大小
      */
-    public func getReadBufferSize():Int64{
+    public func getReadBufferSize():Int64
 
     /* 获取刷新的缓冲大小
      *
      * 返回值 Int64类型 获取下载写入时候的冲刷缓冲大小
      */
-    public func getFlushBufferSize():Int64{
+    public func getFlushBufferSize():Int64
 
     /*获取回调时间间隔数
      *
      * 返回值 Int64类型  下载进度回调的时间间隔数，单位毫秒
      */
-    public func getMinIntervalMillisCallbackProcess():Int64{
+    public func getMinIntervalMillisCallbackProcess():Int64
 
     /* 获取下载时候的连接数
      *
      * 返回值Int64类型,获取下载连接数
      */
-    public func getConnectionCount():Int64{
+    public func getConnectionCount():Int64
 
 }
 ```

@@ -20,7 +20,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     }
 
     init(client:OkHttpClient,url:String){
-        //this(client,RequestBuilder().url(url))
         this(client,Request.builder().url(url))
     }
 

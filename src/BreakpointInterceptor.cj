@@ -14,6 +14,20 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         if(info.getBlockCount() == 1 && !info.isChunked()){
             let blockInstanceLength:Int64 = getExactContentLengthRangeFrom0(connected)
             let infoInstanceLength:Int64 =  info.getTotalLength()
+              if(blockInstanceLength > 0 && blockInstanceLength != infoInstanceLength) {
+                Util.d(TAG, "SingleBlock special check: the response instance-length["+blockInstanceLength.toString()+"] isn't equal to the instance length from trial-connection["+infoInstanceLength.toString()+"]")
+                let blockInfo:BlockInfo =  info.getBlock(0).getOrThrow()
+                var isFromBreakpoint:Bool = blockInfo.getRangeLeft() != 0
+                let newBlockInfo:BlockInfo = BlockInfo(0,blockInstanceLength)
+                info.resetBlockInfos()
+                info.addBlock(newBlockInfo)
+                if (isFromBreakpoint) {
+                    let msg:String = "Discard breakpoint because of on this special case, we have to download from beginning"
+                    Util.d(TAG, msg)
+                    throw RetryException(msg)
+                }
+                OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(chain.getTask())
+            }
         }
         let store:DownloadStore = chain.getDownloadStore()
         try {
@@ -33,13 +47,9 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         let contentLength:Int64 = chain.getResponseContentLength()
         let blockIndex:Int64 = chain.getBlockIndex()
         let isNotChunked:Bool = contentLength != Util.CHUNKED_CONTENT_LENGTH
-
         var fetchLength:Int64 = 0
         var processFetchLength:Int64 = 0
-
         let outputStream:MultiPointOutputStream = chain.getOutputStream()
-
-
         try {
             while (true) {
                 processFetchLength = chain.loopFetch()
@@ -56,22 +66,17 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
                  outputStream.done(blockIndex)
             }
         }
-
         if (isNotChunked) {
             outputStream.inspectComplete(blockIndex)
             if (fetchLength != contentLength) {
                 throw  ReadWriteException("Fetch-length isn't equal to the response content-length, "+ fetchLength.toString() + "!= " + contentLength.toString())
             }
         }
-
         return fetchLength
-
     }
 
 
     private static let CONTENT_RANGE_RIGHT_VALUE:Regex = Regex(".*\\d+ *- *(\\d+) */ *\\d+")
-
-
 
 
     func getExactContentLengthRangeFrom0(connected:DownloadConnectionConnected):Int64{
@@ -88,7 +93,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             if (!Util.isEmpty(contentLengthField)) {
                 contentLength = Int64.parse(contentLengthField.getOrThrow())
             }
-
         }
         return contentLength
     }
