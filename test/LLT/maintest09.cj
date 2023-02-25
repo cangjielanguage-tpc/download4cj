@@ -30,10 +30,6 @@ func runBench(n:Int64,fileName:String):Unit{
     //var url:String = "https://cr8.197946.com/yjcdtjfzwjklj.zip" //1K
 
 
-    //okhttp报错
-    //var url:String = "https://download.fbackup.com/download/setup/fbsetup-full.exe" //96M
-    //var url:String = "https://www.aliyundrive.com/s/VWyy4Vq3uDX"                   //1012.7M
-
 
 
 	if(Directory.exists("download")){
