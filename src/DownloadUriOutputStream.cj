@@ -6,8 +6,8 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     let out:BufferedOutputStream
     let fos:File
 
-    init(uri:URL,bufferSize:Int64){
-        this.fos = File(uri.toString(),OpenOption.Open(true,true))
+    init(uri:String,bufferSize:Int64){
+        this.fos = File(uri,OpenOption.Open(true,true))
         this.out = BufferedOutputStream(fos,bufferSize)
     }
 

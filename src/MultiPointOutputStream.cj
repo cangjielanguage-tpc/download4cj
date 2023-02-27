@@ -124,7 +124,7 @@ public class MultiPointOutputStream {
             var outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
             if(let Some(i) = outputStream){
             }else{
-                var uri:URL
+                var uri:String
                 let isFileScheme:Bool = Util.isUriFileScheme(task.getUri())
                 if(!isFileScheme){
                     let file:Option<File> = task.getFile()
@@ -146,7 +146,7 @@ public class MultiPointOutputStream {
                         Util.d(TAG, "Create new file: " + file.getOrThrow().info.path.fileName.getOrThrow())
                     }catch(e:Exception){
                     }
-                    uri = URL.parse(file.getOrThrow().info.path.toString())
+                    uri = file.getOrThrow().info.path.toString()
                 }else{
                     uri = task.getUri()
                 }

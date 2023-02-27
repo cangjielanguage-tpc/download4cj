@@ -6,7 +6,7 @@ public class DownloadTaskBuilder{
 
 
     let url:String
-    let uri:URL
+    let uri:String
     private var headerMapFields:Option<HashMap<String, ArrayList<String>>> = HashMap<String, ArrayList<String>>()
 
     private var isFilenameFromResponse:Bool
@@ -40,7 +40,7 @@ public class DownloadTaskBuilder{
 
     public init(url:String,file:Directory){
         this.url = url
-        this.uri = URL.parse(file.info.path.toString())
+        this.uri = file.info.path.toString()
         this.isFilenameFromResponse = false
         this.filename = ""
         this.connectionCount = 0

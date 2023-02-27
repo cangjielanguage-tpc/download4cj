@@ -17,7 +17,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     private var id:Int64 //下载任务唯一id
     private let url:String  //下载url
-    private let uri:URL ////下载url
+    private let uri:String ////
     private let headerMapFields:HashMap<String, ArrayList<String>> //头信息
 
     private var info:Option<BreakpointInfo> //断点信息
@@ -44,7 +44,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     private var redirectLocation : String
     private var filename:Option<String>
 
-    DownloadTask(urla:String,uria:URL,prioritya:Int64,readBufferSizea:Int64,flushBufferSizea:Int64,syncBufferSizea:Int64,
+    DownloadTask(urla:String,uria:String,prioritya:Int64,readBufferSizea:Int64,flushBufferSizea:Int64,syncBufferSizea:Int64,
     syncBufferIntervalMillsa:Int64,autoCallbackToUIThreada:Bool,minIntervalMillisCallbackProcessa:Int64,
     headerMapFieldsa:HashMap<String, ArrayList<String>>,filename:Option<String>,passIfAlreadyCompleted:Bool,wifiRequired:Bool,
     filenameFromResponses:Option<Bool>,connectionCount:Int64,isPreAllocateLength:Option<Bool>){
@@ -72,7 +72,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         this.tag = Option<Object>.None
         this.redirectLocation = ""
 
-        let dirFile:Directory = Directory(uria.path)
+        let dirFile:Directory = Directory(uria)
         filenameFromResponse = true
         directoryFile = dirFile
         this.filenameFromResponse = filenameFromResponse
@@ -116,7 +116,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
     }
 
 
-    public func getUri():URL{
+    public func getUri():String{
         return uri
     }
 

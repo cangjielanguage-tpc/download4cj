@@ -32,8 +32,8 @@ public class Util{
      static let HTTP_OK:Int64 = 200
 
 
-     static func isUriFileScheme(uri:URL):Bool{
-        return "file".equals(uri.scheme)
+     static func isUriFileScheme(uri:String):Bool{
+        return uri.startsWith("file")
     }
 
      static func isEmpty(str:Option<String>):Bool{
