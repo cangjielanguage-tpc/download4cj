@@ -3,6 +3,11 @@
 ### 介绍
 可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载 参考地址 https://github.com/lingochamp/okdownload.git
 
+    注意：下载超大文件（100M）时，需要设置 export CJHEAPSIZE=4GB
+
+    仓颉默认规格 stack 1MB，heap 256 MB，建议根据文件大小将堆内存调到合适的大
+    小。一般 4GB 满足大多数情况，如果不够再视情况增加大小。
+
 ### 1 提供文件的同步下载和异步下载的功能
 
 前置条件：NA
@@ -25,7 +30,7 @@ class DownloadTaskBuilder
     /* 用于构造DownloadTaskBuilder对象
      *
      * 参数 url - 要下载的文件的url
-     * 参数 file - 把下载下来的文件放到哪个目录下
+     * 参数 file - 把下载下来的文件放到哪个目录下[](D:/feature_api.md)
      */
     public init(url:String,file:Directory)
 
