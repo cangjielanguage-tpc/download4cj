@@ -52,7 +52,6 @@ public class BreakpointLocalCheck {
 
 
      func isFileExistToResume():Bool{
-        let uri:URL = task.getUri()
         let file:Option<File> = task.getFile()
         if(let Some(i) = file){
         }else{

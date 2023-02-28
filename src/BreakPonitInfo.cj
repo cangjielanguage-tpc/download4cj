@@ -112,20 +112,6 @@ public class BreakpointInfo {
                 return true
             }
         }
-        if(taskOnlyProvidedParentPath){
-            if(!task.isFilenameFromResponse()){
-                return false
-            }
-            var tempa = false
-            var tempb = false
-            if(let Some(i) = otherFilename){
-                tempa = false
-                tempb = i.equals(filenameHolder.get().getOrThrow())
-            }else{
-                tempa = true
-            }
-            return tempa||tempb
-        }
         return false
     }
 
