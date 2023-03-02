@@ -109,9 +109,6 @@ public class MultiPointOutputStream {
     }
 
 
-     func catchBlockConnectException(blockIndex:Int64){
-        noMoreStreamList.append(blockIndex)
-    }
 
 
     let state:StreamsState = StreamsState()

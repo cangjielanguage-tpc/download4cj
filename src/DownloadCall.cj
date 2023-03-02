@@ -1,6 +1,6 @@
 package okdownload
 
-public class DownloadCall <: Equatable<DownloadCall>{
+public class DownloadCall{
 
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
@@ -36,11 +36,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         return DownloadCall(task, asyncExecuted, store)
     }
 
-
-
-     func isCanceled():Bool{
-        return  canceled
-    }
 
 
 
@@ -204,10 +199,6 @@ public class DownloadCall <: Equatable<DownloadCall>{
         return DownloadCache(outputStream)
     }
 
-    func getPriority():Int64 {
-        return task.getPriority()
-    }
-
 
 
     func start(cache:DownloadCache,info:BreakpointInfo):Unit{
@@ -306,33 +297,4 @@ public class DownloadCall <: Equatable<DownloadCall>{
     }
 
 
-
-     func equalsTask(thatTask:DownloadTask):Bool{
-        return this.task == thatTask
-    }
-
-
-
-     func getFile():Option<File>{
-        return this.task.getFile()
-    }
-
-
-    public operator func ==(anothor: DownloadCall): Bool{
-         if(this.task.getId() == anothor.task.getId()){
-            return true
-        }else{
-            return false
-        }
-    }
-
-
-
-    public operator func !=(anothor: DownloadCall): Bool{
-         if(this.task.getId() == anothor.task.getId()){
-            return false
-        }else{
-            return true
-        }
-    }
 }

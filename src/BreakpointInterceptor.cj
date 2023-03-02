@@ -14,18 +14,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         if(info.getBlockCount() == 1 && !info.isChunked()){
             let blockInstanceLength:Int64 = getExactContentLengthRangeFrom0(connected)
             let infoInstanceLength:Int64 =  info.getTotalLength()
-              if(blockInstanceLength > 0 && blockInstanceLength != infoInstanceLength) {
-                Util.d(TAG, "SingleBlock special check: the response instance-length["+blockInstanceLength.toString()+"] isn't equal to the instance length from trial-connection["+infoInstanceLength.toString()+"]")
-                let blockInfo:BlockInfo =  info.getBlock(0).getOrThrow()
-                var isFromBreakpoint:Bool = blockInfo.getRangeLeft() != 0
-                let newBlockInfo:BlockInfo = BlockInfo(0,blockInstanceLength)
-                info.resetBlockInfos()
-                info.addBlock(newBlockInfo)
-                if (isFromBreakpoint) {
-                    let msg:String = "Discard breakpoint because of on this special case, we have to download from beginning"
-                    Util.d(TAG, msg)
-                    throw RetryException(msg)
-                }
+            if(blockInstanceLength > 0 && blockInstanceLength != infoInstanceLength) {
                 OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(chain.getTask())
             }
         }
@@ -85,12 +74,6 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             let rightRange:Int64 = getRangeRightFromContentRange(contentRangeField.getOrThrow())
             if (rightRange > 0){
                 contentLength = rightRange + 1
-            }
-        }
-        if (contentLength < 0) {
-            let contentLengthField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_LENGTH)
-            if (!Util.isEmpty(contentLengthField)) {
-                contentLength = Int64.parse(contentLengthField.getOrThrow())
             }
         }
         return contentLength

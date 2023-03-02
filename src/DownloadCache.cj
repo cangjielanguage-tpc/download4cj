@@ -91,28 +91,8 @@ public open class DownloadCache {
     }
 
 
-     func setPreconditionFailed(realCause:IOException):Unit{
-         this.preconditionFailed = true
-         this.realCause = realCause
-    }
-
-
-
     func setUserCanceled():Unit{
         this.userCanceled = true
-    }
-
-
-
-     func setFileBusyAfterRun():Unit{
-        this.fileBusyAfterRun = true
-    }
-
-
-
-     func setServerCanceled(realCause:IOException):Unit{
-         this.serverCanceled = true
-        this.realCause = realCause
     }
 
 
@@ -123,32 +103,9 @@ public open class DownloadCache {
 
 
 
-     func setPreAllocateFailed(realCause:IOException):Unit{
-         this.preAllocateFailed = true
-        this.realCause = realCause
-    }
 
 
 
-     func catchException(e:IOException):Unit{
-         if (isUserCanceled()){
-            return
-        }
-        if(e is ResumeFailedException){
-            setPreconditionFailed(e)
-        }else if(e is ServerCanceledException){
-            setServerCanceled(e)
-        }else if(refEq(e, FileBusyAfterRunException.SIGNAL)){
-            setFileBusyAfterRun()
-        }else if(e is PreAllocateException){
-            setPreAllocateFailed(e)
-        }else if(!refEq(e, FileBusyAfterRunException.SIGNAL)){
-            setUnknownError(e)
-             if (!(e is SocketException)) {
-                  Util.d("DownloadCache", "catch unknown error " + e.toString())
-             }
-        }
-    }
 
 
 

@@ -44,10 +44,7 @@ public class HeaderInterceptor <: InterceptorConnect{
         responseCheck.inspect()
         var contentLength:Int64 = 0
         let contentLengthField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_LENGTH)
-        if(Option<String>.None == contentLengthField || contentLengthField.getOrThrow().size == 0){
-            let contentRangeField:String = connected.getResponseHeaderField(Util.CONTENT_RANGE).getOrThrow()
-            contentLength = Util.parseContentLengthFromContentRange(contentRangeField)
-        }else{
+        if(Option<String>.None != contentLengthField && contentLengthField.getOrThrow().size > 0){
             contentLength = Util.parseContentLength(contentLengthField)
         }
         chain.setResponseContentLength(contentLength)

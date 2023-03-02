@@ -1,67 +1,43 @@
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
 
 
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
-from std import time.*
-from std import runtime.*
 
 
-func runBench(n:Int64,fileName:String):Unit{
-    //var url:String = "http://127.0.0.1:8080/examples/${fileName}.txt"
-    var url:String = "http://192.168.33.37:8080/examples/${fileName}.txt"
+var isComplete = false
 
-    //var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-    //var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
-    //var url:String = "https://nodejs.org/dist/v11.2.0/node-v11.2.0.tar.gz"
-    //var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
-    //var url:String = "https://cdn-file-ssl-pc.ludashi.com/pc/appstore/ludashi/ludashisetup2020.exe"  //162M
-    //var url:String = "https://cr8.197946.com/occtpt_11.0.18_cr173.com.exe"
-    //var url:String = "https://cr8.197946.com/splashy2.0.1.0.exe" //75.2M
-
-
-
-    //var url:String = "https://cr8.197946.com/syncfolders-v3.5.223_cr173.com.zip"  //1.3M
-    //var url:String = "https://cr8.197946.com/lenovobatterysetting.zip"              //10.6M
-    //var url:String = "https://cr8.197946.com/virtualbox-7.0.4-154605-cr173.exe" //106M
-    //var url:String = "https://cr8.197946.com/colorconsole-v6.66_cr173.com.zip"    //539KB
-    //var url:String = "https://cr8.197946.com/ismyhdok_3.77.zip"                   //218KB
-    //var url:String = "https://cr8.197946.com/zdywinrml.zip"  //34K
-    //var url:String = "https://cr8.197946.com/yjcdtjfzwjklj.zip" //1K
-
-
-
-
-	if(Directory.exists("download")){
-        Directory.delete("download",recursive:true)
-    }
-    let dir=Directory.create("download",recursive:true)
-    var e :Int64 = 0
-	for (i in 0..n){
-	    let s = Time.now()
-		let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
-        task.execute(MyListen())
-        let e0 = Time.since(s).nanoseconds()
-        e += e0
-        if(Directory.exists("download")){
-            //Directory.delete("download",recursive:true)
-             Directory.move("download","${fileName}_download_${i}",true)
-        }
-        Directory.create("download",recursive:true)
-	}
-
-	print("[ PASSED ] CASE: okdownload_${fileName}_${n} (${e} ns, ${Float64(e)/Float64(n)} ns/op)\n", flush:true)
-}
+//目的 主要为了验证同步下载
 
 main(){
-	println("TCS: okdownload, time elapsed: 1 ns, RESULT:")
-	let count = [1,10]
-    let files = ["1B","1K","1M","10M"]
-    for (f in files){
-        for (n in count){
-            runBench(n,f)
+
+        var url:String = "https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fup.enterdesk.com%2Fedpic%2Fc5%2F3a%2Fe5%2Fc53ae5ec144c1d16105303c9d9bf68bb.jpg&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D2171411284%2C1924893541%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D889%26h%3D500"
+
+
+        let parentFilePath:Path = Path("./fileDownLoad")
+        var parentFile:Option<Directory> = Option<Directory>.None
+
+        if (!Directory.exists(parentFilePath)) {
+            parentFile = Directory.create(parentFilePath, recursive: true)
+        }else{
         }
-    }
+
+        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+            .setMinIntervalMillisCallbackProcess(30)
+            .setReadBufferSize(4*1024)
+            .setFlushBufferSize(16*1024)
+            .build()
+        task.execute(MyListen())
+        if(isComplete){
+            return 0
+        }else{
+            return 1
+        }
+
+
+
 }
 
 public class MyListen<: DownloadListener{
@@ -91,14 +67,13 @@ public class MyListen<: DownloadListener{
     }
 
     public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-        //println("maxHeapSize="+MemoryInfo.maxHeapSize.toString()+"-------allocatedHeapSize="+MemoryInfo.allocatedHeapSize.toString()+"------heapPhysicalMemory="+MemoryInfo.heapPhysicalMemory.toString())
     }
 
     public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
     }
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
     }
 }
-
 

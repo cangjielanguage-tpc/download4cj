@@ -9,10 +9,4 @@ public class ServerCanceledException <: Exception {
         this.responseCode = responseCode
     }
 
-
-     func getResponseCode():Int64{
-        return responseCode
-    }
-
-
 }

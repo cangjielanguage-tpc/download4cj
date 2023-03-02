@@ -11,7 +11,7 @@ from std import socket.*
 from std import time.*
 
 
-public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>{
+public class DownloadTask <: IdentifiedTask {
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
 
@@ -111,9 +111,7 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
         return filenameHolder.get()
     }
 
-    func isPassIfAlreadyCompleted():Bool{
-        return passIfAlreadyCompleted
-    }
+
 
 
     public func getUri():String{
@@ -236,32 +234,6 @@ public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>
 
     func getPriority():Int64{
         return priority
-    }
-
-
-
-
-    public operator func ==(anothor: DownloadTask): Bool{
-
-         if(this.id == anothor.id){
-            return true
-         }
-        return  compareIgnoreId(anothor)
-    }
-
-
-    public operator func !=(anothor: DownloadTask): Bool{
-
-        if(this.id == anothor.id){
-            return false
-         }
-        let res:Bool = compareIgnoreId(anothor)
-        return !res
-    }
-
-
-    public func hashCode(): Int64{
-        return (url + providedPathFile.getOrThrow().info.path.toString() + filenameHolder.get().getOrThrow()).hashCode();
     }
 
 

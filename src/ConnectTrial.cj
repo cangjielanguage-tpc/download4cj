@@ -146,20 +146,6 @@ public class ConnectTrial{
                 case None =>
                     isM = true
                 }
-            if(isM){
-                var m = CONTENT_DISPOSITION_NON_QUOTED_PATTERN.matcher(contentDisposition.getOrThrow())
-                var matchData = m.find()
-                match (matchData) {
-                case Some(s) =>
-                    if (s.groupNumber() > 0) {
-                        fileName = s.matchStr(1)
-                    }else{
-                        fileName = Option<String>.None
-                    }
-                case None =>
-                    fileName = Option<String>.None
-                }
-            }
             if(let Some(i) = fileName){
                 if(fileName.getOrThrow().contains("../")){
                     throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");

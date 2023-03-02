@@ -24,14 +24,6 @@ public class KeyToIdMap{
     }
 
 
-     func remove(id:Int64){
-          let key:Option<String> = idToKeyMap.get(id).getOrThrow()
-        if(let Some(i) = key){
-            keyToIdMap.remove(i)
-            idToKeyMap.remove(id)
-        }
-    }
-
      func add(task:DownloadTask,id:Int64):Unit{
         let key:String = generateKey(task)
         keyToIdMap.put(key,id)

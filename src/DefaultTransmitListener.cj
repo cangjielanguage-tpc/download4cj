@@ -59,20 +59,4 @@ public class DefaultTransmitListener <: DownloadListener {
         task.getListener().taskEnd(task,realCause)
     }
 
-
-     func inspectDownloadFromBeginning(task:DownloadTask,info:BreakpointInfo,cause:ResumeFailedCause):Unit{
-        let monitor:Option<DownloadMonitor> = OkDownload.withs().getMonitor()
-        if(let Some(i) = monitor){
-            i.taskDownloadFromBeginning(task,info,cause)
-        }
-    }
-
-
-    func inspectTaskStart(task:DownloadTask):Unit{
-         let monitor:Option<DownloadMonitor> = OkDownload.withs().getMonitor()
-        if(let Some(i) = monitor){
-            i.taskStart(task)
-        }
-
-    }
 }
