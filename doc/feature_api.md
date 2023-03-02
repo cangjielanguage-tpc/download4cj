@@ -702,7 +702,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
 /*
  * 创建DownloadUriOutputStream类的工厂类
  */
-public class FetchDataInterceptor <: InterceptorFetch {
+public class DownloadUriOutputStreamFactory <: DownloadOutputStreamFactory{
     /*
      * 创建DownloadUriOutputStream对象
      * 参数 file - 对于的要写的文件
@@ -754,12 +754,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
      */
     public func getRequestProperties():HashMap<String, ArrayList<String>>
     /*
-     * 根据单个key获取所对应的请求头
-     * 参数 key - 请求头的key
-     * 返回值 - 返回对应请求头的value
-     */
-    public func getRequestProperty(key:String):String
-    /*
      * 获取响应码
      * 返回值 - 返回请求的响应码
      */
@@ -769,12 +763,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
      * 返回值 - 返回okhttp请求的读取流
      */
     public func getInputStream():Source
-    /*
-     * 设置请求方式
-     * 参数 method - 请求的方式
-     * 返回值 - true支持成功 false表示失败
-     */
-    public func setRequestMethod(method:String):Bool
     /*
      * 获取响应头
      * 返回值 - 返回响应头的key value对
@@ -811,79 +799,13 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
 }
 ```
 
-#### DownloadCall
-
-```cangjie
-/*
- * 下载的请求类
- */
-public class DownloadCall <: Equatable<DownloadCall>{
-    /*
-     * 判断两个连接请求是否一样
-     * 参数 anothor - 另一个连接请求
-     * 返回值 - true为一样 false不一样
-     */
-    public operator func ==(anothor: DownloadCall): Bool
-    /*
-     * 判断两个连接请求是否不一样
-     * 参数 anothor - 另一个连接请求
-     * 返回值 - true不一样 false一样
-     */
-    public operator func !=(anothor: DownloadCall): Bool
-}
-```
-
-#### FileNameHolder
-
-```cangjie
-/*
- * 文件名持有类
- */
-public class FileNameHolder <: Hashable & Equatable<FileNameHolder> {
-    /*
-     * 判断两个持有类的文件名是否一样
-     * 参数 holder - 另一个文件名持有类对象
-     * 返回值 - true为一样 false不一样
-     */
-    public operator func ==(holder: FileNameHolder): Bool
-    /*
-     * 判断两个持有类的文件名是否不一样
-     * 参数 holder - 另一个文件名持有类对象
-     * 返回值 - true不一样 false一样
-     */
-    public operator func !=(holder: FileNameHolder): Bool
-    /*
-     * 文件名持有类对象的hashCode
-     * 返回值 - 返回文件名持有类对象的hashCode值
-     */
-    public func hashCode(): Int64
-}
-```
-
 #### DownloadTask
 
 ```cangjie
 /*
  * 下载任务类
  */
-public class DownloadTask <: IdentifiedTask & Hashable & Equatable<DownloadTask>{
-    /*
-     * 获取下载任务对象对于的hashCode值
-     * 返回值 - 返回下载任务对象对应的hashCode值
-     */
-    public func hashCode(): Int64
-    /*
-     * 判断两个下载任务对象是否一样
-     * 参数 anothor - 另一个下载任务对象
-     * 返回值 - true一样 false不一样
-     */
-    public operator func ==(anothor: DownloadTask): Bool
-    /*
-     * 判断两个下载任务对象是否不一样
-     * 参数 anothor - 另一个下载任务对象
-     * 返回值 - true不一样 false一样
-     */
-    public operator func !=(anothor: DownloadTask): Bool
+public class DownloadTask <: IdentifiedTask {
     /*
      * 根据taskid模仿一个task
      * 参数 id - 下载任务的id
