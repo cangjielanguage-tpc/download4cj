@@ -43,15 +43,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 case None => break
             }
         }
-        sortedOccupiedIds.sortBy({rht:Int64,lht:Int64 =>
-            if(rht < lht){
-                return Ordering.LT
-            }
-            if(rht > lht){
-                return Ordering.GT
-            }
-            return Ordering.EQ
-        },stable:true)
     }
 
     public func get(id:Int64):Option<BreakpointInfo>{

@@ -64,14 +64,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     }
 
 
-    public func getRequestProperty(key:String):String{
-         if(let Some(i) = request){
-           return i.getHeader(key).getOrThrow()
-        }else{
-           return requestBuilder.build().getHeader(key).getOrThrow()
-        }
-    }
-
 
     public func getResponseCode():Int64{
         if(let Some(i) = response){
@@ -95,12 +87,6 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
         }
     }
 
-
-
-    public func setRequestMethod(method:String):Bool{
-        this.requestBuilder.method(method,body:Option<RequestBody>.None)
-        return true
-    }
 
 
     public func getResponseHeaderFields():Option<HashMap<String,ArrayList<String>>>{

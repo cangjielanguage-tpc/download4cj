@@ -14,13 +14,4 @@ public class PreAllocateException <: Exception {
    }
 
 
-    func getRequireSpace():Int64{
-        return requireSpace
-   }
-
-    func getFreeSpace():Int64{
-        return freeSpace
-   }
-
-
 }

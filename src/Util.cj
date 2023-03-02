@@ -90,31 +90,6 @@ public class Util{
     private static let CONTENT_LENGTH_FROM_CONTENT_RANGE_PATTERN:Regex = Regex(#"bytes (\d+)-(\d+)/\d+"#)
 
 
-     static func parseContentLengthFromContentRange(contentRange:Option<String>):Int64{
-
-         var isContentRangeEmpty:Bool = true
-        if(let Some(i) = contentRange){
-            isContentRangeEmpty = false
-        }
-        if(isContentRangeEmpty || contentRange.getOrThrow().size == 0){
-            return CHUNKED_CONTENT_LENGTH
-        }
-        try{
-            var matchArray:Option<Array<MatchData>> = CONTENT_LENGTH_FROM_CONTENT_RANGE_PATTERN.matcher(contentRange.getOrThrow()).findAll()
-            if(let Some(i) = matchArray){
-                if(i.size > 1){
-                    let rangeStart:Int64 = Int64.parse(i.get(0).getOrThrow().matchStr())
-                    let rangeEnd:Int64 = Int64.parse(i.get(1).getOrThrow().matchStr())
-                    return rangeEnd - rangeStart + 1
-                }
-            }
-        }catch(e:Exception){
-            Util.d("Util", "parse content-length from content-range failed " + e.toString())
-        }
-        return CHUNKED_CONTENT_LENGTH
-    }
-
-
 
      static func parseContentLength(contentLength:Option<String>):Int64{
         if(let Some(i) = contentLength){

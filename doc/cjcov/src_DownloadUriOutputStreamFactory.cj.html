@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-09 15:28:16</td>
+            <td class="headerValue">2023-03-02 14:18:49</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">5</td>
@@ -366,7 +366,7 @@ pre
 <td align="right" class="lineno"><pre>8</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return  DownloadUriOutputStream(URL.parse(file.info.path.toString()), flushBufferSize)</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        return  DownloadUriOutputStream(file.info.path.toString(), flushBufferSize)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>9</pre></td>
@@ -390,7 +390,7 @@ pre
 <td align="right" class="lineno"><pre>12</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func create(url:URL,flushBufferSize:Int64):DownloadOutputStream{</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func create(url:String,flushBufferSize:Int64):DownloadOutputStream{</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>13</pre></td>
