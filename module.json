@@ -2,7 +2,7 @@
   "cjc_version": "0.37.2",
   "organization": "huang-haoshuai",
   "name": "okdownload",
-  "description": "仓颉版okdownload",
+  "description": "cj version okdownload",
   "version": "0.0.2",
   "requires": {
     "okhttp": {
