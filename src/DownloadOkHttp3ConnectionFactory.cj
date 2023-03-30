@@ -17,7 +17,12 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
                     if(let Some(k) = clientBuilder){
                         client = k.build()
                     }else{
-                        client = OkHttpClient(OkHttpClient.builder())
+                        let a = OkHttpClient.builder()
+                        a.connectionPool(ConnectionPool(maxIdleConnections:500))
+                        a.readTimeout(Duration.hour(1))
+                        a.connectTimeout(Duration.hour(1))
+                        a.retryOnConnectionFailure(true)
+                        client = OkHttpClient(a)
                     }
                     clientBuilder = Option<OkHttpClientBuilder>.None
                 }
