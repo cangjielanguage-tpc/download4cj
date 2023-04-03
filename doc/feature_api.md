@@ -141,7 +141,64 @@ class DownloadTask
      */
     public func toString():String
 
+    /* 取消单个任务的下载
+     *
+     */
+    public func cancel():Unit
+
+    /* 取消多个任务的下载
+     *
+     * 参数 tasks - 要取消的任务数组
+     */
+    public static func cancels(tasks:Array<DownloadTask>):Unit
+
+    /* 返回当前任务对应的每个下载块的进度信息
+     *
+     * 返回值 返回当前任务对应的每个下载块的进度信息
+     */
+    public func getBlockInfoList():ArrayList<BlockInfo>
+
 ```
+
+
+class BlockInfo
+
+```cangjie
+
+public class BlockInfo{
+
+    /* 获取任务块的当前下载到的进度
+     *
+     * 返回值 - 任务块的当前下载到的进度
+     */
+    public func getCurrentOffset():Int64
+
+    /* 获取任务块的左边界
+     *
+     * 返回值 - 任务块的左边界
+     */
+    public func getStartOffset():Int64
+
+    /* 获取任务块的左边界和当前下载进度的和
+     *
+     * 返回值 - 任务块的左边界和当前下载进度的和
+     */
+    public func getRangeLeft():Int64{
+
+    /* 获取任务块的长度
+     *
+     * 返回值 - 任务块的长度
+     */
+    public func getContentLength():Int64{
+
+    /* 获取任务块的右边界
+     *
+     * 返回值 - 任务块的右边界
+     */
+    public func getRangeRight():Int64{
+
+}
+
 interface DownloadListener
 
 ```cangjie

@@ -86,8 +86,7 @@ public open class DownloadCache {
 
 
      func isInterrupt():Bool{
-         return preconditionFailed || userCanceled || serverCanceled || unknownError
-                || fileBusyAfterRun || preAllocateFailed
+         return preconditionFailed || userCanceled || serverCanceled || unknownError|| fileBusyAfterRun || preAllocateFailed
     }
 
 

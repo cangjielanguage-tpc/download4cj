@@ -9,7 +9,8 @@ from std import runtime.*
 
 func runBench(n:Int64,fileName:String):Unit{
     //var url:String = "http://127.0.0.1:8080/examples/${fileName}.txt"
-    var url:String = "http://192.168.33.37:8080/examples/${fileName}.txt"
+    //var url:String = "http://192.168.33.37:8080/examples/${fileName}.txt"
+    var url:String = "http://139.9.247.2:38156/jenkins/job/okdownload/10/artifact/${fileName}.txt"
 
     //var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     //var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
@@ -44,8 +45,8 @@ func runBench(n:Int64,fileName:String):Unit{
         let e0 = Time.since(s).nanoseconds()
         e += e0
         if(Directory.exists("download")){
-            //Directory.delete("download",recursive:true)
-             Directory.move("download","${fileName}_download_${i}",true)
+            Directory.delete("download",recursive:true)
+            // Directory.move("download","${fileName}_download_${i}",true)
         }
         Directory.create("download",recursive:true)
 	}
@@ -55,8 +56,11 @@ func runBench(n:Int64,fileName:String):Unit{
 
 main(){
 	println("TCS: okdownload, time elapsed: 1 ns, RESULT:")
-	let count = [1,10]
-    let files = ["1B","1K","1M","10M"]
+    let count = [1,10,100,1000,10000]
+	//let count = [1,10,100,1000,10000]
+    //let files = ["1B","1K","1M","10M"]
+    let files = ["1B"]
+
     for (f in files){
         for (n in count){
             runBench(n,f)

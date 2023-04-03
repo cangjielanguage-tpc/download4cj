@@ -1,4 +1,4 @@
-// 3rd_party_lib:ok-download/build/okdownload:ok-download/ci_lib/okhttp
+// 3rd_party_lib:ok-download/build/okdownload:ok-download/build/okhttp:ok-download/build/cryptocj
 
 from okdownload import okdownload.*
 from std import collection.*

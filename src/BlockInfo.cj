@@ -16,19 +16,23 @@ public class BlockInfo {
         this.currentOffset =  AtomicInt64(currentOffset)
     }
 
-    func getCurrentOffset():Int64{
+    public func getCurrentOffset():Int64{
         return this.currentOffset.load()
     }
 
-    func getRangeLeft():Int64{
+    public func getStartOffset():Int64{
+        return startOffset
+    }
+
+    public func getRangeLeft():Int64{
         return startOffset + currentOffset.load()
     }
 
-    func getContentLength():Int64{
+    public func getContentLength():Int64{
         return contentLength
     }
 
-    func getRangeRight():Int64{
+    public func getRangeRight():Int64{
         return startOffset + contentLength - 1
     }
 

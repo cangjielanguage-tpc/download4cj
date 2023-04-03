@@ -70,15 +70,26 @@ public class MultiPointOutputStream {
                 return
             }
             outputStream(blockIndex).write(bytes, 0, length)
+            store.onSyncToFilesystemSuccess(info,blockIndex,bytes.size)
             outputStreamMap.get(blockIndex).getOrThrow().flushAndSync()
         }
     }
 
 
 
+    func cancelAsync():Unit{
+        cancel()
+    }
 
-
-
+    func cancel():Unit{
+        synchronized(m){
+             if (canceled){
+                return
+             }
+            canceled = true
+            store.onTaskEnd(task.getId(), EndCause.CANCELED, Option<Exception>.None)
+        }
+    }
 
 
 
