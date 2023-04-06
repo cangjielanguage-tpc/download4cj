@@ -73,8 +73,10 @@ public class  BreakpointRemoteCheck {
          this.acceptRange = isAcceptRange
 
 
-          if (!isTrialSpecialPass(responseCode, instanceLength, resumable) && downloadStrategy.isServerCanceled(responseCode, info.getTotalOffset() != 0)) {
-             throw ServerCanceledException(responseCode, info.getTotalOffset())
+          if (!isTrialSpecialPass(responseCode, instanceLength, resumable)) {
+            if(downloadStrategy.isServerCanceled(responseCode, info.getTotalOffset() != 0)){
+                throw ServerCanceledException(responseCode, info.getTotalOffset())
+            }
          }
     }
 

@@ -135,7 +135,7 @@ public class DownloadTask <: IdentifiedTask {
         return  providedPathFile
     }
 
-    func getParentFile():Directory{
+    protected func getParentFile():Directory{
         return directoryFile
     }
 
@@ -192,6 +192,20 @@ public class DownloadTask <: IdentifiedTask {
         }
     }
 
+    func getInfo():BreakpointInfo{
+        if(let Some(i) = info){
+            return i
+        }else{
+            info = OkDownload.withs().breakpointStore().get(id)
+            return info.getOrThrow()
+        }
+    }
+
+
+    public func getBlockInfoList():ArrayList<BlockInfo>{
+        return  getInfo().getBlockInfoList()
+    }
+
 
     func getLastCallbackProcessTs():Int64{
         return lastCallbackProcessTimestamp.load()
@@ -226,7 +240,13 @@ public class DownloadTask <: IdentifiedTask {
         OkDownload.withs().downloadDispatcher().execute(this)
     }
 
+    public func cancel():Unit{
+        OkDownload.withs().downloadDispatcher().cancel(this)
+    }
 
+    public static func cancels(tasks:Array<DownloadTask>):Unit{
+        OkDownload.withs().downloadDispatcher().cancel(tasks)
+    }
 
     func getListener():DownloadListener{
         return this.listener.getOrThrow()

@@ -131,6 +131,134 @@ public class DownloadDispatcher{
         call.execute()
     }
 
+    func cancel(tasks:Array<DownloadTask>):Unit{
+        skipProceedCallCount.fetchAdd(1)
+        cancelLocked(tasks)
+        skipProceedCallCount.fetchSub(1)
+    }
+
+
+    func cancel(task:DownloadTask):Bool{
+        skipProceedCallCount.fetchAdd(1)
+        let result:Bool = cancelLocked(task)
+        skipProceedCallCount.fetchSub(1)
+        return result
+    }
+
+
+    private func cancelLocked(tasks:Array<DownloadTask>):Unit{
+        synchronized(m){
+            let startCancelTime:Int64 = Time.now().unixTimeStamp().nanoseconds()/1000/1000
+            Util.d(TAG, "start cancel bunch task manually: " + tasks.size.toString())
+            let needCallbackCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            let needCancelCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            try {
+                for (task in tasks) {
+                    filterCanceledCalls(task, needCallbackCalls, needCancelCalls)
+                }
+            }finally{
+                handleCanceledCalls(needCallbackCalls, needCancelCalls)
+                 let endCancelTime:Int64 = Time.now().unixTimeStamp().nanoseconds()/1000/1000
+                Util.d(TAG,"finish cancel bunch task manually: " + tasks.size.toString() + " consume "+(endCancelTime - startCancelTime).toString() + "ms")
+            }
+        }
+    }
+
+
+    func cancelLocked(task:DownloadTask):Bool{
+        synchronized(m){
+            Util.d(TAG, "cancel manually: " + task.getId().toString())
+            let needCallbackCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            let needCancelCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            try{
+                filterCanceledCalls(task, needCallbackCalls, needCancelCalls)
+            }finally{
+                handleCanceledCalls(needCallbackCalls, needCancelCalls)
+            }
+            return needCallbackCalls.size > 0 || needCancelCalls.size > 0
+        }
+    }
+
+
+
+    private func filterCanceledCalls(task:DownloadTask,needCallbackCalls:ArrayList<DownloadCall>,needCancelCalls:ArrayList<DownloadCall>){
+        synchronized(m){
+            let itera:Iterator<DownloadCall>  = readyAsyncCalls.iterator()
+            while(true){
+                var optKey:Option<DownloadCall> = itera.next()
+                match(optKey){
+                    case Some(v)=>
+                        if(refEq(v,task)||v.task.getId() == task.getId()){
+                            if(v.isCanceled() || v.isFinishing()){
+                                return
+                            }
+                            needCallbackCalls.append(v)
+                            return
+                        }
+                    case None => break
+                }
+            }
+
+            for (call in runningAsyncCalls) {
+                if (refEq(call.task,task) || call.task.getId() == task.getId()) {
+                    needCallbackCalls.append(call)
+                    needCancelCalls.append(call)
+                    return
+                }
+            }
+
+            for (call in runningSyncCalls) {
+                if (refEq(call.task,task) || call.task.getId() == task.getId()) {
+                    needCallbackCalls.append(call)
+                    needCancelCalls.append(call)
+                    return
+                }
+            }
+        }
+    }
+
+
+    private func handleCanceledCalls(needCallbackCalls:ArrayList<DownloadCall>,needCancelCalls:ArrayList<DownloadCall>){
+        synchronized(m){
+            Util.d(TAG, "handle cancel calls, cancel calls: " + needCancelCalls.size.toString())
+
+            if (!needCancelCalls.isEmpty()) {
+                let itera:Iterator<DownloadCall>  = needCancelCalls.iterator()
+                while(true){
+                    var optKey:Option<DownloadCall> = itera.next()
+                    match(optKey){
+                        case Some(v)=>
+                             v.cancel()
+                        case None => break
+                    }
+                }
+            }
+
+            Util.d(TAG, "handle cancel calls, callback cancel event: " + needCallbackCalls.size.toString())
+            if (!needCallbackCalls.isEmpty()) {
+                if (needCallbackCalls.size <= 1) {
+                    let call:DownloadCall = needCallbackCalls.get(0).getOrThrow()
+                    OkDownload.withs().callbackDispatcher().dispatch().taskEnd(call.task,Option<Exception>.None)
+                } else {
+                    let callbackCanceledTasks:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+                    for (call in needCallbackCalls) {
+                        callbackCanceledTasks.append(call.task)
+                    }
+                    OkDownload.withs().callbackDispatcher().endTasksWithCanceled(callbackCanceledTasks)
+                }
+            }
+        }
+    }
+
+
+     func flyingCanceled(call:DownloadCall):Unit{
+        synchronized(m){
+            Util.d(TAG, "flying canceled: " + call.task.getId().toString())
+            if (call.asyncExecuted){
+                flyingCanceledAsyncCallCount.fetchAdd(1)
+            }
+        }
+    }
 
 
 

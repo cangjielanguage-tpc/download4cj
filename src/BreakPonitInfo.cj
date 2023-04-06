@@ -54,6 +54,10 @@ public class BreakpointInfo {
         return blockInfoList.get(blockIndex)
     }
 
+     func getBlockInfoList():ArrayList<BlockInfo>{
+        return blockInfoList
+    }
+
 
      func resetBlockInfos():Unit{
         this.blockInfoList.clear()

@@ -24,28 +24,28 @@ public class MockTaskForCompare <: IdentifiedTask {
     }
 
 
-     func getId():Int64{
+    protected func getId():Int64{
         return id
     }
 
 
 
-     func getUrl():String{
+    protected func getUrl():String{
         return url
     }
 
 
-     func getProvidedPathFile():Option<File>{
+    protected func getProvidedPathFile():Option<File>{
         return providedPathFile.getOrThrow()
     }
 
 
-     func getParentFile():Directory{
+    protected  func getParentFile():Directory{
         return parentFile.getOrThrow()
     }
 
 
-     func getFilename():Option<String>{
+    protected func getFilename():Option<String>{
         return filename
     }
 

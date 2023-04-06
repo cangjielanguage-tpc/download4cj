@@ -1,3 +1,6 @@
 .git/
 .gitee/
 .vscode/
+.gcda/
+.gcno/
+.okhttp/
