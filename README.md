@@ -7,13 +7,13 @@
 <img alt="" src="https://img.shields.io/badge/release-v0.0.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.38.2-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjcov-85.7%25-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjcov-85.3%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/> 介绍
-可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载
+可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载,暂停任务
 参考地址 https://github.com/lingochamp/okdownload.git
 
 ### 特性
@@ -24,6 +24,8 @@
 
 - 🚀 支持同步下载和异步下载
 
+- 🚀 支持暂停任务
+
 ## <img alt="" src="./doc/assets/readme-icon-framework.png" style="display: inline-block;" width=3%/> 软件架构
 
 ### 架构图
@@ -31,6 +33,7 @@
 <p align="center">
 <img src="./doc/assets/okdownloadclassrelation.png" width="40%" >
 <img src="./doc/assets/okdownloadclassshuoming.png" width="40%" >
+<img src="./doc/assets/okdownloadcancel.png" width="40%" >
 </p>
 
 
@@ -263,6 +266,360 @@ public class MyListen<: DownloadListener{
 true
 
 ```
+
+
+#### 同步下载暂停下载示例
+
+```cangjie
+
+from okdownload import okdownload.*
+from std import collection.*
+from std import fs.*
+
+var isComplete = false
+
+main(){
+
+        var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+
+
+        let filename:String = "single-test"
+
+        let parentFilePath:Path = Path("./fileDownLoad")
+        var parentFile:Option<Directory> = Option<Directory>.None
+
+        if (!Directory.exists(parentFilePath)) {
+            parentFile = Directory.create(parentFilePath, recursive: true)
+        }else{
+        }
+
+        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+            .setMinIntervalMillisCallbackProcess(30)
+            .build()
+
+        spawn { =>
+            sleep(1000*1000*1000)
+            task.cancel()
+            let blockList:ArrayList<BlockInfo> = task.getBlockInfoList()
+            for(oneitem in blockList){
+                println("==========================================================")
+                println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
+                println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+                println("==========================================================")
+            }
+        }
+
+        task.execute(MyListen())
+
+
+        sleep(1000*1000*1000*3)
+        task.execute(MyListen())
+        sleep(1000*1000*1000*3)
+
+        if(isComplete && task.getConnectionCount()==3){
+            println(true)
+            return 0
+        }else{
+            println(false)
+            return 1
+        }
+
+
+}
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
+    }
+}
+
+
+
+```
+
+执行结果如下：
+
+```shell
+
+true
+
+```
+
+
+
+#### 异步下载暂停下载示例
+
+
+```cangjie
+
+from okdownload import okdownload.*
+from std import collection.*
+from std import fs.*
+
+var isComplete = false
+
+main(){
+
+        var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+
+
+        let filename:String = "single-test"
+
+        let parentFilePath:Path = Path("./fileDownLoad")
+        var parentFile:Option<Directory> = Option<Directory>.None
+
+        if (!Directory.exists(parentFilePath)) {
+            parentFile = Directory.create(parentFilePath, recursive: true)
+        }else{
+        }
+
+        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
+            .setMinIntervalMillisCallbackProcess(30)
+            .build()
+        task.enqueue(MyListen())
+        sleep(1000*1000*1000)
+        task.cancel()
+
+        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList()
+        for(oneitem in blockList){
+            println("==========================================================")
+            println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
+            println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+            println("==========================================================")
+        }
+
+        sleep(1000*1000*1000*2)
+        task.enqueue(MyListen())
+        sleep(1000*1000*1000*3)
+        if(isComplete && task.getConnectionCount()==3){
+            println(true)
+            return 0
+        }else{
+            println(false)
+            return 1
+        }
+
+
+}
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+        isComplete = true
+    }
+}
+
+
+```
+
+执行结果如下：
+
+```shell
+
+true
+
+```
+
+
+####  异步下载多个文件暂停下载示例
+
+```cangjie
+
+from okdownload import okdownload.*
+from std import collection.*
+from std import fs.*
+
+var isComplete = false
+
+main(){
+
+
+    var url1:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+    var url2:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
+    var url3:String = "https://cr8.197946.com/lenovobatterysetting.zip"
+
+
+    let lastIndex1:Int64 = url1.lastIndexOf(".").getOrThrow()
+    let lastIndex2:Int64 = url2.lastIndexOf(".").getOrThrow()
+    let lastIndex3:Int64 = url3.lastIndexOf(".").getOrThrow()
+    var FileEnds1 = url1.substring(lastIndex1)
+    var FileEnds2 = url2.substring(lastIndex2)
+    var FileEnds3 = url3.substring(lastIndex3)
+
+
+    let filenamePre:String = "single-test"
+    let filename1 = filenamePre+"111"+FileEnds1
+    let filename2 = filenamePre+"222"+FileEnds2
+    let filename3 = filenamePre+"333"+FileEnds3
+
+
+    let parentFilePath:Path = Path("./fileDownLoad0")
+    var parentFile:Option<Directory> = Option<Directory>.None
+
+    if (!Directory.exists(parentFilePath)) {
+        parentFile = Directory.create(parentFilePath, recursive: true)
+    }else{
+    }
+
+    let task1:DownloadTask = DownloadTaskBuilder(url1, parentFile.getOrThrow())
+         .setFilename(filename1)
+         .setMinIntervalMillisCallbackProcess(30)
+         .build()
+
+    let task2:DownloadTask = DownloadTaskBuilder(url2, parentFile.getOrThrow())
+         .setFilename(filename2)
+         .setMinIntervalMillisCallbackProcess(30)
+         .build()
+
+    let task3:DownloadTask = DownloadTaskBuilder(url3, parentFile.getOrThrow())
+         .setFilename(filename3)
+         .setMinIntervalMillisCallbackProcess(30)
+         .build()
+
+
+    let tasklists:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+    tasklists.append(task1)
+    tasklists.append(task2)
+    tasklists.append(task3)
+    let tasks:Array<DownloadTask> = Array<DownloadTask>(tasklists)
+
+
+     DownloadTask.enqueues(tasks,MyListen())
+     sleep(1000*1000*1000*2)
+     DownloadTask.cancels(tasks)
+
+     for(oneTask in tasks){
+        println("==========================================================")
+        let blockList:ArrayList<BlockInfo> = oneTask.getBlockInfoList()
+        for(oneitem in blockList){
+            println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
+            println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+        }
+        println("==========================================================")
+     }
+
+     sleep(1000*1000*1000*2)
+     DownloadTask.enqueues(tasks,MyListen())
+     sleep(1000*1000*1000*30)
+     if(isComplete){
+        println(true)
+        return 0
+     }else{
+        println(false)
+        return 1
+     }
+}
+
+
+public class MyListen<: DownloadListener{
+
+    public func taskStart(task:DownloadTask):Unit{
+    }
+
+    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+
+    }
+
+    public func downloadFromBeginning(task:DownloadTask):Unit{
+    }
+
+    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    }
+
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    }
+
+    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    }
+
+    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    }
+
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+       isComplete = true
+    }
+}
+
+```
+
+执行结果如下：
+
+```shell
+
+true
+
+```
+
 
 
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
