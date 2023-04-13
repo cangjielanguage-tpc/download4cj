@@ -3,9 +3,6 @@ package okdownload
 public class DownloadDispatcher{
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
-
-
-
     private static let TAG:String = "DownloadDispatcher"
     var maxParallelRunningCount:Int64 = 5
     //对于排序性能（不需要复制一个数组），使用ArrayList而不是deque（对于顶部添加，底部删除）。
@@ -36,19 +33,17 @@ public class DownloadDispatcher{
         this.store = Option<DownloadStore>.None
     }
 
-     func setDownloadStore(store:DownloadStore):Unit{
+    func setDownloadStore(store:DownloadStore):Unit{
         this.store = store
     }
 
-
-
-     func enqueue(tasks:Array<DownloadTask>):Unit{
+    func enqueue(tasks:Array<DownloadTask>):Unit{
         skipProceedCallCount.fetchAdd(1)
         enqueueLocked(tasks)
         skipProceedCallCount.fetchSub(1)
     }
 
-     func enqueue(task:DownloadTask):Unit{
+    func enqueue(task:DownloadTask):Unit{
         skipProceedCallCount.fetchAdd(1)
         enqueueLocked(task)
         skipProceedCallCount.fetchSub(1)
@@ -84,9 +79,20 @@ public class DownloadDispatcher{
                 OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
             }catch(e:Exception){
             }
+            if(originReadyAsyncCallSize != readyAsyncCalls.size){
+                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                    if(rht.getPriority() < lht.getPriority()){
+                        return Ordering.GT
+                    }
+                    if(rht.getPriority() > lht.getPriority()){
+                        return Ordering.LT
+                    }
+                    return Ordering.EQ
+                },stable:true)
+            }
+
         }
     }
-
 
     private func enqueueLocked(task:DownloadTask):Unit{
         synchronized(m){
@@ -96,29 +102,37 @@ public class DownloadDispatcher{
 
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             enqueueIgnorePriority(task)
+            if(originReadyAsyncCallSize != readyAsyncCalls.size){
+                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                    if(rht.getPriority() < lht.getPriority()){
+                        return Ordering.GT
+                    }
+                    if(rht.getPriority() > lht.getPriority()){
+                        return Ordering.LT
+                    }
+                    return Ordering.EQ
+                },stable:true)
+            }
         }
     }
-
-
-
 
     private func enqueueIgnorePriority(task:DownloadTask):Unit{
         let call:DownloadCall = DownloadCall.create(task, true, store.getOrThrow())
         if (runningAsyncSize() < maxParallelRunningCount) {
             runningAsyncCalls.append(call)
             spawn{=>
-                call.execute()
+                try{
+                    call.executeCall()
+                }finally{
+                    finish(call)
+                }
             }
         } else {
             readyAsyncCalls.append(call)
         }
     }
 
-
-
-
-
-     func execute(task:DownloadTask):Unit{
+    func execute(task:DownloadTask):Unit{
         let call:DownloadCall
         synchronized (m) {
             if (inspectCompleted(task)) {
@@ -128,7 +142,11 @@ public class DownloadDispatcher{
             call = DownloadCall.create(task, false, store.getOrThrow())
             runningSyncCalls.append(call)
         }
-        call.execute()
+        try{
+            call.executeCall()
+        }finally{
+            finish(call)
+        }
     }
 
     func cancel(tasks:Array<DownloadTask>):Unit{
@@ -137,14 +155,12 @@ public class DownloadDispatcher{
         skipProceedCallCount.fetchSub(1)
     }
 
-
     func cancel(task:DownloadTask):Bool{
         skipProceedCallCount.fetchAdd(1)
         let result:Bool = cancelLocked(task)
         skipProceedCallCount.fetchSub(1)
         return result
     }
-
 
     private func cancelLocked(tasks:Array<DownloadTask>):Unit{
         synchronized(m){
@@ -164,7 +180,6 @@ public class DownloadDispatcher{
         }
     }
 
-
     func cancelLocked(task:DownloadTask):Bool{
         synchronized(m){
             Util.d(TAG, "cancel manually: " + task.getId().toString())
@@ -179,23 +194,25 @@ public class DownloadDispatcher{
         }
     }
 
-
-
     private func filterCanceledCalls(task:DownloadTask,needCallbackCalls:ArrayList<DownloadCall>,needCancelCalls:ArrayList<DownloadCall>){
         synchronized(m){
-            let itera:Iterator<DownloadCall>  = readyAsyncCalls.iterator()
-            while(true){
-                var optKey:Option<DownloadCall> = itera.next()
-                match(optKey){
-                    case Some(v)=>
-                        if(refEq(v,task)||v.task.getId() == task.getId()){
-                            if(v.isCanceled() || v.isFinishing()){
-                                return
-                            }
-                            needCallbackCalls.append(v)
-                            return
-                        }
-                    case None => break
+            let TempreadyAsyncCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            for(call in readyAsyncCalls){
+                TempreadyAsyncCalls.append(call)
+            }
+            for(call in TempreadyAsyncCalls){
+                if(refEq(call.task,task) ||  call.task.getId() == task.getId()){
+                    if (call.isCanceled() || call.isFinishing()){
+                        return
+                    }
+
+                    readyAsyncCalls.removeIf({mycall:DownloadCall =>
+                        let myTask:DownloadTask = mycall.task
+                        return refEq(myTask,task)
+                    })
+
+                    needCallbackCalls.append(call)
+                    return
                 }
             }
 
@@ -217,22 +234,20 @@ public class DownloadDispatcher{
         }
     }
 
-
     private func handleCanceledCalls(needCallbackCalls:ArrayList<DownloadCall>,needCancelCalls:ArrayList<DownloadCall>){
         synchronized(m){
             Util.d(TAG, "handle cancel calls, cancel calls: " + needCancelCalls.size.toString())
 
-            if (!needCancelCalls.isEmpty()) {
-                let itera:Iterator<DownloadCall>  = needCancelCalls.iterator()
-                while(true){
-                    var optKey:Option<DownloadCall> = itera.next()
-                    match(optKey){
-                        case Some(v)=>
-                             v.cancel()
-                        case None => break
-                    }
+           if (!needCancelCalls.isEmpty()) {
+                for(call in needCancelCalls){
+                     if (!call.cancel()) {
+                        needCallbackCalls.removeIf({mycall:DownloadCall =>
+                            let myTask:DownloadTask = mycall.task
+                            return refEq(myTask,call.task)
+                        })
+                     }
                 }
-            }
+           }
 
             Util.d(TAG, "handle cancel calls, callback cancel event: " + needCallbackCalls.size.toString())
             if (!needCallbackCalls.isEmpty()) {
@@ -250,8 +265,7 @@ public class DownloadDispatcher{
         }
     }
 
-
-     func flyingCanceled(call:DownloadCall):Unit{
+    func flyingCanceled(call:DownloadCall):Unit{
         synchronized(m){
             Util.d(TAG, "flying canceled: " + call.task.getId().toString())
             if (call.asyncExecuted){
@@ -260,8 +274,33 @@ public class DownloadDispatcher{
         }
     }
 
-
-
+    func finish(call:DownloadCall):Unit{
+        synchronized(m){
+            let asyncExecuted:Bool = call.asyncExecuted
+            var calls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            if(finishingCalls.contains(call)){
+                calls = finishingCalls
+            }else if(asyncExecuted){
+                calls = runningAsyncCalls
+            }else{
+                calls = runningSyncCalls
+            }
+            try{
+                calls.removeIf({mycall:DownloadCall =>
+                    let myTask:DownloadTask = mycall.task
+                    return refEq(myTask,call.task)
+                })
+            }catch(e:Exception){
+                throw IllegalStateException("Call wasn't in-flight!")
+            }
+            if (asyncExecuted && call.isCanceled()){
+                flyingCanceledAsyncCallCount.fetchSub(1)
+            }
+            if (asyncExecuted){
+                 processCalls()
+            }
+        }
+    }
 
     //检查是否完成
     func inspectCompleted(task:DownloadTask):Bool{
@@ -275,12 +314,47 @@ public class DownloadDispatcher{
         }
     }
 
+    private func processCalls():Unit{
+        synchronized(m){
+            if (skipProceedCallCount.load() > 0){
+                return
+            }
+            if (runningAsyncSize() >= maxParallelRunningCount){
+                return
+            }
+            if (readyAsyncCalls.isEmpty()){
+                return
+            }
 
+            let TempreadyAsyncCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            for(call in readyAsyncCalls){
+                TempreadyAsyncCalls.append(call)
+            }
+
+            for(call in TempreadyAsyncCalls){
+                let task:DownloadTask = call.task
+
+                readyAsyncCalls.removeIf({mycall:DownloadCall =>
+                    let myTask:DownloadTask = mycall.task
+                    return refEq(myTask,task)
+                })
+
+                runningAsyncCalls.append(call)
+                spawn{=>
+                    try{
+                        call.executeCall()
+                    }finally{
+                        finish(call)
+                    }
+                }
+                if (runningAsyncSize() >= maxParallelRunningCount){
+                    return
+                }
+            }
+        }
+    }
 
     private func runningAsyncSize():Int64{
         return runningAsyncCalls.size - flyingCanceledAsyncCallCount.load()
     }
-
-
-
 }

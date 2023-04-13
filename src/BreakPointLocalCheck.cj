@@ -11,7 +11,7 @@ public class BreakpointLocalCheck {
     private let info:BreakpointInfo
     private let responseInstanceLength:Int64
 
-     init(task:DownloadTask,info:BreakpointInfo,responseInstanceLength:Int64){
+    init(task:DownloadTask,info:BreakpointInfo,responseInstanceLength:Int64){
         this.task = task
         this.info = info
         this.responseInstanceLength = responseInstanceLength
@@ -21,19 +21,18 @@ public class BreakpointLocalCheck {
         outputStreamSupport = false
     }
 
-
-     func isDirty():Bool{
+    func isDirty():Bool{
         return dirty
     }
 
-     func getCauseOrThrow():ResumeFailedCause{
+    func getCauseOrThrow():ResumeFailedCause{
         if (!infoRight) {
             return INFO_DIRTY
         }
         throw IllegalStateException("No cause find with dirty: " + dirty.toString())
     }
 
-     func isInfoRightToResume():Bool{
+    func isInfoRightToResume():Bool{
         let blockCount:Int64 = info.getBlockCount()
         if(blockCount <= 0){
             return false
@@ -41,8 +40,7 @@ public class BreakpointLocalCheck {
         return true
     }
 
-
-     func isOutputStreamSupportResume():Bool{
+    func isOutputStreamSupportResume():Bool{
         let supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
         if (supportSeek){
              return true
@@ -50,8 +48,7 @@ public class BreakpointLocalCheck {
         return true
     }
 
-
-     func isFileExistToResume():Bool{
+    func isFileExistToResume():Bool{
         let file:Option<File> = task.getFile()
         if(let Some(i) = file){
         }else{
@@ -64,17 +61,14 @@ public class BreakpointLocalCheck {
         }
     }
 
-
-     func check():Unit{
+    func check():Unit{
         fileExist = isFileExistToResume()
         infoRight = isInfoRightToResume()
         outputStreamSupport = isOutputStreamSupportResume()
         dirty = !infoRight || !fileExist || !outputStreamSupport
     }
 
-
-
-     func toString():String{
+    func toString():String{
          return "fileExist[" + fileExist.toString() + "] infoRight[" + infoRight.toString() + "] outputStreamSupport[" + outputStreamSupport.toString() + "]"
     }
 }

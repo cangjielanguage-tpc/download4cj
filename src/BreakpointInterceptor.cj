@@ -2,7 +2,6 @@ package okdownload
 
 public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
-
     private static let TAG:String = "BreakpointInterceptor"
 
     public func interceptConnect(chain:DownloadChain):Option<DownloadConnectionConnected>{
@@ -27,10 +26,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             throw ReadWriteException("Update store failed!"+e.toString())
         }
         return connected
-
     }
-
-
 
     public func interceptFetch(chain:DownloadChain):Int64{
         let contentLength:Int64 = chain.getResponseContentLength()
@@ -63,9 +59,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         return fetchLength
     }
 
-
     private static let CONTENT_RANGE_RIGHT_VALUE:Regex = Regex(".*\\d+ *- *(\\d+) */ *\\d+")
-
 
     func getExactContentLengthRangeFrom0(connected:DownloadConnectionConnected):Int64{
         let contentRangeField:Option<String> = connected.getResponseHeaderField(Util.CONTENT_RANGE)
@@ -79,17 +73,16 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         return contentLength
     }
 
-
     static func getRangeRightFromContentRange(contentRange:String):Int64{
-         let r = CONTENT_RANGE_RIGHT_VALUE.matcher(contentRange)
-         let matchDataArray:Option<Array<MatchData>> = r.findAll()
-                match(matchDataArray){
-                    case Some(md)
-                        =>
-                        return Int64.parse(md.get(0).getOrThrow().matchStr(1))
-                    case None
-                        =>
-                        return -1
-                }
+        let r = CONTENT_RANGE_RIGHT_VALUE.matcher(contentRange)
+        let matchDataArray:Option<Array<MatchData>> = r.findAll()
+        match(matchDataArray){
+            case Some(md)
+                =>
+                return Int64.parse(md.get(0).getOrThrow().matchStr(1))
+            case None
+                =>
+                return -1
         }
+    }
 }

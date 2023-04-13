@@ -2,11 +2,8 @@ package okdownload
 
 public class BreakpointStoreOnCache <: DownloadStore{
 
-
     let m:MultiConditionMonitor = MultiConditionMonitor()
     let m2:MultiConditionMonitor = MultiConditionMonitor()
-
-
 
     private let storedInfos:HashMap<Int64,Option<BreakpointInfo>>
     private let responseFilenameMap:HashMap<String, String>
@@ -17,11 +14,11 @@ public class BreakpointStoreOnCache <: DownloadStore{
     private let sortedOccupiedIds:ArrayList<Int64>
     private let fileDirtyList:ArrayList<Int64>
 
-     init(){
+    init(){
         this(HashMap<Int64,Option<BreakpointInfo>>(),ArrayList<Int64>(),HashMap<String, String>())
     }
 
-     init(storedInfos:HashMap<Int64,Option<BreakpointInfo>>,fileDirtyList:ArrayList<Int64>,responseFilenameMap:HashMap<String, String>){
+    init(storedInfos:HashMap<Int64,Option<BreakpointInfo>>,fileDirtyList:ArrayList<Int64>,responseFilenameMap:HashMap<String, String>){
         this.unStoredTasks = HashMap<Int64,Option<IdentifiedTask>>()
         this.storedInfos = storedInfos
         this.fileDirtyList = fileDirtyList
@@ -67,8 +64,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
         //对标库空实现
     }
 
-
-
     public func onSyncToFilesystemSuccess(info:BreakpointInfo,blockIndex:Int64,increaseLength:Int64):Unit{
         let onCacheOne:Option<BreakpointInfo> = this.storedInfos.get(info.id).getOrThrow()
          if(refEq(info, onCacheOne.getOrThrow())){
@@ -100,16 +95,12 @@ public class BreakpointStoreOnCache <: DownloadStore{
         }
     }
 
-
-
     public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit{
          match(cause){
             case EndCause.COMPLETED =>  remove(id)
             case _ => return
         }
     }
-
-
 
     public func getAfterCompleted(id:Int64):Option<BreakpointInfo>{
         return Option<BreakpointInfo>.None
@@ -127,8 +118,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
         return false
     }
 
-
-
     public func markFileClear(id:Int64):Bool{
          synchronized (m2) {
             try{
@@ -140,17 +129,11 @@ public class BreakpointStoreOnCache <: DownloadStore{
         }
     }
 
-
-
-
-
-
     public func remove(id:Int64):Unit{
         synchronized(m){
             storedInfos.remove(id)
         }
     }
-
 
     public func findOrCreateId(task:DownloadTask):Int64{
         synchronized(m){
@@ -196,7 +179,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
            return id
         }
     }
-
 
     public func findAnotherInfoFromCompare(task:DownloadTask,ignored:BreakpointInfo):Option<BreakpointInfo>{
         let clonedMap:HashMap<Int64,Option<BreakpointInfo>>

@@ -2,7 +2,6 @@ package okdownload
 
 public interface DownloadConnection {
 
-
     func addHeader(name:String,value:String):Unit
 
     func execute():DownloadConnectionConnected
@@ -10,6 +9,5 @@ public interface DownloadConnection {
     func release():Unit
 
     func getRequestProperties():HashMap<String,ArrayList<String>>
-
 
 }

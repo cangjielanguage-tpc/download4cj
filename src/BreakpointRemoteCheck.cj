@@ -10,7 +10,7 @@ public class  BreakpointRemoteCheck {
     private let task:DownloadTask
     private let info:BreakpointInfo
 
-     init(task:DownloadTask,info:BreakpointInfo){
+    init(task:DownloadTask,info:BreakpointInfo){
         this.task = task
         this.info = info
         this.acceptRange = false
@@ -19,68 +19,60 @@ public class  BreakpointRemoteCheck {
         this.instanceLength = 0
     }
 
-
-     func toString():String{
+    func toString():String{
         return "acceptRange[" + acceptRange.toString() + "] resumable[" + resumable.toString() + "] failedCause[failedCause.getOrThrow().toString()instanceLength[" + instanceLength.toString() + "]"
     }
 
-
-
-
-
-     func getCauseOrThrow():ResumeFailedCause{
+    func getCauseOrThrow():ResumeFailedCause{
         return this.failedCause.getOrThrow()
     }
 
-     func isResumable():Bool{
+    func isResumable():Bool{
         return resumable
     }
 
-     func isAcceptRange():Bool{
+    func isAcceptRange():Bool{
         return acceptRange
     }
 
-     func getInstanceLength():Int64{
+    func getInstanceLength():Int64{
         return instanceLength
     }
 
-
-     func check():Unit{
+    func check():Unit{
         let downloadStrategy:DownloadStrategy = OkDownload.withs().downloadStrategy()
         var connectTrial:ConnectTrial = createConnectTrial()
         connectTrial.executeTrial()
-         let isAcceptRange:Bool = connectTrial.isAcceptRange()
-         let isChunked:Bool = connectTrial.isChunked()
+        let isAcceptRange:Bool = connectTrial.isAcceptRange()
+        let isChunked:Bool = connectTrial.isChunked()
 
-         let instanceLength:Int64 = connectTrial.getInstanceLength()
-         let responseEtag:String = connectTrial.getResponseEtag()
-         let responseFilename:String =  connectTrial.getResponseFilename()
-         let responseCode:Int64 =  connectTrial.getResponseCode()
+        let instanceLength:Int64 = connectTrial.getInstanceLength()
+        let responseEtag:String = connectTrial.getResponseEtag()
+        let responseFilename:String =  connectTrial.getResponseFilename()
+        let responseCode:Int64 =  connectTrial.getResponseCode()
 
-         downloadStrategy.validFilenameFromResponse(responseFilename, task)
-         info.setChunked(isChunked)
-         info.setEtag(responseEtag)
+        downloadStrategy.validFilenameFromResponse(responseFilename, task)
+        info.setChunked(isChunked)
+        info.setEtag(responseEtag)
 
-         let resumeFailedCause:Option<ResumeFailedCause> = downloadStrategy.getPreconditionFailedCause(responseCode, info.getTotalOffset() != 0, info,responseEtag)
+        let resumeFailedCause:Option<ResumeFailedCause> = downloadStrategy.getPreconditionFailedCause(responseCode, info.getTotalOffset() != 0, info,responseEtag)
 
-         if(let Some(i) = resumeFailedCause){
-             this.resumable = false
-         }else{
-             this.resumable = true
-         }
-         this.failedCause = resumeFailedCause
-         this.instanceLength = instanceLength
-         this.acceptRange = isAcceptRange
+        if(let Some(i) = resumeFailedCause){
+            this.resumable = false
+        }else{
+            this.resumable = true
+        }
+        this.failedCause = resumeFailedCause
+        this.instanceLength = instanceLength
+        this.acceptRange = isAcceptRange
 
 
-          if (!isTrialSpecialPass(responseCode, instanceLength, resumable)) {
+        if (!isTrialSpecialPass(responseCode, instanceLength, resumable)) {
             if(downloadStrategy.isServerCanceled(responseCode, info.getTotalOffset() != 0)){
                 throw ServerCanceledException(responseCode, info.getTotalOffset())
             }
-         }
+        }
     }
-
-
 
     func isTrialSpecialPass(responseCode:Int64,instanceLength:Int64,isResumable:Bool):Bool{
         if (responseCode == Util.RANGE_NOT_SATISFIABLE && instanceLength >= 0 && isResumable) {
@@ -91,9 +83,7 @@ public class  BreakpointRemoteCheck {
         return false
     }
 
-
     func createConnectTrial():ConnectTrial{
         return ConnectTrial(task,info)
     }
-
 }
