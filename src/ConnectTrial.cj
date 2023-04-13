@@ -12,7 +12,7 @@ public class ConnectTrial{
     private var responseFilename:String
     private var responseCode:Int64
 
-     init(task:DownloadTask,info:BreakpointInfo){
+    init(task:DownloadTask,info:BreakpointInfo){
         this.task = task
         this.info = info
         this.acceptRange = false
@@ -22,7 +22,7 @@ public class ConnectTrial{
         this.responseCode = 0
     }
 
-     func executeTrial():Unit{
+    func executeTrial():Unit{
         var connection:DownloadConnection = OkDownload.withs().connectionFactory().create(task.getUrl())
         var isNeedTrialHeadMethod:Bool = false
         try{
@@ -57,41 +57,29 @@ public class ConnectTrial{
         }
     }
 
-
-
-     func getInstanceLength():Int64{
+    func getInstanceLength():Int64{
         return this.instanceLength
     }
 
-
-
-     func isAcceptRange():Bool{
+    func isAcceptRange():Bool{
         return this.acceptRange
     }
 
-
-
-     func isChunked():Bool{
+    func isChunked():Bool{
         return this.instanceLength == Util.CHUNKED_CONTENT_LENGTH
     }
 
-
-
-     func getResponseEtag():String{
+    func getResponseEtag():String{
         return responseEtag
     }
 
-
-     func getResponseFilename():String{
+    func getResponseFilename():String{
         return responseFilename
     }
 
-
-     func getResponseCode():Int64{
+    func getResponseCode():Int64{
         return responseCode
     }
-
-
 
     private static func isAcceptRanges(connected:DownloadConnectionConnected):Bool{
         if (connected.getResponseCode() == Util.HTTP_PARTIAL){
@@ -103,11 +91,7 @@ public class ConnectTrial{
         }catch(e:Exception){
             return false
         }
-
     }
-
-
-
 
     private static func findFilename(connected:DownloadConnectionConnected):String{
         let optStr:Option<String> = connected.getResponseHeaderField(Util.CONTENT_DISPOSITION)
@@ -118,15 +102,10 @@ public class ConnectTrial{
         }
     }
 
-
-
     private static let CONTENT_DISPOSITION_QUOTED_PATTERN:Regex = Regex("attachment;\\s*filename\\s*=\\s*\"([^\"]*)\"")
     private static let CONTENT_DISPOSITION_NON_QUOTED_PATTERN:Regex = Regex("attachment;\\s*filename\\s*=\\s*(.*)")
 
-
-
     private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
-
         if(let Some(i) = contentDisposition){
         }else{
             return Option<String>.None
@@ -157,9 +136,6 @@ public class ConnectTrial{
         return Option<String>.None
     }
 
-
-
-
     private static func findEtag(connected:DownloadConnectionConnected):String{
         try{
             return connected.getResponseHeaderField(Util.ETAG).getOrThrow()
@@ -167,8 +143,6 @@ public class ConnectTrial{
             return ""
         }
     }
-
-
 
     private static func findInstanceLength(connected:DownloadConnectionConnected):Int64{
         let instanceLength:Int64 = parseContentRangeFoInstanceLength(connected.getResponseHeaderField(Util.CONTENT_RANGE))
@@ -186,10 +160,6 @@ public class ConnectTrial{
         return true
     }
 
-
-
-
-
     private static func parseContentRangeFoInstanceLength(contentRange:Option<String>):Int64{
         if(let Some(i) = contentRange){
         }else{
@@ -205,6 +175,4 @@ public class ConnectTrial{
         }
          return -1
     }
-
-
 }

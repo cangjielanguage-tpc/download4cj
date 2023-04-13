@@ -26,8 +26,6 @@ public open class DownloadCache {
         this.realCause = Option<IOException>.None
     }
 
-
-
     func getOutputStream():MultiPointOutputStream{
         if(let Some(i) = outputStream){
         }else{
@@ -35,7 +33,6 @@ public open class DownloadCache {
         }
         return outputStream.getOrThrow()
     }
-
 
     func setRedirectLocation(redirectLocation:String):Unit{
         this.redirectLocation = redirectLocation
@@ -49,77 +46,41 @@ public open class DownloadCache {
         return preconditionFailed
     }
 
-     func isUserCanceled():Bool{
+    func isUserCanceled():Bool{
         return userCanceled
     }
 
-     func isServerCanceled():Bool{
+    func isServerCanceled():Bool{
         return serverCanceled
     }
 
-
-
-     func isUnknownError():Bool{
+    func isUnknownError():Bool{
         return unknownError
     }
 
 
-     func isFileBusyAfterRun():Bool{
+    func isFileBusyAfterRun():Bool{
         return fileBusyAfterRun
     }
 
-
-
-       func isPreAllocateFailed():Bool{
+    func isPreAllocateFailed():Bool{
         return preAllocateFailed
     }
-
-
 
     func getRealCause():IOException{
         return realCause.getOrThrow()
     }
 
-
-
-
-
-
-     func isInterrupt():Bool{
+    func isInterrupt():Bool{
          return preconditionFailed || userCanceled || serverCanceled || unknownError|| fileBusyAfterRun || preAllocateFailed
     }
-
 
     func setUserCanceled():Unit{
         this.userCanceled = true
     }
 
-
-     func setUnknownError(realCause:IOException):Unit{
+    func setUnknownError(realCause:IOException):Unit{
          this.unknownError = true
         this.realCause = realCause
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

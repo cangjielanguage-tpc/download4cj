@@ -8,7 +8,6 @@ public class DefaultTransmitListener <: DownloadListener {
         task.getListener().taskStart(task)
     }
 
-
     public func connectTrialStart(task:DownloadTask,headerFields:HashMap<String,ArrayList<String>>):Unit{
         task.getListener().connectTrialStart(task, headerFields)
     }
@@ -17,26 +16,21 @@ public class DefaultTransmitListener <: DownloadListener {
         task.getListener().connectTrialEnd(task, responseCode, headerFields)
     }
 
-
     public func downloadFromBeginning(task:DownloadTask):Unit{
         task.getListener().downloadFromBeginning(task)
     }
-
 
     public func downloadFromBreakpoint(task:DownloadTask):Unit{
         task.getListener().downloadFromBreakpoint(task)
     }
 
-
-     public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String,ArrayList<String>>):Unit{
+    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String,ArrayList<String>>):Unit{
         task.getListener().connectStart(task, blockIndex, requestHeaderFields)
     }
-
 
     public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String,ArrayList<String>>):Unit{
         task.getListener().connectEnd(task, blockIndex, responseCode,requestHeaderFields)
     }
-
 
     public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
         task.getListener().fetchStart(task, blockIndex, contentLength)
@@ -54,8 +48,7 @@ public class DefaultTransmitListener <: DownloadListener {
         task.getListener().fetchEnd(task, blockIndex, contentLength)
     }
 
-
-     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
         task.getListener().taskEnd(task,realCause)
     }
 

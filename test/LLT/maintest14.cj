@@ -1,3 +1,5 @@
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
 
 from okdownload import okdownload.*
 from std import collection.*

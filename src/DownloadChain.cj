@@ -2,11 +2,7 @@ package okdownload
 
 public class DownloadChain {
 
-
     let m:MultiConditionMonitor = MultiConditionMonitor()
-
-
-
     private static let TAG:String = "DownloadChain"
     private let blockIndex:Int64
 
@@ -35,7 +31,6 @@ public class DownloadChain {
          return DownloadChain(blockIndex, task, info, cache, store)
     }
 
-
     private init(blockIndex:Int64,task:DownloadTask,info:BreakpointInfo,cache:DownloadCache,store:DownloadStore){
         this.blockIndex = blockIndex
         this.task = task
@@ -47,12 +42,11 @@ public class DownloadChain {
         this.noCallbackIncreaseBytes = 0
     }
 
-
-     func getResponseContentLength():Int64{
+    func getResponseContentLength():Int64{
         return responseContentLength
     }
 
-     func setResponseContentLength(responseContentLength:Int64):Unit{
+    func setResponseContentLength(responseContentLength:Int64):Unit{
         this.responseContentLength = responseContentLength
     }
 
@@ -63,32 +57,27 @@ public class DownloadChain {
         //java这边有个线程interrupt，仓颉则没有
     }
 
-
-     func getTask():DownloadTask{
+    func getTask():DownloadTask{
         return task
     }
 
-     func getInfo():BreakpointInfo{
+    func getInfo():BreakpointInfo{
         return this.info
     }
 
-
-     func getBlockIndex():Int64{
+    func getBlockIndex():Int64{
         return blockIndex
     }
 
-
-     func getCache():DownloadCache{
+    func getCache():DownloadCache{
         return cache
     }
 
-
-     func getOutputStream():MultiPointOutputStream{
+    func getOutputStream():MultiPointOutputStream{
         return  this.cache.getOutputStream()
     }
 
-
-     func getConnectionOrCreate():DownloadConnection{
+    func getConnectionOrCreate():DownloadConnection{
         synchronized(m){
 
             if (cache.isInterrupt()){
@@ -114,20 +103,17 @@ public class DownloadChain {
         }
     }
 
-
-     func increaseCallbackBytes(increaseBytes:Int64):Unit{
+    func increaseCallbackBytes(increaseBytes:Int64):Unit{
         this.noCallbackIncreaseBytes += increaseBytes
     }
 
-     func flushNoCallbackIncreaseBytes():Unit{
+    func flushNoCallbackIncreaseBytes():Unit{
          if (noCallbackIncreaseBytes == 0){
             return
          }
         callbackDispatcher.dispatch().fetchProgress(task, blockIndex, noCallbackIncreaseBytes)
         noCallbackIncreaseBytes = 0
     }
-
-
 
     func start():Unit{
         let dispatcher:CallbackDispatcher =  OkDownload.withs().callbackDispatcher()
@@ -154,15 +140,12 @@ public class DownloadChain {
         dispatcher.dispatch().fetchEnd(task, blockIndex, totalFetchedBytes)
     }
 
-
-
-
     func resetConnectForRetry():Unit{
         connectIndex = 1
         releaseConnection()
     }
 
-     func releaseConnection():Unit{
+    func releaseConnection():Unit{
         synchronized(m){
             if(let Some(i) = connection){
                 i.release()
@@ -172,7 +155,7 @@ public class DownloadChain {
     }
 
 
-     func processConnect():DownloadConnectionConnected{
+    func processConnect():DownloadConnectionConnected{
 
         if (cache.isInterrupt()){
             throw InterruptException.SIGNAL
@@ -184,9 +167,7 @@ public class DownloadChain {
 
     }
 
-
-
-     func processFetch():Int64{
+    func processFetch():Int64{
         if (cache.isInterrupt()){
            throw InterruptException.SIGNAL
         }
@@ -196,9 +177,7 @@ public class DownloadChain {
         return fetch.interceptFetch(this)
     }
 
-
-
-     func loopFetch():Int64{
+    func loopFetch():Int64{
         if (fetchIndex == fetchInterceptorList.size) {
             // last one is fetch data interceptor
             fetchIndex--
@@ -210,21 +189,13 @@ public class DownloadChain {
         return finished.load()
     }
 
-
-     func getDownloadStore():DownloadStore{
+    func getDownloadStore():DownloadStore{
         return store
     }
-
 
     func releaseConnectionAsync():Unit{
         spawn{
             releaseConnection()
         }
     }
-
-
-
-
-
-
 }

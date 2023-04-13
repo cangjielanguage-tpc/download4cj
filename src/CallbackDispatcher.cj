@@ -6,12 +6,11 @@ public class CallbackDispatcher {
 
    private let transmit:DownloadListener
 
-
-    init(){
+   init(){
       this.transmit = DefaultTransmitListener()
    }
 
-    func isFetchProcessMoment(task:DownloadTask):Bool{
+   func isFetchProcessMoment(task:DownloadTask):Bool{
         let minInterval:Int64 = task.getMinIntervalMillisCallbackProcess()
 
 
@@ -20,8 +19,7 @@ public class CallbackDispatcher {
         return (minInterval <= 0) || ((now - TaskHideWrapper.getLastCallbackProcessTs(task)) >= minInterval)
    }
 
-
-    func endTasks(completedTaskCollection:ArrayList<DownloadTask>,sameTaskConflictCollection:ArrayList<DownloadTask>,fileBusyCollection:ArrayList<DownloadTask>){
+   func endTasks(completedTaskCollection:ArrayList<DownloadTask>,sameTaskConflictCollection:ArrayList<DownloadTask>,fileBusyCollection:ArrayList<DownloadTask>){
 
       if (completedTaskCollection.size == 0 && sameTaskConflictCollection.size == 0&& fileBusyCollection.size == 0) {
             return
@@ -39,7 +37,6 @@ public class CallbackDispatcher {
 
    }
 
-
    func endTasksWithCanceled(canceledCollection:ArrayList<DownloadTask>):Unit{
        if (canceledCollection.size <= 0){
          return
@@ -49,7 +46,7 @@ public class CallbackDispatcher {
        }
    }
 
-    func dispatch():DownloadListener{
+   func dispatch():DownloadListener{
         return transmit
    }
 }

@@ -24,5 +24,4 @@ public interface DownloadListener{
 
     func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit
 
-
 }

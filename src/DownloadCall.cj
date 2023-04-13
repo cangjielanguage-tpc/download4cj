@@ -2,21 +2,17 @@ package okdownload
 
 from net import tls.*
 
-public class DownloadCall{
-
+public class DownloadCall <: Equatable<DownloadCall>{
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
-
-
     private static let TAG:String = "DownloadCall"
     static let MAX_COUNT_RETRY_FOR_PRECONDITION_FAILEDA:Int64 = 1
-     let task:DownloadTask
-     let asyncExecuted:Bool
+    let task:DownloadTask
+    let asyncExecuted:Bool
     let blockChainList:ArrayList<DownloadChain>
     var cache:Option<DownloadCache>
     var canceled:Bool
     var finishing:Bool
-    //volatile Thread currentThread
     private let store:DownloadStore
 
     private init(task:DownloadTask,asyncExecuted:Bool,store:DownloadStore){
@@ -32,7 +28,6 @@ public class DownloadCall{
         this.canceled = false
         this.finishing = false
     }
-
 
     static func create(task:DownloadTask,asyncExecuted:Bool,store:DownloadStore){
         return DownloadCall(task, asyncExecuted, store)
@@ -72,7 +67,6 @@ public class DownloadCall{
         return true
     }
 
-
     func isCanceled():Bool{
         return canceled
     }
@@ -81,11 +75,7 @@ public class DownloadCall{
         return finishing
     }
 
-
-
-
-     func execute():Unit{
-        //currentThread = Thread.currentThread();
+    func executeCall():Unit{
         var retry:Bool = false
         var retryCount:Int64 = 0
         // ready param
@@ -93,7 +83,6 @@ public class DownloadCall{
         let fileStrategy:ProcessFileStrategy = okDownload.processFileStrategy()
         //inspect task start
         inspectTaskStart()
-
         do{
             // 0. check basic param before start
             if(task.getUrl().size <= 0){
@@ -109,7 +98,6 @@ public class DownloadCall{
               try{
                 var infoOnStore:Option<BreakpointInfo> = store.get(task.getId())
                 if(let Some(i) = infoOnStore){
-                    //已经存在
                     info = i
                 }else{
                     info = store.createAndInsert(task)
@@ -130,7 +118,7 @@ public class DownloadCall{
             } catch (e:ReadWriteException) {
                 break
             }
-               // ready cache.
+            // ready cache.
             let cachea:DownloadCache = createCache(info)
             this.cache = cachea
             if(!Util.isEmpty(task.getRedirectLocation())){
@@ -150,7 +138,6 @@ public class DownloadCall{
                         fileStrategy.discardProcess(task)
                         assembleBlockAndCallbackFromBeginning(info,remoteCheck)
                     }else{
-                         //okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task, info)
                          okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
                     }
                  }
@@ -161,8 +148,6 @@ public class DownloadCall{
 
             // 7. start with cache and info.
             start(cache.getOrThrow(), info)
-
-            //break
 
             if (canceled){
                 break
@@ -181,7 +166,7 @@ public class DownloadCall{
             }
         }while(retry)
 
-        // finish结束了
+        // finish
         finishing = true
         blockChainList.clear()
 
@@ -216,8 +201,7 @@ public class DownloadCall{
         OkDownload.withs().callbackDispatcher().dispatch().taskStart(task)
     }
 
-
-      private func inspectTaskEnd(cause:EndCause,realCause:Option<Exception>){
+    private func inspectTaskEnd(cause:EndCause,realCause:Option<Exception>){
 
         synchronized(m){
             if (canceled){
@@ -235,16 +219,14 @@ public class DownloadCall{
 
     }
 
-
-
-
-
     func createCache(info:BreakpointInfo):DownloadCache{
         let outputStream:MultiPointOutputStream = OkDownload.withs().processFileStrategy().createProcessStream(task, info, store)
         return DownloadCache(outputStream)
     }
 
-
+    func getPriority():Int64 {
+        return task.getPriority()
+    }
 
     func start(cache:DownloadCache,info:BreakpointInfo):Unit{
         let blockCount:Int64 = info.getBlockCount()
@@ -269,7 +251,6 @@ public class DownloadCall{
         startBlocks(blockChainList)
 
     }
-
 
     func startBlocks(tasks:ArrayList<DownloadChain>):Unit{
 
@@ -308,7 +289,6 @@ public class DownloadCall{
         }
     }
 
-
     private func doDelete(blockChainList:ArrayList<DownloadChain>,tasks:ArrayList<DownloadChain>){
         blockChainList.removeIf(
             {blockChain:DownloadChain =>
@@ -324,26 +304,28 @@ public class DownloadCall{
         )
     }
 
-
     func createLocalCheck(info:BreakpointInfo,responseInstanceLength:Int64):BreakpointLocalCheck{
         return BreakpointLocalCheck(task, info, responseInstanceLength)
     }
-
 
     func createRemoteCheck(info:BreakpointInfo):BreakpointRemoteCheck{
         return BreakpointRemoteCheck(task, info)
     }
 
-       func setInfoToTask(info:BreakpointInfo):Unit{
+    func setInfoToTask(info:BreakpointInfo):Unit{
         TaskHideWrapper.setBreakpointInfo(task, info)
     }
-
 
     func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck):Unit{
         Util.assembleBlock(task, info, remoteCheck.getInstanceLength(),remoteCheck.isAcceptRange())
         OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
-
     }
 
+    public operator func ==(that: DownloadCall): Bool{
+        return refEq(task,that.task)
+    }
 
+    public operator func !=(that: DownloadCall): Bool{
+        return !refEq(task,that.task)
+    }
 }
