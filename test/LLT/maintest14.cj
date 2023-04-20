@@ -74,10 +74,13 @@ main(){
 
      for(oneTask in tasks){
         println("==========================================================")
-        let blockList:ArrayList<BlockInfo> = oneTask.getBlockInfoList()
-        for(oneitem in blockList){
-            println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
-            println("blockinfoRangeLeft="+oneitem.getStartOffset().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+        let blockList:Option<ArrayList<BlockInfo>> = oneTask.getBlockInfoList()
+        if(let Some(i) = blockList){
+            for(oneitem in i){
+               println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
+            }
+        }else{
+            println("此时的这个task的blockList为null")
         }
         println("==========================================================")
      }

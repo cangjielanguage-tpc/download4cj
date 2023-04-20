@@ -192,18 +192,23 @@ public class DownloadTask <: IdentifiedTask {
         }
     }
 
-    func getInfo():BreakpointInfo{
+    func getInfo():Option<BreakpointInfo>{
         if(let Some(i) = info){
             return i
         }else{
             info = OkDownload.withs().breakpointStore().get(id)
-            return info.getOrThrow()
+            return info
         }
     }
 
 
-    public func getBlockInfoList():ArrayList<BlockInfo>{
-        return  getInfo().getBlockInfoList()
+    public func getBlockInfoList():Option<ArrayList<BlockInfo>>{
+        let opBreakInfo = getInfo()
+        if(let Some(i) = opBreakInfo){
+            return i.getBlockInfoList()
+        }else{
+            return Option<ArrayList<BlockInfo>>.None
+        }
     }
 
 

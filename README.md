@@ -48,11 +48,7 @@
 ├── README.OPENSOURCE
 ├── doc
 │  ├── assets
-│  ├── cjcov
-│  ├── api.md
-│  ├── design.md
-│  ├── OkDownLoad核心类说明.xmind
-│  └── OkDownLoad类关系图.xmind
+│  └── feaure_api.md
 ├── src
 │  ├── BreakpointInterceptor.cj
 │  ├── BreakPointLocalCheck.cj
@@ -70,13 +66,13 @@
 │  └── DownloadConnection.cj
 └── test
 ```
-- `doc`  包含库的图片资源，覆盖率报告，api文档，设计文档，核心类说明和类关系图
+- `doc`  包含库的图片资源，feature_api文档
 - `src`  okdownload项目的源码目录
 - `test` 示例代码目录，里面存放了测试用例
 
 ### 接口说明
 
-主要是核心类和成员函数说明，详情请见  [设计文档](./doc/design.md)
+主要是核心类和成员函数说明，详情请见  [设计文档](./doc/feature_api.md)
 
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 使用说明
 

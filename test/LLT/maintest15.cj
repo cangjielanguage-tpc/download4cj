@@ -30,7 +30,7 @@ main(){
         sleep(1000*1000*1000)
         task.cancel()
 
-        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList()
+        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
         for(oneitem in blockList){
             println("==========================================================")
             println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString()+"=========blockinfoStart="+oneitem.getStartOffset().toString())

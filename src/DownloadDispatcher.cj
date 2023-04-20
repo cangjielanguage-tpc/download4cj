@@ -74,6 +74,10 @@ public class DownloadDispatcher{
                     if (inspectCompleted(task)){
                         continue
                     }
+
+                    if(inspectForConflict(task, sameTaskConflictList, fileBusyList)){
+                        continue
+                    }
                     enqueueIgnorePriority(task)
                 }
                 OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
@@ -97,6 +101,10 @@ public class DownloadDispatcher{
     private func enqueueLocked(task:DownloadTask):Unit{
         synchronized(m){
             if (inspectCompleted(task)){
+                return
+            }
+
+            if (inspectForConflict(task)){
                 return
             }
 
@@ -136,6 +144,10 @@ public class DownloadDispatcher{
         let call:DownloadCall
         synchronized (m) {
             if (inspectCompleted(task)) {
+                return
+            }
+
+            if (inspectForConflict(task)){
                 return
             }
 
@@ -208,7 +220,8 @@ public class DownloadDispatcher{
 
                     readyAsyncCalls.removeIf({mycall:DownloadCall =>
                         let myTask:DownloadTask = mycall.task
-                        return refEq(myTask,task)
+                        let b =  refEq(myTask,task)
+                        return b
                     })
 
                     needCallbackCalls.append(call)
@@ -243,7 +256,8 @@ public class DownloadDispatcher{
                      if (!call.cancel()) {
                         needCallbackCalls.removeIf({mycall:DownloadCall =>
                             let myTask:DownloadTask = mycall.task
-                            return refEq(myTask,call.task)
+                            let b = refEq(myTask,call.task)
+                            return b
                         })
                      }
                 }
@@ -277,18 +291,19 @@ public class DownloadDispatcher{
     func finish(call:DownloadCall):Unit{
         synchronized(m){
             let asyncExecuted:Bool = call.asyncExecuted
-            var calls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+            var callsa:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
             if(finishingCalls.contains(call)){
-                calls = finishingCalls
+                callsa = finishingCalls
             }else if(asyncExecuted){
-                calls = runningAsyncCalls
+                callsa = runningAsyncCalls
             }else{
-                calls = runningSyncCalls
+                callsa = runningSyncCalls
             }
             try{
-                calls.removeIf({mycall:DownloadCall =>
+                callsa.removeIf({mycall:DownloadCall =>
                     let myTask:DownloadTask = mycall.task
-                    return refEq(myTask,call.task)
+                    let b = refEq(myTask,call.task)
+                    return b
                 })
             }catch(e:Exception){
                 throw IllegalStateException("Call wasn't in-flight!")
@@ -302,6 +317,20 @@ public class DownloadDispatcher{
         }
     }
 
+
+    private func inspectForConflict(task:DownloadTask):Bool{
+        return inspectForConflict(task,Option<ArrayList<DownloadTask>>.None,Option<ArrayList<DownloadTask>>.None)
+    }
+
+
+    private func inspectForConflict(task:DownloadTask,sameTaskList:Option<ArrayList<DownloadTask>>,fileBusyList:Option<ArrayList<DownloadTask>>){
+        let resultA = inspectForConflict(task, readyAsyncCalls, sameTaskList, fileBusyList)
+        let resultB = inspectForConflict(task, runningAsyncCalls, sameTaskList, fileBusyList)
+        let resultC = inspectForConflict(task, runningSyncCalls, sameTaskList, fileBusyList)
+        return resultA||resultB||resultC
+    }
+
+
     //检查是否完成
     func inspectCompleted(task:DownloadTask):Bool{
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
@@ -314,6 +343,42 @@ public class DownloadDispatcher{
         }
     }
 
+
+    func inspectForConflict(task:DownloadTask,calls:ArrayList<DownloadCall>,sameTaskList:Option<ArrayList<DownloadTask>>,fileBusyList:Option<ArrayList<DownloadTask>>){
+        let callbackDispatcher:CallbackDispatcher = OkDownload.withs().callbackDispatcher()
+        let TempCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
+        for(call in calls){
+            TempCalls.append(call)
+        }
+        for(call in TempCalls){
+            if(call.isCanceled()){
+                continue
+            }
+
+            if(refEq(call.task,task)||call.task.getId() == task.getId()){
+                if(call.isFinishing()){
+                    Util.d(TAG, "task: "+task.getId().toString()+" is finishing, move it to finishing list")
+                    finishingCalls.append(call)
+                    calls.removeIf({mycall:DownloadCall =>
+                        let b = refEq(mycall,call)
+                        return b
+                    })
+                    return false
+                }
+
+                if(let Some(i) = sameTaskList){
+                    i.append(task)
+                }else{
+                    callbackDispatcher.dispatch().taskEnd(task,Option<Exception>.None)
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+
+
     private func processCalls():Unit{
         synchronized(m){
             if (skipProceedCallCount.load() > 0){
@@ -325,7 +390,6 @@ public class DownloadDispatcher{
             if (readyAsyncCalls.isEmpty()){
                 return
             }
-
             let TempreadyAsyncCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
             for(call in readyAsyncCalls){
                 TempreadyAsyncCalls.append(call)
@@ -336,7 +400,8 @@ public class DownloadDispatcher{
 
                 readyAsyncCalls.removeIf({mycall:DownloadCall =>
                     let myTask:DownloadTask = mycall.task
-                    return refEq(myTask,task)
+                    let b = refEq(myTask,task)
+                    return b
                 })
 
                 runningAsyncCalls.append(call)
