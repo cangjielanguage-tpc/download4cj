@@ -8,19 +8,16 @@
     仓颉默认规格 stack 1MB，heap 256 MB，建议根据文件大小将堆内存调到合适的大
     小。一般 4GB 满足大多数情况，如果不够再视情况增加大小。
 
-### 1 提供文件的同步下载和异步下载的功能
+### 1.提供下载功能
+
+#### 1.1 构造下载任务
 
 前置条件：NA
 场景：
-   在网络上需要下载文件到本地硬盘时候，可以采取同步线程下载的方式。
-   在网络上需要下载文件到本地硬盘时候，可以采取异步线程下载的方式。
-   在网络上需要下载文件到本地硬盘时候，可以采取异步线程下载多个文件的方式。
+    在下载文件的时候首先需要构造下载任务对象
 约束：
 性能： 支持版本几何性能持平
 可靠性： NA
-
-#### 1.1 任务的同步下载（开发时候包含设置下载策略组件）
-可以同步将url对应的文件路径下载到指定目录
 
 ##### 1.1.1 主要接口
 
@@ -72,6 +69,17 @@ class DownloadTaskBuilder
 
 ```
 
+#### 1.2 执行下载任务
+
+前置条件：NA
+场景：
+    通过api进行控制任务执行方式以及获取任务相关信息,包括同步下载 异步下载 下载暂停
+约束：
+性能： 支持版本几何性能持平
+可靠性： NA
+
+##### 1.2.1 主要接口
+
 class DownloadTask
 
 ```cangjie
@@ -80,6 +88,19 @@ class DownloadTask
      * 参数 listener - 下载的时候的监听类
      */
     public func execute(listener:DownloadListener)
+
+    /* 用于执行异步下载
+     *
+     * 参数 listener - 下载的时候的监听类
+     */
+    public func enqueue(listener:DownloadListener){
+
+    /* 用于执行异步下载多个任务
+     *
+     * 参数 tasks - 要下载的任务的数组
+     * 参数 listener - 下载的时候的监听类
+     */
+    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
 
     /*
      * 获取任务的Id
@@ -156,10 +177,21 @@ class DownloadTask
      *
      * 返回值 返回当前任务对应的每个下载块的进度信息
      */
-    public func getBlockInfoList():ArrayList<BlockInfo>
+    public func getBlockInfoList():Option<ArrayList<BlockInfo>>
 
 ```
 
+#### 1.3 存储下载进度
+
+前置条件：NA
+场景：
+    下载的时候，可能有一个或者多个下载块，里面包含着当前块的下载进度信息
+约束：
+性能： 支持版本几何性能持平
+可靠性： NA
+
+
+##### 1.3.1 主要接口
 
 class BlockInfo
 
@@ -198,6 +230,19 @@ public class BlockInfo{
     public func getRangeRight():Int64{
 
 }
+
+```
+
+#### 1.4 监听下载任务
+
+前置条件：NA
+场景：
+    监听相应的回调机制
+约束：
+性能： 支持版本几何性能持平
+可靠性： NA
+
+##### 1.4.1 主要接口
 
 interface DownloadListener
 
@@ -286,8 +331,9 @@ interface DownloadListener
 
 ```
 
+### 特性示例
 
-##### 1.1.1.1 示例
+##### 同步下载示例
 
 ```cangjie
 
@@ -315,6 +361,17 @@ main(){
         .setFlushBufferSize(16384)
         .build()
     task.execute(MyListen())
+    println("taskId="+task.getId().toString())
+    println("fileName="+task.getFilename().getOrThrow())
+    println("url="+task.getUrl())
+    println("uri="+task.getUri().toString())
+    println("ProvidedPathFile="+task.getProvidedPathFile().getOrThrow().info.path.toString())
+    println("ReadBufferSize="+task.getReadBufferSize().toString())
+    println("FlushBufferSize="+task.getFlushBufferSize().toString())
+    println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())
+    println("ConnectionCount="+task.getConnectionCount().toString())
+    println("toString="+task.toString())
+
     if(isComplete){
         println(isComplete)
         return 0
@@ -371,416 +428,8 @@ true
 
 ```
 
+##### 同步下载及暂停示例
 
-#### 1.2 任务异步的下载和异步下载多个文件
-可以异步下载单个文件或多个文件
-
-##### 1.2.1 主要接口
-
-class DownloadTaskBuilder
-
-```cangjie
-    /* 用于构造DownloadTaskBuilder对象
-     *
-     * 参数 url - 要下载的文件的url
-     * 参数 file - 把下载下来的文件放到哪个目录下
-     */
-    public init(url:String,file:Directory){
-
-    /* 设置进度回调的时间间隔
-     *
-     * 参数 minIntervalMillisCallbackProcess - 下载的时候多少毫秒进行一次回调
-     * 返回值 - 返回一个DownloadTaskBuilder
-     */
-    public func setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess:Int64):DownloadTaskBuilder{
-
-    /* 用于设置下载文件的名称
-     *
-     * 参数 filename - 设置给下载下来的文件的名字
-     * 返回值 - 返回一个DownloadTaskBuilder
-     * 注意：文件名优先用户自己设置的，如果用户没设置会去取请求返回的，如果都没有，就去截取url,截取失败随机生成
-     */
-    public func setFilename(filename:String):DownloadTaskBuilder{
-
-     /* 用于构造DownloadTask对象
-     *
-     * 返回值 - 返回一个DownloadTask
-     */
-    public func build():DownloadTask{
-
-```
-
-class DownloadTask
-
-```cangjie
-
-     /* 用于执行异步下载
-     *
-     * 参数 listener - 下载的时候的监听类
-     */
-    public func enqueue(listener:DownloadListener){
-
-    /* 用于执行异步下载多个任务
-     *
-     * 参数 tasks - 要下载的任务的数组
-     * 参数 listener - 下载的时候的监听类
-     */
-    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
-
-```
-
-##### 1.2.1.1 示例
-
-```cangjie
-
-from okdownload import okdownload.*
-from std import collection.*
-from std import fs.*
-
-var isComplete = false
-
-main(){
-    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
-    let filenamePre:String = "single-test"
-    let filename = filenamePre+FileEnds
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
-    }
-    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-         .setFilename(filename)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-     task.enqueue(MyListen())
-     sleep(1000*1000*1000*3)
-     if(isComplete){
-        println(isComplete)
-        return 0
-     }else{
-        return 1
-     }
-}
-
-
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
-    }
-
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func downloadFromBeginning(task:DownloadTask):Unit{
-    }
-
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
-    }
-
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-    }
-
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-        isComplete = true
-    }
-}
-
-```
-
-执行结果如下：
-
-```shell
-
-true
-
-```
-
-
-##### 1.2.1.2 示例
-
-```cangjie
-
-from okdownload import okdownload.*
-from std import collection.*
-from std import fs.*
-
-var i = 0
-
-main(){
-    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
-    }
-    var filename0 = "0.jpg"
-    var filename1 = "1.jpg"
-    var filename2 = "2.jpg"
-    var filename3 = "3.jpg"
-    var filename4 = "4.jpg"
-    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-        .setFilename(filename0)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-    let task1:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-        .setFilename(filename1)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-     let task2:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-        .setFilename(filename2)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-    let task3:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-        .setFilename(filename3)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-    let task4:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-        .setFilename(filename4)
-        .setMinIntervalMillisCallbackProcess(30)
-        .build()
-    let tasklists:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
-    tasklists.append(task)
-    tasklists.append(task1)
-    tasklists.append(task2)
-    tasklists.append(task3)
-    tasklists.append(task4)
-    let tasks:Array<DownloadTask> = Array<DownloadTask>(tasklists)
-     DownloadTask.enqueues(tasks,MyListen())
-     sleep(1000*1000*1000*8)
-     if(i == tasklists.size){
-        println(i)
-        return 0
-     }else{
-        return 1
-     }
-}
-
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
-    }
-
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func downloadFromBeginning(task:DownloadTask):Unit{
-    }
-
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
-    }
-
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-    }
-
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-        i++
-    }
-}
-```
-
-执行结果如下：
-
-```shell
-
-5
-
-```
-
-### 2 提供文件的同步下载和异步下载的暂停下载和继续下载功能
-
-前置条件：NA
-场景：
-okdownload在下载过程中可以暂停，然后可以继续下载，前提是程序在运行中
-约束：
-依赖：NA
-性能： NA
-可靠性： NA
-
-#### 2.1 同步下载单个和异步下载单个时候的暂停下载和继续下载
-
-##### 2.1.1 主要接口
-
-class DownloadTask
-
-```cangjie
-    /* 用于执行同步下载
-     *
-     * 参数 listener - 下载的时候的监听类
-     */
-    public func execute(listener:DownloadListener)
-
-    /* 用于执行异步下载
-     *
-     * 参数 listener - 下载的时候的监听类
-     */
-    public func enqueue(listener:DownloadListener){
-
-    /* 取消单个任务的下载
-     *
-     */
-    public func cancel():Unit
-
-    /* 返回当前任务对应的每个下载块的进度信息
-     *
-     * 返回值 返回当前任务对应的每个下载块的进度信息
-     */
-    public func getBlockInfoList():ArrayList<BlockInfo>
-
-```
-
-class BlockInfo
-
-```cangjie
-
-public class BlockInfo{
-
-    /* 获取任务块的当前下载到的进度
-     *
-     * 返回值 - 任务块的当前下载到的进度
-     */
-    public func getCurrentOffset():Int64
-
-    /* 获取任务块的左边界
-     *
-     * 返回值 - 任务块的左边界
-     */
-    public func getRangeLeft():Int64{
-
-    /* 获取任务块的长度
-     *
-     * 返回值 - 任务块的长度
-     */
-    public func getContentLength():Int64{
-
-    /* 获取任务块的右边界
-     *
-     * 返回值 - 任务块的右边界
-     */
-    public func getRangeRight():Int64{
-
-}
-```
-
-interface DownloadListener
-
-```cangjie
-
-/* 任务刚开始的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func taskStart(task:DownloadTask)
-
-    /* 任务开始尝试连接的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 requestHeaderFields - 请求的header
-     */
-    func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 任务结束尝试连接的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 responseCode - 请求返回的响应码
-     * 参数 responseHeaderFields - 响应的haeder
-     */
-    func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 从开始下载的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func downloadFromBeginning(task:DownloadTask)
-
-    /* 从断点处下载的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func downloadFromBreakpoint(task:DownloadTask)
-
-    /* 连接开始的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 requestHeaderFields - 请求的请求头
-     */
-    func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 连接结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 responseCode - 请求返回的响应码
-     * 参数 responseHeaderFields - 响应的haeder
-     */
-    func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 开始获取进度的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 contentLength - 下载的内容长度
-     */
-    func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
-
-    /* 获取进度的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 increaseBytes - 下载增加的部分字节数
-     */
-    func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64)
-
-    /* 获取进度结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 contentLength - 下载的内容长度
-     */
-    func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
-
-    /* 任务结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 realCause - 造成异常结束的原因
-     */
-    func taskEnd(task:DownloadTask,realCause:Option<Exception>)
-
-```
-
-##### 2.1.1.1 示例
 
 ```cangjie
 
@@ -812,11 +461,12 @@ main(){
         spawn { =>
             sleep(1000*1000*1000)
             task.cancel()
-            let blockList:ArrayList<BlockInfo> = task.getBlockInfoList()
+            let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
             for(oneitem in blockList){
                 println("==========================================================")
                 println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
                 println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+                println("blockinfoStart="+oneitem.getStartOffset().toString())
                 println("==========================================================")
             }
         }
@@ -888,7 +538,7 @@ true
 
 ```
 
-##### 2.1.1.2 示例
+##### 异步下载及暂停示例
 
 
 ```cangjie
@@ -921,11 +571,12 @@ main(){
         sleep(1000*1000*1000)
         task.cancel()
 
-        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList()
+        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
         for(oneitem in blockList){
             println("==========================================================")
             println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
             println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+            println("blockinfoStart="+oneitem.getStartOffset().toString())
             println("==========================================================")
         }
 
@@ -991,156 +642,8 @@ true
 
 ```
 
-#### 2.2 异步下载多个时候的暂停下载和继续下载
 
-##### 2.2.1 主要接口
-
-class DownloadTask
-
-```cangjie
-
-    /* 用于执行异步下载多个任务
-     *
-     * 参数 tasks - 要下载的任务的数组
-     * 参数 listener - 下载的时候的监听类
-     */
-    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
-
-    /* 取消多个任务的下载
-     *
-     * 参数 tasks - 要取消的任务数组
-     */
-    public static func cancels(tasks:Array<DownloadTask>):Unit
-
-    /* 返回当前任务对应的每个下载块的进度信息
-     *
-     * 返回值 返回当前任务对应的每个下载块的进度信息
-     */
-    public func getBlockInfoList():ArrayList<BlockInfo>
-
-```
-
-class BlockInfo
-
-```cangjie
-
-public class BlockInfo{
-
-    /* 获取任务块的当前下载到的进度
-     *
-     * 返回值 - 任务块的当前下载到的进度
-     */
-    public func getCurrentOffset():Int64
-
-    /* 获取任务块的左边界
-     *
-     * 返回值 - 任务块的左边界
-     */
-    public func getRangeLeft():Int64{
-
-    /* 获取任务块的长度
-     *
-     * 返回值 - 任务块的长度
-     */
-    public func getContentLength():Int64{
-
-    /* 获取任务块的右边界
-     *
-     * 返回值 - 任务块的右边界
-     */
-    public func getRangeRight():Int64{
-
-}
-```
-
-interface DownloadListener
-
-```cangjie
-
-/* 任务刚开始的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func taskStart(task:DownloadTask)
-
-    /* 任务开始尝试连接的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 requestHeaderFields - 请求的header
-     */
-    func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 任务结束尝试连接的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 responseCode - 请求返回的响应码
-     * 参数 responseHeaderFields - 响应的haeder
-     */
-    func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 从开始下载的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func downloadFromBeginning(task:DownloadTask)
-
-    /* 从断点处下载的回调
-     *
-     * 参数 task - 下载的任务对象
-     */
-    func downloadFromBreakpoint(task:DownloadTask)
-
-    /* 连接开始的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 requestHeaderFields - 请求的请求头
-     */
-    func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 连接结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 responseCode - 请求返回的响应码
-     * 参数 responseHeaderFields - 响应的haeder
-     */
-    func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>)
-
-    /* 开始获取进度的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 contentLength - 下载的内容长度
-     */
-    func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
-
-    /* 获取进度的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 increaseBytes - 下载增加的部分字节数
-     */
-    func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64)
-
-    /* 获取进度结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 blockIndex - 对应的分块index
-     * 参数 contentLength - 下载的内容长度
-     */
-    func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64)
-
-    /* 任务结束的回调
-     *
-     * 参数 task - 下载的任务对象
-     * 参数 realCause - 造成异常结束的原因
-     */
-    func taskEnd(task:DownloadTask,realCause:Option<Exception>)
-
-```
-
-##### 2.2.1.1 示例
+##### 异步下载多个文件及暂停示例
 
 ```cangjie
 
@@ -1209,10 +712,11 @@ main(){
 
      for(oneTask in tasks){
         println("==========================================================")
-        let blockList:ArrayList<BlockInfo> = oneTask.getBlockInfoList()
+        let blockList:ArrayList<BlockInfo> = oneTask.getBlockInfoList().getOrThrow()
         for(oneitem in blockList){
             println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
             println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+            println("blockinfoStart="+oneitem.getStartOffset().toString())
         }
         println("==========================================================")
      }
