@@ -7,7 +7,6 @@ from std import fs.*
 
 var i = 0
 
-//目的 主要为了验证异步下载多个相同的
 
 main(){
 
