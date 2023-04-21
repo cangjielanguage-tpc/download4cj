@@ -93,14 +93,14 @@ class DownloadTask
      *
      * 参数 listener - 下载的时候的监听类
      */
-    public func enqueue(listener:DownloadListener){
+    public func enqueue(listener:DownloadListener)
 
     /* 用于执行异步下载多个任务
      *
      * 参数 tasks - 要下载的任务的数组
      * 参数 listener - 下载的时候的监听类
      */
-    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener){
+    public static func enqueues(tasks:Array<DownloadTask>,listener:DownloadListener)
 
     /*
      * 获取任务的Id
@@ -205,29 +205,29 @@ public class BlockInfo{
      */
     public func getCurrentOffset():Int64
 
-    /* 获取任务块的左边界
+    /* 获取任务块的起始位置
      *
-     * 返回值 - 任务块的左边界
+     * 返回值 - 任务块的起始位置
      */
     public func getStartOffset():Int64
 
-    /* 获取任务块的左边界和当前下载进度的和
+    /* 获取任务块左边界的值
      *
-     * 返回值 - 任务块的左边界和当前下载进度的和
+     * 返回值 - 左边界，即块的StartOffset与CurrentOffset之和
      */
-    public func getRangeLeft():Int64{
+    public func getRangeLeft():Int64
 
     /* 获取任务块的长度
      *
      * 返回值 - 任务块的长度
      */
-    public func getContentLength():Int64{
+    public func getContentLength():Int64
 
     /* 获取任务块的右边界
      *
      * 返回值 - 任务块的右边界
      */
-    public func getRangeRight():Int64{
+    public func getRangeRight():Int64
 
 }
 
