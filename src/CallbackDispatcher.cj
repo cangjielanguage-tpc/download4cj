@@ -14,7 +14,7 @@ public class CallbackDispatcher {
         let minInterval:Int64 = task.getMinIntervalMillisCallbackProcess()
 
 
-        let now:Int64 = Time.now().unixTimeStamp().nanoseconds()
+        let now:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds()
 
         return (minInterval <= 0) || ((now - TaskHideWrapper.getLastCallbackProcessTs(task)) >= minInterval)
    }

@@ -24,7 +24,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
         this.fileDirtyList = fileDirtyList
         this.responseFilenameMap = responseFilenameMap
         this.keyToIdMap = KeyToIdMap()
-        let count:Int64 = storedInfos.size
         sortedOccupiedIds = ArrayList<Int64>()
 
         let keyList:Keys<Int64> = storedInfos.keys()
@@ -61,7 +60,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func onTaskStart(id:Int64):Unit{
-        //对标库空实现
+        id.toString()
     }
 
     public func onSyncToFilesystemSuccess(info:BreakpointInfo,blockIndex:Int64,increaseLength:Int64):Unit{
@@ -96,13 +95,17 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit{
-         match(cause){
+        if(let Some(i) = exception){
+            println("onTaskEnd exception="+i.message)
+        }
+        match(cause){
             case EndCause.COMPLETED =>  remove(id)
             case _ => return
         }
     }
 
     public func getAfterCompleted(id:Int64):Option<BreakpointInfo>{
+        println("Id="+id.toString())
         return Option<BreakpointInfo>.None
     }
 
@@ -185,7 +188,6 @@ public class BreakpointStoreOnCache <: DownloadStore{
         synchronized(m){
             clonedMap = storedInfos.clone()
         }
-        let size:Int64 = clonedMap.size
         let keyList:Keys<Int64> = clonedMap.keys()
         let itera:Iterator<Int64>  = keyList.iterator()
         while(true){
@@ -224,7 +226,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
             var curId:Int64
             for(i in 0..sortedOccupiedIds.size){
                  let curIdObj:Option<Int64> = sortedOccupiedIds.get(i)
-                if(let Some(j) = curIdObj){
+                if(let Some(_) = curIdObj){
 
                 }else{
                     index = i

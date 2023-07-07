@@ -57,7 +57,7 @@ public class DownloadStrategy{
 
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
 
-        if(let Some(i) = anotherInfo){
+        if(let Some(_) = anotherInfo){
         }else{
             return false
         }
@@ -94,7 +94,7 @@ public class DownloadStrategy{
                   }
 
                  if(Util.isEmpty(filename)){
-                    filename = Time.now().unixTimeStamp().nanoseconds().toString()
+                    filename = DateTime.now().toUnixTimeStamp().toNanoseconds().toString()
                  }
 
                   task.filenameHolder = FileNameHolder(filename)

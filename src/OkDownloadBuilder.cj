@@ -27,43 +27,43 @@ public class OkDownloadBuilder {
 
      func build():OkDownload{
 
-         if(let Some(i) = downloadDispatchers){
+         if(let Some(_) = downloadDispatchers){
 
          }else{
             downloadDispatchers = DownloadDispatcher()
          }
 
-         if(let Some(i) = callbackDispatchers){
+         if(let Some(_) = callbackDispatchers){
 
          }else{
             callbackDispatchers = CallbackDispatcher()
          }
 
-         if(let Some(i) = downloadStores){
+         if(let Some(_) = downloadStores){
 
          }else{
             downloadStores =  BreakpointStoreOnCache()
          }
 
-         if(let Some(i) = connectionFactorys){
+         if(let Some(_) = connectionFactorys){
 
          }else{
             connectionFactorys = DownloadOkHttp3ConnectionFactory()
          }
 
-        if(let Some(i) = outputStreamFactorys){
+        if(let Some(_) = outputStreamFactorys){
 
          }else{
              outputStreamFactorys =  DownloadUriOutputStreamFactory()
          }
 
-         if(let Some(i) = processFileStrategys){
+         if(let Some(_) = processFileStrategys){
 
          }else{
             processFileStrategys =  ProcessFileStrategy()
          }
 
-         if(let Some(i) = downloadStrategys){
+         if(let Some(_) = downloadStrategys){
 
          }else{
             downloadStrategys =  DownloadStrategy()

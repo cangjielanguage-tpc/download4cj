@@ -4,7 +4,8 @@
 from okdownload import okdownload.*
 from std import collection.*
 from std import fs.*
-
+from std import sync.sleep
+from std import time.Duration
 //目的 主要为了验证异步下载多个不相同的
 
 var i = 0
@@ -51,7 +52,7 @@ main(){
 
 
      DownloadTask.enqueues(tasks,MyListen())
-     sleep(1000*1000*1000*30)
+     sleep(30 * Duration.second)
      if(i == 2){
         return 0
      }else{
@@ -61,39 +62,54 @@ main(){
 
 
 public class MyListen<: DownloadListener{
-
     public func taskStart(task:DownloadTask):Unit{
+         task.getUrl()
     }
-
     public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         task.getUrl()
+         requestHeaderFields.size
     }
-
     public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         task.getUrl()
+         responseHeaderFields.size
+         responseCode.toString()
     }
-
     public func downloadFromBeginning(task:DownloadTask):Unit{
+         task.getUrl()
     }
-
     public func downloadFromBreakpoint(task:DownloadTask):Unit{
+         task.getUrl()
     }
-
     public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         task.getUrl()
+         blockIndex.toString()
+         requestHeaderFields.toString()
     }
-
     public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+         task.getUrl()
+         blockIndex.toString()
+         responseCode.toString()
+         requestHeaderFields.toString()
     }
-
     public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+         task.getUrl()
+         blockIndex.toString()
+         contentLength.toString()
     }
-
     public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+         task.getUrl()
+         blockIndex.toString()
+         increaseBytes.toString()
     }
-
     public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+         task.getUrl()
+         blockIndex.toString()
+         contentLength.toString()
     }
-
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-        i++
+         task.getUrl()
+         realCause is Option<Exception>
+         i++
     }
 }
 

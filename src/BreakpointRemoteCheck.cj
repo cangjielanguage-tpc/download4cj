@@ -19,13 +19,7 @@ public class  BreakpointRemoteCheck {
         this.instanceLength = 0
     }
 
-    func toString():String{
-        return "acceptRange[" + acceptRange.toString() + "] resumable[" + resumable.toString() + "] failedCause[failedCause.getOrThrow().toString()instanceLength[" + instanceLength.toString() + "]"
-    }
 
-    func getCauseOrThrow():ResumeFailedCause{
-        return this.failedCause.getOrThrow()
-    }
 
     func isResumable():Bool{
         return resumable
@@ -57,7 +51,7 @@ public class  BreakpointRemoteCheck {
 
         let resumeFailedCause:Option<ResumeFailedCause> = downloadStrategy.getPreconditionFailedCause(responseCode, info.getTotalOffset() != 0, info,responseEtag)
 
-        if(let Some(i) = resumeFailedCause){
+        if(let Some(_) = resumeFailedCause){
             this.resumable = false
         }else{
             this.resumable = true
@@ -66,9 +60,11 @@ public class  BreakpointRemoteCheck {
         this.instanceLength = instanceLength
         this.acceptRange = isAcceptRange
 
+        println("responseCode="+responseCode.toString()) //要删
 
         if (!isTrialSpecialPass(responseCode, instanceLength, resumable)) {
             if(downloadStrategy.isServerCanceled(responseCode, info.getTotalOffset() != 0)){
+                println("到这里来2") //要删
                 throw ServerCanceledException(responseCode, info.getTotalOffset())
             }
         }

@@ -32,9 +32,6 @@ public class BreakpointInfo {
         etag = ""
     }
 
-    func getId():Int64{
-        return id
-    }
 
     func setChunked(chunked:Bool):Unit{
         this.chunked = chunked

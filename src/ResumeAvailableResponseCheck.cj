@@ -16,13 +16,11 @@ public class ResumeAvailableResponseCheck {
         let blockInfo:BlockInfo = info.getBlock(blockIndex).getOrThrow()
         let code:Int64 = connected.getResponseCode()
         var newEtag:Option<String> = connected.getResponseHeaderField(Util.ETAG)
-        if(let Some(i) = newEtag){
-
+        if(let Some(_) = newEtag){
         }else{
             newEtag = ""
         }
-        let resumeFailedCause:Option<ResumeFailedCause> = OkDownload.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag.getOrThrow())
-
+        OkDownload.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag.getOrThrow())
         let isServerCancelled:Bool =  OkDownload.withs().downloadStrategy().isServerCanceled(code, blockInfo.getCurrentOffset() != 0)
         if (isServerCancelled) {
             throw ServerCanceledException(code, blockInfo.getCurrentOffset())

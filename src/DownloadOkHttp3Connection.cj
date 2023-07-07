@@ -75,7 +75,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getInputStream():Source{
-        if(let Some(i) = response){
+        if(let Some(_) = response){
         }else{
             throw  ReadWriteException("Please invoke execute first!")
         }

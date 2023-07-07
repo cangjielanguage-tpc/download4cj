@@ -2,7 +2,7 @@ package okdownload
 
 public interface DownloadOutputStream {
 
-    func write(b:Array<UInt8> , off:Int64 , len:Int64):Unit
+    func write(b:Array<UInt8>):Unit
 
     func close():Unit
 

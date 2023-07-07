@@ -12,7 +12,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     }
 
 
-    public func write(b:Array<UInt8>,off:Int64,len:Int64){
+    public func write(b:Array<UInt8>){
         out.write(b)
     }
 
@@ -33,7 +33,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
 
 
     public func setLength(newLength:Int64):Unit{
-        //空实现
+        newLength.toString()
     }
 
 }
