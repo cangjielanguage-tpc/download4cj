@@ -16,7 +16,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
      init(blockIndex:Int64,source:Source,outputStream:MultiPointOutputStream,task:DownloadTask){
         this.blockIndex = blockIndex
         this.source = source
-        this.readBuffer = Array<Byte>(task.getReadBufferSize(),{i => 0})
+        this.readBuffer = Array<Byte>(task.getReadBufferSize(),{_ => 0})
         this.outputStream = outputStream
         this.task = task
         this.dispatcher = OkDownload.withs().callbackDispatcher()
@@ -39,7 +39,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
         }
 
         // write to file
-        outputStream.write(blockIndex, stream.readToEnd(), fetchLength)
+        outputStream.write(blockIndex, stream.readToEnd())
 
 
         chain.increaseCallbackBytes(fetchLength)

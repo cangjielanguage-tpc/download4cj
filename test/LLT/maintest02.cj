@@ -113,6 +113,7 @@ public class MyListen<: DownloadListener{
 
     public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
          println("===============taskEnd===================")
+         realCause is Option<Exception>
          println("task.getId="+task.getId().toString())
          i++
     }

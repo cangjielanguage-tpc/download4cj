@@ -7,9 +7,6 @@ public class StreamsState {
     var newNoMoreStreamBlockList:ArrayList<Int64> = ArrayList<Int64>()
 
 
-    func isStreamsEndOrChanged():Bool{
-        return isNoMoreStream || newNoMoreStreamBlockList.size > 0
-    }
 
 
 }

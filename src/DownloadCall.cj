@@ -45,7 +45,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
             this.canceled = true
         }
-        let startCancelTime:Int64 = Time.now().unixTimeStamp().nanoseconds() / 1000 /1000
+        let startCancelTime:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds() / 1000 /1000
         OkDownload.withs().downloadDispatcher().flyingCanceled(this)
         let cache:Option<DownloadCache> = this.cache
         if(let Some(i) = cache){
@@ -63,7 +63,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
         if(let Some(i) = cache){
             i.getOutputStream().cancelAsync()
         }
-        Util.d(TAG, "cancel task " + task.getId().toString() + " consume: " + (Time.now().unixTimeStamp().nanoseconds() / 1000 /1000 - startCancelTime).toString() + "ms")
+        Util.d(TAG, "cancel task " + task.getId().toString() + " consume: " + (DateTime.now().toUnixTimeStamp().toNanoseconds() / 1000 /1000 - startCancelTime).toString() + "ms")
         return true
     }
 
@@ -175,7 +175,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             return
         }
 
-        if(let Some(i) = cache){
+        if(let Some(_) = cache){
         }else{
             return
         }
@@ -279,7 +279,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             }
             blockChainList.appendAll(tasks)
             for(future in futures){
-                future.getResult()
+                future.get()
             }
 
         }catch(e:Exception){

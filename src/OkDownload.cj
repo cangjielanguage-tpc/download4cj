@@ -62,27 +62,19 @@ public class OkDownload {
         this.monitor = monitor
     }
 
-     func getMonitor():Option<DownloadMonitor>{
-        return monitor
-    }
 
 
      static func withs():OkDownload{
-        if(let Some(i) = singleton){
-
+        if(let Some(_) = singleton){
         }else{
-            //为空
             synchronized(m){
-                if(let Some(i) = singleton){
-
+                if(let Some(_) = singleton){
                 }else{
                     //为空
                     singleton = OkDownloadBuilder().build()
                 }
             }
-
         }
-
         return singleton.getOrThrow()
     }
 

@@ -141,12 +141,12 @@ public class DownloadTask <: IdentifiedTask {
 
      func getFile():Option<File>{
         let filenames:Option<String> = filenameHolder.get()
-        if(let Some(i) = filenames){
+        if(let Some(_) = filenames){
         }else{
             return Option<File>.None
         }
 
-        if(let Some(i) = targetFile){
+        if(let Some(_) = targetFile){
         }else{
             targetFile = File(directoryFile.info.path.toString()+filenames.getOrThrow(),OpenOption.Open(true,true)); //targetFile就是下载的目标文件
         }

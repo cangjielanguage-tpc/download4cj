@@ -83,7 +83,7 @@ public class DownloadChain {
             if (cache.isInterrupt()){
                 throw InterruptException.SIGNAL
             }
-            if(let Some(i) = connection){
+            if(let Some(_) = connection){
             }else{
                 var url:String = ""
                 let redirectLocation:Option<String> = cache.getRedirectLocation()
@@ -124,7 +124,7 @@ public class DownloadChain {
         connectInterceptorList.append(breakpointInterceptor)
         connectInterceptorList.append(HeaderInterceptor())
         connectInterceptorList.append(CallServerInterceptor())
-        var connectIndex:Int64 = 0
+        connectIndex = 0
         let connected:DownloadConnectionConnected = processConnect()
         if (cache.isInterrupt()) {
             throw InterruptException.SIGNAL
@@ -135,15 +135,11 @@ public class DownloadChain {
         fetchInterceptorList.append(retryInterceptor)
         fetchInterceptorList.append(breakpointInterceptor)
         fetchInterceptorList.append(fetchDataInterceptor)
-        var fetchIndex:Int64 = 0
+        fetchIndex = 0
         let totalFetchedBytes:Int64 = processFetch()
         dispatcher.dispatch().fetchEnd(task, blockIndex, totalFetchedBytes)
     }
 
-    func resetConnectForRetry():Unit{
-        connectIndex = 1
-        releaseConnection()
-    }
 
     func releaseConnection():Unit{
         synchronized(m){

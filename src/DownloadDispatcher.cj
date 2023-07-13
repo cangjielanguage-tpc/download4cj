@@ -71,7 +71,7 @@ public class DownloadDispatcher{
                 let sameTaskConflictList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 let fileBusyList:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                 for(task in taskList){
-                    if (inspectCompleted(task)){
+                    if (inspectCompleted()){
                         continue
                     }
 
@@ -100,7 +100,7 @@ public class DownloadDispatcher{
 
     private func enqueueLocked(task:DownloadTask):Unit{
         synchronized(m){
-            if (inspectCompleted(task)){
+            if (inspectCompleted()){
                 return
             }
 
@@ -143,7 +143,7 @@ public class DownloadDispatcher{
     func execute(task:DownloadTask):Unit{
         let call:DownloadCall
         synchronized (m) {
-            if (inspectCompleted(task)) {
+            if (inspectCompleted()) {
                 return
             }
 
@@ -176,7 +176,7 @@ public class DownloadDispatcher{
 
     private func cancelLocked(tasks:Array<DownloadTask>):Unit{
         synchronized(m){
-            let startCancelTime:Int64 = Time.now().unixTimeStamp().nanoseconds()/1000/1000
+            let startCancelTime:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds()/1000/1000
             Util.d(TAG, "start cancel bunch task manually: " + tasks.size.toString())
             let needCallbackCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
             let needCancelCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
@@ -186,7 +186,7 @@ public class DownloadDispatcher{
                 }
             }finally{
                 handleCanceledCalls(needCallbackCalls, needCancelCalls)
-                 let endCancelTime:Int64 = Time.now().unixTimeStamp().nanoseconds()/1000/1000
+                 let endCancelTime:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds()/1000/1000
                 Util.d(TAG,"finish cancel bunch task manually: " + tasks.size.toString() + " consume "+(endCancelTime - startCancelTime).toString() + "ms")
             }
         }
@@ -332,7 +332,7 @@ public class DownloadDispatcher{
 
 
     //检查是否完成
-    func inspectCompleted(task:DownloadTask):Bool{
+    func inspectCompleted():Bool{
         let store:BreakpointStore = OkDownload.withs().breakpointStore()
         let isOnlyMemoryCache = store.isOnlyMemoryCache()
         //目前是isOnlyMemoryCache true 根据规则true的时候为false
@@ -372,6 +372,12 @@ public class DownloadDispatcher{
                     callbackDispatcher.dispatch().taskEnd(task,Option<Exception>.None)
                 }
                 return true
+            }
+
+            if(let Some(i) = fileBusyList){
+                if(i.size>0){
+                    println("fileBusyListSize="+i.size.toString())
+                }
             }
         }
         return false

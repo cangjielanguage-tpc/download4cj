@@ -92,12 +92,10 @@ public class Util{
 
 
      static func parseContentLength(contentLength:Option<String>):Int64{
-        if(let Some(i) = contentLength){
-
+        if(let Some(_) = contentLength){
         }else{
             return CHUNKED_CONTENT_LENGTH
         }
-
         try {
             return Int64.parse(contentLength.getOrThrow())
         } catch (ignored:Exception) {

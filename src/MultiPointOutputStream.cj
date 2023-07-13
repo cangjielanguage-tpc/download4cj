@@ -64,12 +64,12 @@ public class MultiPointOutputStream {
         this(task, info, store, Option<()->Unit>.None)
     }
 
-     func write(blockIndex:Int64,bytes:Array<UInt8>,length:Int64){
+     func write(blockIndex:Int64,bytes:Array<UInt8>){
         synchronized(m){
             if(canceled){
                 return
             }
-            outputStream(blockIndex).write(bytes, 0, length)
+            outputStream(blockIndex).write(bytes)
             store.onSyncToFilesystemSuccess(info,blockIndex,bytes.size)
             outputStreamMap.get(blockIndex).getOrThrow().flushAndSync()
         }
@@ -104,7 +104,7 @@ public class MultiPointOutputStream {
     func close(blockIndex:Int64):Unit{
         synchronized(m){
             let outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
-                if(let Some(i) = outputStream){
+                if(let Some(_) = outputStream){
                 outputStream.getOrThrow().close()
                 outputStreamMap.remove(blockIndex)
                 Util.d(TAG, "OutputStream close task[" + task.getId().toString() + "] block[" + blockIndex.toString() + "]")
@@ -130,13 +130,13 @@ public class MultiPointOutputStream {
     func outputStream(blockIndex:Int64):DownloadOutputStream{
         synchronized(m){
             var outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
-            if(let Some(i) = outputStream){
+            if(let Some(_) = outputStream){
             }else{
                 var uri:String
                 let isFileScheme:Bool = Util.isUriFileScheme(task.getUri())
                 if(!isFileScheme){
                     let file:Option<File> = task.getFile()
-                    if(let Some(j) = file){
+                    if(let Some(_) = file){
                     }else{
                         throw FileNotFoundException("Filename is not ready!")
                     }

@@ -25,12 +25,6 @@ public class BreakpointLocalCheck {
         return dirty
     }
 
-    func getCauseOrThrow():ResumeFailedCause{
-        if (!infoRight) {
-            return INFO_DIRTY
-        }
-        throw IllegalStateException("No cause find with dirty: " + dirty.toString())
-    }
 
     func isInfoRightToResume():Bool{
         let blockCount:Int64 = info.getBlockCount()
@@ -50,7 +44,7 @@ public class BreakpointLocalCheck {
 
     func isFileExistToResume():Bool{
         let file:Option<File> = task.getFile()
-        if(let Some(i) = file){
+        if(let Some(_) = file){
         }else{
             return false
         }
