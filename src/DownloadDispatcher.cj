@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class DownloadDispatcher{
 
@@ -80,7 +80,7 @@ public class DownloadDispatcher{
                     }
                     enqueueIgnorePriority(task)
                 }
-                OkDownload.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
+                Download4cj.withs().callbackDispatcher().endTasks(completedTaskList, sameTaskConflictList, fileBusyList)
             }catch(e:Exception){
             }
             if(originReadyAsyncCallSize != readyAsyncCalls.size){
@@ -267,13 +267,13 @@ public class DownloadDispatcher{
             if (!needCallbackCalls.isEmpty()) {
                 if (needCallbackCalls.size <= 1) {
                     let call:DownloadCall = needCallbackCalls.get(0).getOrThrow()
-                    OkDownload.withs().callbackDispatcher().dispatch().taskEnd(call.task,Option<Exception>.None)
+                    Download4cj.withs().callbackDispatcher().dispatch().taskEnd(call.task,Option<Exception>.None)
                 } else {
                     let callbackCanceledTasks:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                     for (call in needCallbackCalls) {
                         callbackCanceledTasks.append(call.task)
                     }
-                    OkDownload.withs().callbackDispatcher().endTasksWithCanceled(callbackCanceledTasks)
+                    Download4cj.withs().callbackDispatcher().endTasksWithCanceled(callbackCanceledTasks)
                 }
             }
         }
@@ -333,7 +333,7 @@ public class DownloadDispatcher{
 
     //检查是否完成
     func inspectCompleted():Bool{
-        let store:BreakpointStore = OkDownload.withs().breakpointStore()
+        let store:BreakpointStore = Download4cj.withs().breakpointStore()
         let isOnlyMemoryCache = store.isOnlyMemoryCache()
         //目前是isOnlyMemoryCache true 根据规则true的时候为false
         if(isOnlyMemoryCache){
@@ -345,7 +345,7 @@ public class DownloadDispatcher{
 
 
     func inspectForConflict(task:DownloadTask,calls:ArrayList<DownloadCall>,sameTaskList:Option<ArrayList<DownloadTask>>,fileBusyList:Option<ArrayList<DownloadTask>>){
-        let callbackDispatcher:CallbackDispatcher = OkDownload.withs().callbackDispatcher()
+        let callbackDispatcher:CallbackDispatcher = Download4cj.withs().callbackDispatcher()
         let TempCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
         for(call in calls){
             TempCalls.append(call)

@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 from net import tls.*
 
@@ -46,7 +46,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             this.canceled = true
         }
         let startCancelTime:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds() / 1000 /1000
-        OkDownload.withs().downloadDispatcher().flyingCanceled(this)
+        Download4cj.withs().downloadDispatcher().flyingCanceled(this)
         let cache:Option<DownloadCache> = this.cache
         if(let Some(i) = cache){
             i.setUserCanceled()
@@ -79,8 +79,8 @@ public class DownloadCall <: Equatable<DownloadCall>{
         var retry:Bool = false
         var retryCount:Int64 = 0
         // ready param
-        let okDownload:OkDownload = OkDownload.withs()
-        let fileStrategy:ProcessFileStrategy = okDownload.processFileStrategy()
+        let download4cj:Download4cj = Download4cj.withs()
+        let fileStrategy:ProcessFileStrategy = download4cj.processFileStrategy()
         //inspect task start
         inspectTaskStart()
         do{
@@ -126,7 +126,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             }
             // 3. waiting for file lock release after file path is confirmed.
               // 4. reuse another info if another info is idle and available for reuse.
-            OkDownload.withs().downloadStrategy().inspectAnotherSameInfo(task, info, remoteCheck.getInstanceLength())
+            Download4cj.withs().downloadStrategy().inspectAnotherSameInfo(task, info, remoteCheck.getInstanceLength())
             try{
                  if (remoteCheck.isResumable()) {
                          // 5. local check
@@ -138,7 +138,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
                         fileStrategy.discardProcess(task)
                         assembleBlockAndCallbackFromBeginning(info,remoteCheck)
                     }else{
-                         okDownload.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
+                         download4cj.callbackDispatcher().dispatch().downloadFromBreakpoint(task)
                     }
                  }
             }catch(e:IOException){
@@ -198,7 +198,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     private func inspectTaskStart():Unit{
         store.onTaskStart(task.getId())
-        OkDownload.withs().callbackDispatcher().dispatch().taskStart(task)
+        Download4cj.withs().callbackDispatcher().dispatch().taskStart(task)
     }
 
     private func inspectTaskEnd(cause:EndCause,realCause:Option<Exception>){
@@ -215,12 +215,12 @@ public class DownloadCall <: Equatable<DownloadCall>{
                 store.markFileClear(task.getId())
             case _ =>  println("cause not complete")
         }
-        OkDownload.withs().callbackDispatcher().dispatch().taskEnd(task, realCause)
+        Download4cj.withs().callbackDispatcher().dispatch().taskEnd(task, realCause)
 
     }
 
     func createCache(info:BreakpointInfo):DownloadCache{
-        let outputStream:MultiPointOutputStream = OkDownload.withs().processFileStrategy().createProcessStream(task, info, store)
+        let outputStream:MultiPointOutputStream = Download4cj.withs().processFileStrategy().createProcessStream(task, info, store)
         return DownloadCache(outputStream)
     }
 
@@ -318,7 +318,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
 
     func assembleBlockAndCallbackFromBeginning(info:BreakpointInfo,remoteCheck:BreakpointRemoteCheck):Unit{
         Util.assembleBlock(task, info, remoteCheck.getInstanceLength(),remoteCheck.isAcceptRange())
-        OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
+        Download4cj.withs().callbackDispatcher().dispatch().downloadFromBeginning(task)
     }
 
     public operator func ==(that: DownloadCall): Bool{

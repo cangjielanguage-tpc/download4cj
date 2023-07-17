@@ -1,10 +1,10 @@
-package okdownload
+package download4cj
 
 public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
 
     let m:MultiConditionMonitor = MultiConditionMonitor()
-    private var clientBuilder:Option<OkHttpClientBuilder> = Option<OkHttpClientBuilder>.None
-    private var client:Option<OkHttpClient> = Option<OkHttpClient>.None
+    private var clientBuilder:Option<HttpClientBuilder> = Option<HttpClientBuilder>.None
+    private var client:Option<HttpClient> = Option<HttpClient>.None
 
 
     public func create(url:String):DownloadConnection{
@@ -17,14 +17,14 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
                     if(let Some(k) = clientBuilder){
                         client = k.build()
                     }else{
-                        let a = OkHttpClient.builder()
+                        let a = HttpClient.builder()
                         a.connectionPool(ConnectionPool(maxIdleConnections:500))
                         a.readTimeout(Duration.hour*1)
                         a.connectTimeout(Duration.hour*1)
                         a.retryOnConnectionFailure(true)
-                        client = OkHttpClient(a)
+                        client = HttpClient(a)
                     }
-                    clientBuilder = Option<OkHttpClientBuilder>.None
+                    clientBuilder = Option<HttpClientBuilder>.None
                 }
             }
         }

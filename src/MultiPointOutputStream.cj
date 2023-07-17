@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class MultiPointOutputStream {
 
@@ -47,8 +47,8 @@ public class MultiPointOutputStream {
         this.syncBufferIntervalMills = taska.getSyncBufferIntervalMills()
         this.info = infoa
         this.store = storea
-        this.supportSeek = OkDownload.withs().outputStreamFactory().supportSeek()
-        this.isPreAllocateLength = OkDownload.withs().processFileStrategy().isPreAllocateLength(task)
+        this.supportSeek = Download4cj.withs().outputStreamFactory().supportSeek()
+        this.isPreAllocateLength = Download4cj.withs().processFileStrategy().isPreAllocateLength(task)
         this.noMoreStreamList = ArrayList<Int64>()
         this.requireStreamBlocks = ArrayList<Int64>()
         this.syncRunnable = syncRunnable
@@ -158,7 +158,7 @@ public class MultiPointOutputStream {
                 }else{
                     uri = task.getUri()
                 }
-                outputStream = OkDownload.withs().outputStreamFactory().create(uri,flushBufferSize)
+                outputStream = Download4cj.withs().outputStreamFactory().create(uri,flushBufferSize)
                 if(supportSeek){
                     let seekPoint:Int64 = info.getBlock(blockIndex).getOrThrow().getRangeLeft()
                     if (seekPoint > 0){

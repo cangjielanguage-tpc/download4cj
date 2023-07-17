@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 from std import runtime.*
 public class FetchDataInterceptor <: InterceptorFetch {
@@ -19,7 +19,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
         this.readBuffer = Array<Byte>(task.getReadBufferSize(),{_ => 0})
         this.outputStream = outputStream
         this.task = task
-        this.dispatcher = OkDownload.withs().callbackDispatcher()
+        this.dispatcher = Download4cj.withs().callbackDispatcher()
     }
 
 

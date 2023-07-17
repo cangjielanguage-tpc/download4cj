@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class Util{
 
@@ -63,8 +63,8 @@ public class Util{
 
      static func assembleBlock(task:DownloadTask,info:BreakpointInfo,instanceLength:Int64,isAcceptRange:Bool):Unit{
         let blockCount:Int64
-        if (OkDownload.withs().downloadStrategy().isUseMultiBlock(isAcceptRange)) {
-            blockCount = OkDownload.withs().downloadStrategy().determineBlockCount(task, instanceLength)
+        if (Download4cj.withs().downloadStrategy().isUseMultiBlock(isAcceptRange)) {
+            blockCount = Download4cj.withs().downloadStrategy().determineBlockCount(task, instanceLength)
         } else {
             blockCount = 1
         }
@@ -143,7 +143,7 @@ public class Util{
 
      static func addDefaultUserAgent(connection:DownloadConnection):Unit{
 
-        let userAgent:String = "OkDownload/"+VERSION_NAME
+        let userAgent:String = "Download4cj/"+VERSION_NAME
         connection.addHeader(USER_AGENT, userAgent)
 
     }

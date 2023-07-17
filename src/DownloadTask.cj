@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 
 from std import fs.*
@@ -90,7 +90,7 @@ public class DownloadTask <: IdentifiedTask {
 
 
 
-        this.id = OkDownload.withs().breakpointStore().findOrCreateId(this)
+        this.id = Download4cj.withs().breakpointStore().findOrCreateId(this)
 
     }
 
@@ -196,7 +196,7 @@ public class DownloadTask <: IdentifiedTask {
         if(let Some(i) = info){
             return i
         }else{
-            info = OkDownload.withs().breakpointStore().get(id)
+            info = Download4cj.withs().breakpointStore().get(id)
             return info
         }
     }
@@ -230,27 +230,27 @@ public class DownloadTask <: IdentifiedTask {
         for(task in tasks){
             task.listener = listener
         }
-        OkDownload.withs().downloadDispatcher().enqueue(tasks)
+        Download4cj.withs().downloadDispatcher().enqueue(tasks)
     }
 
 
     public func enqueue(listener:DownloadListener):Unit{
         this.listener = listener
-        OkDownload.withs().downloadDispatcher().enqueue(this)
+        Download4cj.withs().downloadDispatcher().enqueue(this)
     }
 
 
     public func execute(listener:DownloadListener):Unit{
         this.listener = listener
-        OkDownload.withs().downloadDispatcher().execute(this)
+        Download4cj.withs().downloadDispatcher().execute(this)
     }
 
     public func cancel():Unit{
-        OkDownload.withs().downloadDispatcher().cancel(this)
+        Download4cj.withs().downloadDispatcher().cancel(this)
     }
 
     public static func cancels(tasks:Array<DownloadTask>):Unit{
-        OkDownload.withs().downloadDispatcher().cancel(tasks)
+        Download4cj.withs().downloadDispatcher().cancel(tasks)
     }
 
     func getListener():DownloadListener{

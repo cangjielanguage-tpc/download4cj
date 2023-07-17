@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class ProcessFileStrategy {
 
@@ -34,7 +34,7 @@ public class ProcessFileStrategy {
 
 
      func isPreAllocateLength(task:DownloadTask):Bool{
-        var supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
+        var supportSeek:Bool = Download4cj.withs().outputStreamFactory().supportSeek()
         if(!supportSeek){
             return false
         }

@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 

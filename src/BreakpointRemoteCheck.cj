@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class  BreakpointRemoteCheck {
 
@@ -34,7 +34,7 @@ public class  BreakpointRemoteCheck {
     }
 
     func check():Unit{
-        let downloadStrategy:DownloadStrategy = OkDownload.withs().downloadStrategy()
+        let downloadStrategy:DownloadStrategy = Download4cj.withs().downloadStrategy()
         var connectTrial:ConnectTrial = createConnectTrial()
         connectTrial.executeTrial()
         let isAcceptRange:Bool = connectTrial.isAcceptRange()
@@ -60,11 +60,9 @@ public class  BreakpointRemoteCheck {
         this.instanceLength = instanceLength
         this.acceptRange = isAcceptRange
 
-        println("responseCode="+responseCode.toString()) //要删
 
         if (!isTrialSpecialPass(responseCode, instanceLength, resumable)) {
             if(downloadStrategy.isServerCanceled(responseCode, info.getTotalOffset() != 0)){
-                println("到这里来2") //要删
                 throw ServerCanceledException(responseCode, info.getTotalOffset())
             }
         }

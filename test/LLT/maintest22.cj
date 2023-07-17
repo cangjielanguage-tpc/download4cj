@@ -15,7 +15,7 @@ from std import sync.*
 main() {
     let str = """
 GET /Everything-1.4.1.1017.x64-Setup.exe HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=0-0
 Keep-Alive: timeout=600, max=1000
 Host: www.voidtools.com
@@ -62,7 +62,7 @@ Connection: Keep-Alive
 func down1():Unit{
             let str2 = """
 GET /Everything-1.4.1.1017.x64-Setup.exe HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=0-931243
 Keep-Alive: timeout=600, max=1000
 Host: www.voidtools.com
@@ -93,7 +93,7 @@ Connection: Keep-Alive
 func down2():Unit{
             let str3 = """
 GET /Everything-1.4.1.1017.x64-Setup.exe HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=931244-1862487
 Keep-Alive: timeout=600, max=1000
 Host: www.voidtools.com

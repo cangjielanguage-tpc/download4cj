@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class ResumeAvailableResponseCheck {
 
@@ -20,8 +20,8 @@ public class ResumeAvailableResponseCheck {
         }else{
             newEtag = ""
         }
-        OkDownload.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag.getOrThrow())
-        let isServerCancelled:Bool =  OkDownload.withs().downloadStrategy().isServerCanceled(code, blockInfo.getCurrentOffset() != 0)
+        Download4cj.withs().downloadStrategy().getPreconditionFailedCause(code, blockInfo.getCurrentOffset() != 0,info,newEtag.getOrThrow())
+        let isServerCancelled:Bool =  Download4cj.withs().downloadStrategy().isServerCanceled(code, blockInfo.getCurrentOffset() != 0)
         if (isServerCancelled) {
             throw ServerCanceledException(code, blockInfo.getCurrentOffset())
         }

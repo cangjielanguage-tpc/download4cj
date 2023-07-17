@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 from std import regex.*
 
@@ -53,7 +53,7 @@ public class DownloadStrategy{
             return false
         }
 
-        let store:BreakpointStore = OkDownload.withs().breakpointStore()
+        let store:BreakpointStore = Download4cj.withs().breakpointStore()
 
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
 
@@ -72,7 +72,7 @@ public class DownloadStrategy{
 
      func isUseMultiBlock(isAcceptRange:Bool){
         // output stream not support seek
-        if (!OkDownload.withs().outputStreamFactory().supportSeek()){
+        if (!Download4cj.withs().outputStreamFactory().supportSeek()){
             return false
         }
          //  support range

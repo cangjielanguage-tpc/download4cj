@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 
 public class ConnectTrial{
@@ -23,7 +23,7 @@ public class ConnectTrial{
     }
 
     func executeTrial():Unit{
-        var connection:DownloadConnection = OkDownload.withs().connectionFactory().create(task.getUrl())
+        var connection:DownloadConnection = Download4cj.withs().connectionFactory().create(task.getUrl())
         var isNeedTrialHeadMethod:Bool = false
         try{
             connection.addHeader(Util.RANGE, "bytes=0-0")
@@ -31,7 +31,7 @@ public class ConnectTrial{
             if(let Some(_) = userHeader){
                  Util.addUserRequestHeaderField(userHeader.getOrThrow(), connection)
             }
-            let listener:DownloadListener = OkDownload.withs().callbackDispatcher().dispatch()
+            let listener:DownloadListener = Download4cj.withs().callbackDispatcher().dispatch()
             let requestProperties:HashMap<String,ArrayList<String>> = connection.getRequestProperties()
 
             listener.connectTrialStart(task, requestProperties)

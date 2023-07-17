@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class DownloadChain {
 
@@ -37,7 +37,7 @@ public class DownloadChain {
         this.cache = cache
         this.info = info
         this.store = store
-        this.callbackDispatcher = OkDownload.withs().callbackDispatcher()
+        this.callbackDispatcher = Download4cj.withs().callbackDispatcher()
         this.connection = Option<DownloadConnection>.None
         this.noCallbackIncreaseBytes = 0
     }
@@ -97,7 +97,7 @@ public class DownloadChain {
                     url = info.getUrl()
                 }
                 Util.d(TAG, "create connection on url: " + url)
-                connection = OkDownload.withs().connectionFactory().create(url)
+                connection = Download4cj.withs().connectionFactory().create(url)
             }
              return connection.getOrThrow()
         }
@@ -116,7 +116,7 @@ public class DownloadChain {
     }
 
     func start():Unit{
-        let dispatcher:CallbackDispatcher =  OkDownload.withs().callbackDispatcher()
+        let dispatcher:CallbackDispatcher =  Download4cj.withs().callbackDispatcher()
         // connect chain
         let retryInterceptor:RetryInterceptor = RetryInterceptor()
         let breakpointInterceptor:BreakpointInterceptor = BreakpointInterceptor()

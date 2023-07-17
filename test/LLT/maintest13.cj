@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 from std import sync.sleep

@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class HeaderInterceptor <: InterceptorConnect{
 
@@ -29,7 +29,7 @@ public class HeaderInterceptor <: InterceptorConnect{
         if (chain.getCache().isInterrupt()) {
             throw InterruptException.SIGNAL
         }
-        OkDownload.withs().callbackDispatcher().dispatch().connectStart(task, blockIndex, connection.getRequestProperties())
+        Download4cj.withs().callbackDispatcher().dispatch().connectStart(task, blockIndex, connection.getRequestProperties())
         var connected:DownloadConnectionConnected = chain.processConnect()
         if (chain.getCache().isInterrupt()) {
             throw InterruptException.SIGNAL
@@ -38,8 +38,8 @@ public class HeaderInterceptor <: InterceptorConnect{
         if (Option<HashMap<String,ArrayList<String>>>.None == responseHeaderFields) {
             responseHeaderFields = HashMap<String,ArrayList<String>>()
         }
-        OkDownload.withs().callbackDispatcher().dispatch().connectEnd(task, blockIndex,connected.getResponseCode(), responseHeaderFields.getOrThrow())
-        let strategy:DownloadStrategy = OkDownload.withs().downloadStrategy()
+        Download4cj.withs().callbackDispatcher().dispatch().connectEnd(task, blockIndex,connected.getResponseCode(), responseHeaderFields.getOrThrow())
+        let strategy:DownloadStrategy = Download4cj.withs().downloadStrategy()
         let responseCheck:ResumeAvailableResponseCheck =  strategy.resumeAvailableResponseCheck(connected, blockIndex, info)
         responseCheck.inspect()
         var contentLength:Int64 = 0
