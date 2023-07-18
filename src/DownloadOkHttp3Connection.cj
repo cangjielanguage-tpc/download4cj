@@ -1,25 +1,25 @@
-package okdownload
+package download4cj
 
 from net import http.Header
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 
 public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectionConnected{
 
 
-    let client:OkHttpClient
+    let client:HttpClient
     private let requestBuilder:RequestBuilder
     private var request:Option<Request>
     var response:Option<Response>
 
-    init(client:OkHttpClient,requestBuilder:RequestBuilder){
+    init(client:HttpClient,requestBuilder:RequestBuilder){
         this.client = client
         this.requestBuilder = requestBuilder
         request = Option<Request>.None
         response = Option<Response>.None
     }
 
-    init(client:OkHttpClient,url:String){
+    init(client:HttpClient,url:String){
         this(client,Request.builder().url(url))
     }
 

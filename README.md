@@ -1,5 +1,5 @@
 <div align="center">
-<h1>OkDownLoad</h1>
+<h1>DownLoad4cj</h1>
 </div>
 
 
@@ -31,9 +31,9 @@
 ### 架构图
 
 <p align="center">
-<img src="./doc/assets/okdownloadclassrelation.png" width="40%" >
-<img src="./doc/assets/okdownloadclassshuoming.png" width="40%" >
-<img src="./doc/assets/okdownloadcancel.png" width="40%" >
+<img src="./doc/assets/download4cjclassrelation.png" width="40%" >
+<img src="./doc/assets/download4cjclassshuoming.png" width="40%" >
+<img src="./doc/assets/download4cjcancel.png" width="40%" >
 </p>
 
 
@@ -60,14 +60,14 @@
 │  ├── DownloadListener.cj
 │  ├── DownloadDispatcher.cj
 │  ├── DownloadStrategy.cj
-│  ├── OkDownload.cj
+│  ├── Download4cj.cj
 │  ├── DownloadStore.cj
 │  ├── DownloadOutputStream.cj
 │  └── DownloadConnection.cj
 └── test
 ```
 - `doc`  包含库的图片资源，feature_api文档
-- `src`  okdownload项目的源码目录
+- `src`  download4cj项目的源码目录
 - `test` 示例代码目录，里面存放了测试用例
 
 ### 接口说明
@@ -81,20 +81,20 @@
 #### Linux编译
 
 ```
-git clone https://gitee.com/HW-PLLab/ok-download.git
-地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 ok-download 根目录下
+git clone https://gitee.com/HW-PLLab/download4cj.git
+地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 download4cj 根目录下
 python3 ci_test/main.py build
 ```
 
 #### Windows编译
 
 ```
-1.获取最新tag的okdownload代码
+1.获取最新tag的download4cj代码
 2.配置依赖库
-  (1)在src同级目录下创建okhttp文档，根据okdownload/module.json文件中指定的okhttp版本获取okhttp代码
+  (1)在src同级目录下创建okhttp文档，根据download4cj/module.json文件中指定的okhttp版本获取okhttp代码
   (2)根据okhttp库介绍编译okhttp库
-3.编译ok-download
-  (1)切换到okdownload下，即src同级目录，执行如下命令，提示success即表示编译成功
+3.编译download4cj
+  (1)切换到download4cj下，即src同级目录，执行如下命令，提示success即表示编译成功
      cpm build
 ```
 
@@ -105,7 +105,7 @@ python3 ci_test/main.py build
 
 ```
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -182,7 +182,7 @@ true
 
 ```
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -268,7 +268,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -379,7 +379,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -482,7 +482,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 

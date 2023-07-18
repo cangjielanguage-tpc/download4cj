@@ -1,4 +1,4 @@
-## okdownload 库
+## download4cj 库
 
 ### 介绍
 可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载 参考地址 https://github.com/lingochamp/okdownload.git
@@ -337,7 +337,7 @@ interface DownloadListener
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -433,7 +433,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -543,7 +543,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 
@@ -647,7 +647,7 @@ true
 
 ```cangjie
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 

@@ -1,6 +1,6 @@
 
 
-from okdownload import okdownload.*
+from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*
 from std import time.*
@@ -51,11 +51,11 @@ func runBench(n:Int64,fileName:String):Unit{
         Directory.create("download",recursive:true)
 	}
 
-	print("[ PASSED ] CASE: okdownload_${fileName}_${n} (${e} ns, ${Float64(e)/Float64(n)} ns/op)\n", flush:true)
+	print("[ PASSED ] CASE: download4cj_${fileName}_${n} (${e} ns, ${Float64(e)/Float64(n)} ns/op)\n", flush:true)
 }
 
 main(){
-	println("TCS: okdownload, time elapsed: 1 ns, RESULT:")
+	println("TCS: download4cj, time elapsed: 1 ns, RESULT:")
     let count = [1,10,100,1000,10000]
 	//let count = [1,10,100,1000,10000]
     //let files = ["1B","1K","1M","10M"]

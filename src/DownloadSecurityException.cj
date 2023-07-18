@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class DownloadSecurityException <: Exception {
 

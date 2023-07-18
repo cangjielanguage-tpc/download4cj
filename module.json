@@ -1,14 +1,14 @@
 {
   "cjc_version": "0.39.4",
-  "organization": "huang-haoshuai",
-  "name": "okdownload",
-  "description": "cj version okdownload",
+  "organization": "cangjie",
+  "name": "download4cj",
+  "description": "cj version download4cj",
   "version": "0.0.2",
   "requires": {
-    "okhttp": {
+    "httpclient4cj": {
       "organization": "cangjie",
       "version": "0.0.6",
-      "path": "./okhttp"
+      "path": "./httpclient4cj"
     }
   },
   "package_requires": {

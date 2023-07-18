@@ -10,7 +10,7 @@ from std import sync.*
 main() {
     let str = """
 GET /yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=0-0
 Keep-Alive: timeout=600, max=1000
 Host: cdn.llscdn.com
@@ -62,7 +62,7 @@ Connection: Keep-Alive
 func down1():Unit{
             let str2 = """
 GET /yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=0-14664668
 Keep-Alive: timeout=600, max=1000
 Host: cdn.llscdn.com
@@ -93,7 +93,7 @@ Connection: Keep-Alive
 func down2():Unit{
             let str3 = """
 GET /yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=14664669-29329336
 Keep-Alive: timeout=600, max=1000
 Host: cdn.llscdn.com
@@ -123,7 +123,7 @@ Connection: Keep-Alive
 func down3(){
              let str4 = """
 GET /yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk HTTP/1.1
-User-Agent: OkDownload/1.0.7
+User-Agent: Download4cj/1.0.7
 Range: bytes=29329337-43994004
 Keep-Alive: timeout=600, max=1000
 Host: cdn.llscdn.com

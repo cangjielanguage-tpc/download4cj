@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
 
@@ -14,7 +14,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
             let blockInstanceLength:Int64 = getExactContentLengthRangeFrom0(connected)
             let infoInstanceLength:Int64 =  info.getTotalLength()
             if(blockInstanceLength > 0 && blockInstanceLength != infoInstanceLength) {
-                OkDownload.withs().callbackDispatcher().dispatch().downloadFromBeginning(chain.getTask())
+                Download4cj.withs().callbackDispatcher().dispatch().downloadFromBeginning(chain.getTask())
             }
         }
         let store:DownloadStore = chain.getDownloadStore()

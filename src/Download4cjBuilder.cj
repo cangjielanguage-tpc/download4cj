@@ -1,6 +1,6 @@
-package okdownload
+package download4cj
 
-public class OkDownloadBuilder {
+public class Download4cjBuilder {
 
     private var downloadDispatchers:Option<DownloadDispatcher>
     private var callbackDispatchers:Option<CallbackDispatcher>
@@ -25,52 +25,38 @@ public class OkDownloadBuilder {
 
 
 
-     func build():OkDownload{
+     func build():Download4cj{
 
          if(let Some(_) = downloadDispatchers){
-
          }else{
             downloadDispatchers = DownloadDispatcher()
          }
-
          if(let Some(_) = callbackDispatchers){
-
          }else{
             callbackDispatchers = CallbackDispatcher()
          }
-
          if(let Some(_) = downloadStores){
-
          }else{
             downloadStores =  BreakpointStoreOnCache()
          }
-
          if(let Some(_) = connectionFactorys){
-
          }else{
             connectionFactorys = DownloadOkHttp3ConnectionFactory()
          }
-
         if(let Some(_) = outputStreamFactorys){
-
          }else{
              outputStreamFactorys =  DownloadUriOutputStreamFactory()
          }
-
          if(let Some(_) = processFileStrategys){
-
          }else{
             processFileStrategys =  ProcessFileStrategy()
          }
-
          if(let Some(_) = downloadStrategys){
-
          }else{
             downloadStrategys =  DownloadStrategy()
          }
-
-         var okDownload:OkDownload = OkDownload(downloadDispatchers.getOrThrow(),callbackDispatchers.getOrThrow(),downloadStores.getOrThrow(),connectionFactorys.getOrThrow(),outputStreamFactorys.getOrThrow(),processFileStrategys.getOrThrow(),downloadStrategys.getOrThrow())
-         okDownload.setMonitor(monitors)
-         return okDownload
+         var download4cj:Download4cj = Download4cj(downloadDispatchers.getOrThrow(),callbackDispatchers.getOrThrow(),downloadStores.getOrThrow(),connectionFactorys.getOrThrow(),outputStreamFactorys.getOrThrow(),processFileStrategys.getOrThrow(),downloadStrategys.getOrThrow())
+         download4cj.setMonitor(monitors)
+         return download4cj
     }
 }

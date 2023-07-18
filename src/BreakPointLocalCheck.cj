@@ -1,4 +1,4 @@
-package okdownload
+package download4cj
 
 public class BreakpointLocalCheck {
 
@@ -35,7 +35,7 @@ public class BreakpointLocalCheck {
     }
 
     func isOutputStreamSupportResume():Bool{
-        let supportSeek:Bool = OkDownload.withs().outputStreamFactory().supportSeek()
+        let supportSeek:Bool = Download4cj.withs().outputStreamFactory().supportSeek()
         if (supportSeek){
              return true
         }

@@ -1,11 +1,11 @@
-package okdownload
+package download4cj
 
-public class OkDownload {
+public class Download4cj {
 
     static let m:MultiConditionMonitor = MultiConditionMonitor()
 
 
-    static var singleton:Option<OkDownload> = Option<OkDownload>.None
+    static var singleton:Option<Download4cj> = Option<Download4cj>.None
     private let downloadDispatchers:DownloadDispatcher
     private let callbackDispatchers:CallbackDispatcher
     private let breakpointStores:BreakpointStore
@@ -64,14 +64,14 @@ public class OkDownload {
 
 
 
-     static func withs():OkDownload{
+     static func withs():Download4cj{
         if(let Some(_) = singleton){
         }else{
             synchronized(m){
                 if(let Some(_) = singleton){
                 }else{
                     //为空
-                    singleton = OkDownloadBuilder().build()
+                    singleton = Download4cjBuilder().build()
                 }
             }
         }
