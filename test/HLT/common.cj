@@ -1,4 +1,4 @@
-// 3rd_party_lib:download4cj/build/download4cj:download4cj/build/httpclient4cj:download4cj/build/cryptocj
+// 3rd_party_lib:download4cj/build/download4cj:download4cj/build/httpclient4cj:download4cj/build/crypto4cj
 from download4cj import download4cj.*
 from std import collection.*
 from std import fs.*

@@ -1,4 +1,4 @@
-// 3rd_party_lib:download4cj/build/download4cj:download4cj/build/httpclient4cj:download4cj/build/cryptocj
+// 3rd_party_lib:download4cj/build/download4cj:download4cj/build/httpclient4cj:download4cj/build/crypto4cj
 // dependence: ../common.cj
 @Test
 public class Test01{
