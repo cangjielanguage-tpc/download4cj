@@ -52,7 +52,7 @@ main(){
 
 
      DownloadTask.enqueues(tasks,MyListen())
-     sleep(30 * Duration.second)
+     sleep(Duration.second*30)
      if(i == 2){
         return 0
      }else{

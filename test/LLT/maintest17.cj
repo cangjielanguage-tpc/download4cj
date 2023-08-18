@@ -72,7 +72,7 @@ main(){
 
 
      DownloadTask.enqueues(tasks,MyListen())
-     sleep(8 * Duration.second)
+     sleep(Duration.second*8)
      println(i)
      println(tasklists.size)
      if(i == tasklists.size){

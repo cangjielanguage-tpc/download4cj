@@ -12,11 +12,11 @@ public class Test01{
         let listener01=MyListen()
         task.enqueue(listener01)
         while(File.exists(dirName+"/"+fileName)  == false ){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         var length_fileInfo=FileInfo(dirName+"/"+fileName).length
         while(length_fileInfo<small_file_size || listener01.flag11!=1 ){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(listener01.flag01,1)
         @Assert(listener01.flag02,1)

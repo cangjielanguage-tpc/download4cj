@@ -1,6 +1,5 @@
 package download4cj
 
-from net import http.Header
 from httpclient4cj import httpclient4cj.*
 
 

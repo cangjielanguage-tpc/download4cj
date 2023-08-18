@@ -11,7 +11,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+filename) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -24,7 +24,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+filename) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -37,7 +37,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+filename) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -50,7 +50,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+filename) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }

@@ -7,7 +7,13 @@ from std import time.*
 from std import sync.*
 
 
-main() {
+main(){
+    //for(_ in 0..20){
+        maintest1()
+    //}
+}
+
+public func maintest1() {
     let str = """
 GET /yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk HTTP/1.1
 User-Agent: Download4cj/1.0.7
@@ -85,6 +91,7 @@ Connection: Keep-Alive
                 //     print("-----------------------------------isClosed="+isClosed.toString()+"-----------------------------len="+len2.toString())
                 // }
             }
+            println("1len2="+len2.toString())
             s2.close()
             println("s2 done")
 
@@ -115,6 +122,7 @@ Connection: Keep-Alive
                 //     print("-----------------------------------isClosed="+isClosed.toString()+"-----------------------------len="+len3.toString())
                 // }
             }
+            println("1len3="+len3.toString())
             s3.close()
             println("s3 done")
 }
@@ -146,6 +154,7 @@ Connection: Keep-Alive
 
                 // }
             }
+            println("1len4="+len4.toString())
             s4.close()
             println("s4 done")
 }
