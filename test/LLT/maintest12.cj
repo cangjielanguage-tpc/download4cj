@@ -25,7 +25,7 @@ main(){
             .setMinIntervalMillisCallbackProcess(30)
             .build()
         task.enqueue(MyListen())
-        sleep(1 * Duration.second)
+        sleep(Duration.second)
         task.cancel()
 
         let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
@@ -36,9 +36,9 @@ main(){
             println("==========================================================")
         }
 
-        sleep(2 * Duration.second)
+        sleep(Duration.second*2)
         task.enqueue(MyListen())
-        sleep(3 * Duration.second)
+        sleep(Duration.second*3)
         if(isComplete && task.getConnectionCount()==3){
             println(true)
             return 0

@@ -21,7 +21,7 @@ main(){
             .setMinIntervalMillisCallbackProcess(30)
             .build()
         spawn { =>
-            sleep(1 * Duration.second)
+            sleep(Duration.second)
             task.cancel()
             let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
             for(oneitem in blockList){
@@ -32,9 +32,9 @@ main(){
             }
         }
         task.execute(MyListen())
-        sleep(3 * Duration.second)
+        sleep(Duration.second*3)
         task.execute(MyListen())
-        sleep(3 * Duration.second)
+        sleep(Duration.second*3)
         if(isComplete && task.getConnectionCount()==3){
             println(true)
             return 0

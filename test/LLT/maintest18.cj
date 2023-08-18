@@ -34,7 +34,7 @@ main(){
      task.enqueue(MyListen())
      task.enqueue(MyListen())
 
-     sleep(3 * Duration.second)
+     sleep(Duration.second * 3)
      if(isComplete){
         return 0
      }else{

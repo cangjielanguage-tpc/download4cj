@@ -1,5 +1,7 @@
 package download4cj
 
+from std import convert.*
+
 public class Util{
 
      static let CHUNKED_CONTENT_LENGTH:Int64 = -1

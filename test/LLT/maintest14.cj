@@ -70,7 +70,7 @@ main(){
 
 
      DownloadTask.enqueues(tasks,MyListen())
-     sleep(2 * Duration.second)
+     sleep(Duration.second*2)
      DownloadTask.cancels(tasks)
 
      for(oneTask in tasks){
@@ -86,9 +86,9 @@ main(){
         println("==========================================================")
      }
 
-     sleep(2 * Duration.second)
+     sleep(Duration.second*2)
      DownloadTask.enqueues(tasks,MyListen())
-     sleep(30 * Duration.second)
+     sleep(Duration.second*30)
      if(isComplete){
         return 0
      }else{

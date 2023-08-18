@@ -29,7 +29,7 @@ public class Test02{
               File.exists(dirName03+"/"+fileName) == false ||
               File.exists(dirName04+"/"+fileName) == false ||
               File.exists(dirName05+"/"+fileName) == false ){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(FileInfo(dirName01+"/"+fileName).length,0)
         @Assert(FileInfo(dirName02+"/"+fileName).length,0)

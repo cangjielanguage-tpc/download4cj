@@ -21,7 +21,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+filename) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         var taskFilename=task.getFilename().getOrThrow()
         @Assert(taskFilename,filename)

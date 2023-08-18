@@ -19,7 +19,7 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
         task.enqueue(MyListen())
         while(File.exists(dirName+"/"+small_file_name) == false){
-            sleep(1*Duration.second)
+            sleep(Duration.second)
         }
         @Assert(task.getConnectionCount()!=0,true)
     }
