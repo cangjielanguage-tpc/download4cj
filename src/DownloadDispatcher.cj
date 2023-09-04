@@ -366,7 +366,7 @@ public class DownloadDispatcher{
                     return false
                 }
 
-                if(let Some(i) = sameTaskList){
+                if(let Some(i) <- sameTaskList){
                     i.append(task)
                 }else{
                     callbackDispatcher.dispatch().taskEnd(task,Option<Exception>.None)
@@ -374,7 +374,7 @@ public class DownloadDispatcher{
                 return true
             }
 
-            if(let Some(i) = fileBusyList){
+            if(let Some(i) <- fileBusyList){
                 if(i.size>0){
                     println("fileBusyListSize="+i.size.toString())
                 }

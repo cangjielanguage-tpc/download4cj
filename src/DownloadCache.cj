@@ -27,7 +27,7 @@ public open class DownloadCache {
     }
 
     func getOutputStream():MultiPointOutputStream{
-        if(let Some(_) = outputStream){
+        if(let Some(_) <- outputStream){
         }else{
             throw IllegalArgumentException()
         }

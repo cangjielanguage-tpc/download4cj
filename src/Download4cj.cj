@@ -65,10 +65,10 @@ public class Download4cj {
 
 
      static func withs():Download4cj{
-        if(let Some(_) = singleton){
+        if(let Some(_) <- singleton){
         }else{
             synchronized(m){
-                if(let Some(_) = singleton){
+                if(let Some(_) <- singleton){
                 }else{
                     //为空
                     singleton = Download4cjBuilder().build()

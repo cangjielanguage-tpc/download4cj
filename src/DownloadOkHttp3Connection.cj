@@ -34,7 +34,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
     public func release():Unit{
         request = Option<Request>.None
-        if(let Some(i) = response){
+        if(let Some(i) <- response){
             i.close()
         }
         response = Option<Response>.None
@@ -43,7 +43,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
     public func getRequestProperties():HashMap<String, ArrayList<String>>{
         var hashMapList:HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
         var header:Option<Header> = Option<Header>.None
-        if(let Some(i) = request){
+        if(let Some(i) <- request){
              header = i.getHeaders()
         }else{
              header = requestBuilder.build().getHeaders()
@@ -65,7 +65,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getResponseCode():Int64{
-        if(let Some(i) = response){
+        if(let Some(i) <- response){
             return i.getCode()
         }else{
             throw  ReadWriteException("Please invoke execute first!")
@@ -74,12 +74,12 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getInputStream():Source{
-        if(let Some(_) = response){
+        if(let Some(_) <- response){
         }else{
             throw  ReadWriteException("Please invoke execute first!")
         }
         let body:Option<ResponseBody> = response.getOrThrow().getBody()
-        if(let Some(i) = body){
+        if(let Some(i) <- body){
             return i.getSource()
         }else{
             throw  ReadWriteException("no body found on response!")
@@ -89,7 +89,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getResponseHeaderFields():Option<HashMap<String,ArrayList<String>>>{
-        if(let Some(i) = response){
+        if(let Some(i) <- response){
             var header:Header = i.getHeaders()
             var hashMapList:HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
             var itera:Iterator<(String, ArrayList<String>)> =  header.iterator()
@@ -112,8 +112,8 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
 
     public func getResponseHeaderField(name:String):Option<String>{
-         if(let Some(i) = response){
-            if(let Some(j) = i.getHeader(name)){
+         if(let Some(i) <- response){
+            if(let Some(j) <- i.getHeader(name)){
                 return j
             }else{
                 return Option<String>.None
@@ -126,7 +126,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
 
     public func getRedirectLocation():Option<String>{
         let priorRes:Option<Response> = response.getOrThrow().getPrevResponse()
-         if(let Some(i) = priorRes){
+         if(let Some(i) <- priorRes){
             if(response.getOrThrow().isSuccess() && i.isRedirect()){
                 return response.getOrThrow().getRequest().getUrl().toString()
             }

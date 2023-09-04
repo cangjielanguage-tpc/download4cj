@@ -33,7 +33,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
             match(optKey){
                 case Some(v)=>
                     let info:Option<BreakpointInfo> =  storedInfos.get(v).getOrThrow()
-                    if(let Some(j) = info){
+                    if(let Some(j) <- info){
                         sortedOccupiedIds.append(j.id)
                     }
                 case None => break
@@ -42,7 +42,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func get(id:Int64):Option<BreakpointInfo>{
-        if(let Some(i) = storedInfos.get(id)){
+        if(let Some(i) <- storedInfos.get(id)){
             return i.getOrThrow()
         }else{
             return Option<BreakpointInfo>.None
@@ -74,14 +74,14 @@ public class BreakpointStoreOnCache <: DownloadStore{
 
     public func update(breakpointInfo:BreakpointInfo):Bool{
         let filename:Option<String> = breakpointInfo.getFilename()
-        if(let Some(i) = filename){
+        if(let Some(i) <- filename){
             if(breakpointInfo.isTaskOnlyProvidedParentPath()){
                 this.responseFilenameMap.put(breakpointInfo.getUrl(), i);
             }
         }
 
         let onCacheOne:Option<BreakpointInfo> = this.storedInfos.get(breakpointInfo.id).getOrThrow()
-        if(let Some(i) = onCacheOne){
+        if(let Some(i) <- onCacheOne){
             if(refEq(i,breakpointInfo)){
                 return true
             }
@@ -95,7 +95,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     }
 
     public func onTaskEnd(id:Int64,cause:EndCause,exception:Option<Exception>):Unit{
-        if(let Some(i) = exception){
+        if(let Some(i) <- exception){
             println("onTaskEnd exception="+i.message)
         }
         match(cause){
@@ -141,7 +141,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     public func findOrCreateId(task:DownloadTask):Int64{
         synchronized(m){
             let candidate:Option<Int64> = keyToIdMap.get(task)
-            if(let Some(i) = candidate){
+            if(let Some(i) <- candidate){
                 return i
             }
             let keyList:Keys<Int64> = storedInfos.keys()
@@ -151,7 +151,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                match(optKey){
                     case Some(v)=>
                        let info:Option<BreakpointInfo> =  storedInfos.get(v).getOrThrow()
-                       if(let Some(j) = info){
+                       if(let Some(j) <- info){
                           if(j.isSameFrom(task)){
                              return j.id
                           }
@@ -166,7 +166,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 match(optKey){
                     case Some(v)=>
                        let another:Option<IdentifiedTask> =  unStoredTasks.get(v).getOrThrow()
-                        if(let Some(k) = another){
+                        if(let Some(k) <- another){
                             if(k.compareIgnoreId(task)){
                                 return k.getId()
                             }
@@ -195,7 +195,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
             match(optKey){
                 case Some(v)=>
                     let info:Option<BreakpointInfo> =  clonedMap.get(v).getOrThrow()
-                    if(let Some(j) = info){
+                    if(let Some(j) <- info){
                         if(refEq(j,ignored)){
                             continue
                         }
@@ -226,7 +226,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
             var curId:Int64
             for(i in 0..sortedOccupiedIds.size){
                  let curIdObj:Option<Int64> = sortedOccupiedIds.get(i)
-                if(let Some(_) = curIdObj){
+                if(let Some(_) <- curIdObj){
 
                 }else{
                     index = i

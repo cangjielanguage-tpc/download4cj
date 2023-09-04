@@ -109,7 +109,7 @@ public class BreakpointInfo {
             return false
         }
         let otherFilename:Option<String> = task.getFilename()
-        if(let Some(i) = otherFilename){
+        if(let Some(i) <- otherFilename){
             if(i.equals(filenameHolder.get().getOrThrow())){
                 return true
             }

@@ -51,7 +51,7 @@ public class  BreakpointRemoteCheck {
 
         let resumeFailedCause:Option<ResumeFailedCause> = downloadStrategy.getPreconditionFailedCause(responseCode, info.getTotalOffset() != 0, info,responseEtag)
 
-        if(let Some(_) = resumeFailedCause){
+        if(let Some(_) <- resumeFailedCause){
             this.resumable = false
         }else{
             this.resumable = true

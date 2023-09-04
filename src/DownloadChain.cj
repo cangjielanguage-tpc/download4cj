@@ -83,11 +83,11 @@ public class DownloadChain {
             if (cache.isInterrupt()){
                 throw InterruptException.SIGNAL
             }
-            if(let Some(_) = connection){
+            if(let Some(_) <- connection){
             }else{
                 var url:String = ""
                 let redirectLocation:Option<String> = cache.getRedirectLocation()
-                if(let Some(j) = redirectLocation){
+                if(let Some(j) <- redirectLocation){
                     if(Util.isEmpty(j)){
                         url = info.getUrl()
                     }else{
@@ -143,7 +143,7 @@ public class DownloadChain {
 
     func releaseConnection():Unit{
         synchronized(m){
-            if(let Some(i) = connection){
+            if(let Some(i) <- connection){
                 i.release()
             }
             connection = Option<DownloadConnection>.None

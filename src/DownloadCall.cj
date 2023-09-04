@@ -48,7 +48,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
         let startCancelTime:Int64 = DateTime.now().toUnixTimeStamp().toNanoseconds() / 1000 /1000
         Download4cj.withs().downloadDispatcher().flyingCanceled(this)
         let cache:Option<DownloadCache> = this.cache
-        if(let Some(i) = cache){
+        if(let Some(i) <- cache){
             i.setUserCanceled()
         }
         let chains:Array<DownloadChain> = blockChainList.toArray()
@@ -60,7 +60,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             }
         }
 
-        if(let Some(i) = cache){
+        if(let Some(i) <- cache){
             i.getOutputStream().cancelAsync()
         }
         Util.d(TAG, "cancel task " + task.getId().toString() + " consume: " + (DateTime.now().toUnixTimeStamp().toNanoseconds() / 1000 /1000 - startCancelTime).toString() + "ms")
@@ -97,7 +97,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
              var info:BreakpointInfo
               try{
                 var infoOnStore:Option<BreakpointInfo> = store.get(task.getId())
-                if(let Some(i) = infoOnStore){
+                if(let Some(i) <- infoOnStore){
                     info = i
                 }else{
                     info = store.createAndInsert(task)
@@ -175,7 +175,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
             return
         }
 
-        if(let Some(_) = cache){
+        if(let Some(_) <- cache){
         }else{
             return
         }

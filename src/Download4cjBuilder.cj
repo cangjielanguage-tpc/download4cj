@@ -27,31 +27,31 @@ public class Download4cjBuilder {
 
      func build():Download4cj{
 
-         if(let Some(_) = downloadDispatchers){
+         if(let Some(_) <- downloadDispatchers){
          }else{
             downloadDispatchers = DownloadDispatcher()
          }
-         if(let Some(_) = callbackDispatchers){
+         if(let Some(_) <- callbackDispatchers){
          }else{
             callbackDispatchers = CallbackDispatcher()
          }
-         if(let Some(_) = downloadStores){
+         if(let Some(_) <- downloadStores){
          }else{
             downloadStores =  BreakpointStoreOnCache()
          }
-         if(let Some(_) = connectionFactorys){
+         if(let Some(_) <- connectionFactorys){
          }else{
             connectionFactorys = DownloadOkHttp3ConnectionFactory()
          }
-        if(let Some(_) = outputStreamFactorys){
+        if(let Some(_) <- outputStreamFactorys){
          }else{
              outputStreamFactorys =  DownloadUriOutputStreamFactory()
          }
-         if(let Some(_) = processFileStrategys){
+         if(let Some(_) <- processFileStrategys){
          }else{
             processFileStrategys =  ProcessFileStrategy()
          }
-         if(let Some(_) = downloadStrategys){
+         if(let Some(_) <- downloadStrategys){
          }else{
             downloadStrategys =  DownloadStrategy()
          }

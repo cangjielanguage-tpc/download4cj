@@ -8,13 +8,13 @@ public class DownloadOkHttp3ConnectionFactory <: DownloadConnectionFactory{
 
 
     public func create(url:String):DownloadConnection{
-        if(let Some(_) = client){
+        if(let Some(_) <- client){
 
         }else{
             synchronized(m){
-                if(let Some(_) = client){
+                if(let Some(_) <- client){
                 }else{
-                    if(let Some(k) = clientBuilder){
+                    if(let Some(k) <- clientBuilder){
                         client = k.build()
                     }else{
                         let a = HttpClient.builder()

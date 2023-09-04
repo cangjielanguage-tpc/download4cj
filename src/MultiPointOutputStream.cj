@@ -53,7 +53,7 @@ public class MultiPointOutputStream {
         this.requireStreamBlocks = ArrayList<Int64>()
         this.syncRunnable = syncRunnable
         let file:Option<File> = task.getFile()
-        if(let Some(i) = file){
+        if(let Some(i) <- file){
             this.path = i.info.path.toString()
         }else{
             this.path = ""
@@ -104,7 +104,7 @@ public class MultiPointOutputStream {
     func close(blockIndex:Int64):Unit{
         synchronized(m){
             let outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
-                if(let Some(_) = outputStream){
+                if(let Some(_) <- outputStream){
                 outputStream.getOrThrow().close()
                 outputStreamMap.remove(blockIndex)
                 Util.d(TAG, "OutputStream close task[" + task.getId().toString() + "] block[" + blockIndex.toString() + "]")
@@ -130,13 +130,13 @@ public class MultiPointOutputStream {
     func outputStream(blockIndex:Int64):DownloadOutputStream{
         synchronized(m){
             var outputStream:Option<DownloadOutputStream> = outputStreamMap.get(blockIndex)
-            if(let Some(_) = outputStream){
+            if(let Some(_) <- outputStream){
             }else{
                 var uri:String
                 let isFileScheme:Bool = Util.isUriFileScheme(task.getUri())
                 if(!isFileScheme){
                     let file:Option<File> = task.getFile()
-                    if(let Some(_) = file){
+                    if(let Some(_) <- file){
                     }else{
                         throw FileNotFoundException("Filename is not ready!")
                     }

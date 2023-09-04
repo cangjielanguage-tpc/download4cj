@@ -28,7 +28,7 @@ public class ConnectTrial{
         try{
             connection.addHeader(Util.RANGE, "bytes=0-0")
             let userHeader:Option<HashMap<String,ArrayList<String>>> = task.getHeaderMapFields()
-            if(let Some(_) = userHeader){
+            if(let Some(_) <- userHeader){
                  Util.addUserRequestHeaderField(userHeader.getOrThrow(), connection)
             }
             let listener:DownloadListener = Download4cj.withs().callbackDispatcher().dispatch()
@@ -37,7 +37,7 @@ public class ConnectTrial{
             listener.connectTrialStart(task, requestProperties)
             let connected:DownloadConnectionConnected = connection.execute()
 
-            if(let Some(_) = connected.getRedirectLocation()){
+            if(let Some(_) <- connected.getRedirectLocation()){
                   task.setRedirectLocation(connected.getRedirectLocation().getOrThrow())
             }
             this.responseCode = connected.getResponseCode()
@@ -46,7 +46,7 @@ public class ConnectTrial{
             this.responseEtag = findEtag(connected)
             this.responseFilename = findFilename(connected)
             var responseHeader: Option<HashMap<String, ArrayList<String>>> = connected.getResponseHeaderFields()
-            if(let Some(_) = responseHeader){
+            if(let Some(_) <- responseHeader){
             }else{
                  responseHeader = HashMap<String, ArrayList<String>>()
             }
@@ -95,7 +95,7 @@ public class ConnectTrial{
 
     private static func findFilename(connected:DownloadConnectionConnected):String{
         let optStr:Option<String> = connected.getResponseHeaderField(Util.CONTENT_DISPOSITION)
-        if(let Some(_) = optStr){
+        if(let Some(_) <- optStr){
             return parseContentDisposition(optStr).getOrThrow()
         }else{
             return ""
@@ -106,7 +106,7 @@ public class ConnectTrial{
     private static let CONTENT_DISPOSITION_NON_QUOTED_PATTERN:Regex = Regex("attachment;\\s*filename\\s*=\\s*(.*)")
 
     private static func parseContentDisposition(contentDisposition:Option<String>):Option<String>{
-        if(let Some(_) = contentDisposition){
+        if(let Some(_) <- contentDisposition){
         }else{
             return Option<String>.None
         }
@@ -125,7 +125,7 @@ public class ConnectTrial{
                 case None =>
                     isM = true
                 }
-            if(let Some(_) = fileName){
+            if(let Some(_) <- fileName){
                 if(fileName.getOrThrow().contains("../")){
                     throw  DownloadSecurityException("The filename [" + fileName.getOrThrow() + "] from the response is not allowable, because it contains '../', which can raise the directory traversal vulnerability");
                 }
@@ -161,7 +161,7 @@ public class ConnectTrial{
     }
 
     private static func parseContentRangeFoInstanceLength(contentRange:Option<String>):Int64{
-        if(let Some(_) = contentRange){
+        if(let Some(_) <- contentRange){
         }else{
             return Util.CHUNKED_CONTENT_LENGTH
         }

@@ -10,7 +10,7 @@ public class HeaderInterceptor <: InterceptorConnect{
         let connection: DownloadConnection = chain.getConnectionOrCreate()
         let task: DownloadTask = chain.getTask()
         let userHeader: Option<HashMap<String,ArrayList<String>>> =  task.getHeaderMapFields()
-        if(let Some(_) = userHeader) {
+        if(let Some(_) <- userHeader) {
             Util.addUserRequestHeaderField(userHeader.getOrThrow(), connection)
         }
         if(Option<HashMap<String,ArrayList<String>>>.None == userHeader || !userHeader.getOrThrow().contains(Util.USER_AGENT)) {
@@ -18,7 +18,7 @@ public class HeaderInterceptor <: InterceptorConnect{
         }
         let blockIndex:Int64 = chain.getBlockIndex()
         let blockInfo:Option<BlockInfo> =  info.getBlock(blockIndex)
-        if (let Some(_) = blockInfo) {
+        if (let Some(_) <- blockInfo) {
         } else {
                 throw ReadWriteException("No block-info found on " + blockIndex.toString())
         }
