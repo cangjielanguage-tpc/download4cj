@@ -25,7 +25,7 @@ public class DownloadStrategy{
 
 
      func determineBlockCount(task:DownloadTask,totalLengtha:Int64):Int64{
-        if(let Some(i) = task.getSetConnectionCount()){
+        if(let Some(i) <- task.getSetConnectionCount()){
             if(i != 0){
                 return i
             }
@@ -57,7 +57,7 @@ public class DownloadStrategy{
 
         let anotherInfo:Option<BreakpointInfo> = store.findAnotherInfoFromCompare(task, info)
 
-        if(let Some(_) = anotherInfo){
+        if(let Some(_) <- anotherInfo){
         }else{
             return false
         }

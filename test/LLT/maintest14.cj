@@ -76,7 +76,7 @@ main(){
      for(oneTask in tasks){
         println("==========================================================")
         let blockList:Option<ArrayList<BlockInfo>> = oneTask.getBlockInfoList()
-        if(let Some(i) = blockList){
+        if(let Some(i) <- blockList){
             for(oneitem in i){
                println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
             }

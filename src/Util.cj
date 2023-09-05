@@ -39,7 +39,7 @@ public class Util{
     }
 
      static func isEmpty(str:Option<String>):Bool{
-        if(let Some(v) = str){
+        if(let Some(v) <- str){
             if(v.size == 0){
                 return true
             }else{
@@ -94,7 +94,7 @@ public class Util{
 
 
      static func parseContentLength(contentLength:Option<String>):Int64{
-        if(let Some(_) = contentLength){
+        if(let Some(_) <- contentLength){
         }else{
             return CHUNKED_CONTENT_LENGTH
         }

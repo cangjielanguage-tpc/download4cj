@@ -141,12 +141,12 @@ public class DownloadTask <: IdentifiedTask {
 
      func getFile():Option<File>{
         let filenames:Option<String> = filenameHolder.get()
-        if(let Some(_) = filenames){
+        if(let Some(_) <- filenames){
         }else{
             return Option<File>.None
         }
 
-        if(let Some(_) = targetFile){
+        if(let Some(_) <- targetFile){
         }else{
             targetFile = File(directoryFile.info.path.toString()+filenames.getOrThrow(),OpenOption.Open(true,true)); //targetFile就是下载的目标文件
         }
@@ -185,7 +185,7 @@ public class DownloadTask <: IdentifiedTask {
     }
 
     public func getConnectionCount():Int64{
-        if(let Some(i) = info){
+        if(let Some(i) <- info){
             return i.getBlockCount()
         }else{
             return 0
@@ -193,7 +193,7 @@ public class DownloadTask <: IdentifiedTask {
     }
 
     func getInfo():Option<BreakpointInfo>{
-        if(let Some(i) = info){
+        if(let Some(i) <- info){
             return i
         }else{
             info = Download4cj.withs().breakpointStore().get(id)
@@ -204,7 +204,7 @@ public class DownloadTask <: IdentifiedTask {
 
     public func getBlockInfoList():Option<ArrayList<BlockInfo>>{
         let opBreakInfo = getInfo()
-        if(let Some(i) = opBreakInfo){
+        if(let Some(i) <- opBreakInfo){
             return i.getBlockInfoList()
         }else{
             return Option<ArrayList<BlockInfo>>.None

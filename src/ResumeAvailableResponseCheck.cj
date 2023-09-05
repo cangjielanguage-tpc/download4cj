@@ -16,7 +16,7 @@ public class ResumeAvailableResponseCheck {
         let blockInfo:BlockInfo = info.getBlock(blockIndex).getOrThrow()
         let code:Int64 = connected.getResponseCode()
         var newEtag:Option<String> = connected.getResponseHeaderField(Util.ETAG)
-        if(let Some(_) = newEtag){
+        if(let Some(_) <- newEtag){
         }else{
             newEtag = ""
         }

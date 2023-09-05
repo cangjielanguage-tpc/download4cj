@@ -13,7 +13,7 @@ public class ProcessFileStrategy {
 
      func discardProcess(task:DownloadTask):Unit{
         let file:Option<File> = task.getFile()
-        if(let Some(_) = file){
+        if(let Some(_) <- file){
         }else{
             return
         }
@@ -38,7 +38,7 @@ public class ProcessFileStrategy {
         if(!supportSeek){
             return false
         }
-        if(let Some(i) = task.getSetPreAllocateLength()){
+        if(let Some(i) <- task.getSetPreAllocateLength()){
             return i
         }else{
             return true

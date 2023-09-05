@@ -44,7 +44,7 @@ public class BreakpointLocalCheck {
 
     func isFileExistToResume():Bool{
         let file:Option<File> = task.getFile()
-        if(let Some(_) = file){
+        if(let Some(_) <- file){
         }else{
             return false
         }
