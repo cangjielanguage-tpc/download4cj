@@ -2,6 +2,7 @@
 // dependence: ../common.cj
 @Test
 public class Test02{
+    //用错误的连接下载
     @TestCase
     func testEnqueues02(): Unit {
         var url:String = "http://imgsrc.baidu.com/forum/w%3D580"
@@ -24,17 +25,22 @@ public class Test02{
         let tasks=Array<DownloadTask>([task01,task02,task03,task04,task05])
         var listen=MyListen()
         DownloadTask.enqueues(tasks,listen)
-        while(File.exists(dirName01+"/"+fileName) == false ||
-              File.exists(dirName02+"/"+fileName) == false ||
-              File.exists(dirName03+"/"+fileName) == false ||
-              File.exists(dirName04+"/"+fileName) == false ||
-              File.exists(dirName05+"/"+fileName) == false ){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName01+"/"+fileName) == false || File.exists(dirName02+"/"+fileName) == false || File.exists(dirName03+"/"+fileName) == false || File.exists(dirName04+"/"+fileName) == false ||  File.exists(dirName05+"/"+fileName) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(FileInfo(dirName01+"/"+fileName).length,0)
         @Assert(FileInfo(dirName02+"/"+fileName).length,0)
         @Assert(FileInfo(dirName03+"/"+fileName).length,0)
         @Assert(FileInfo(dirName04+"/"+fileName).length,0)
         @Assert(FileInfo(dirName05+"/"+fileName).length,0)
-    }
+
+   }
 }

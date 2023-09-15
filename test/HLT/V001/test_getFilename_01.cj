@@ -15,15 +15,23 @@ public class Test01{
     @TestCase
     func testgetFilename02(): Unit {
         var url:String = big_file_url
+        var fileName=big_file_name
         var dirName="download_"+DateTime.now().nanosecond.toString()
         let dir=Directory.create(dirName,recursive:true)
-        var filename=big_file_name
         let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
         task.enqueue(MyListen())
-        while(File.exists(dirName+"/"+filename) == false){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName+"/"+fileName) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         var taskFilename=task.getFilename().getOrThrow()
-        @Assert(taskFilename,filename)
+        @Assert(taskFilename,fileName)
     }
 }
