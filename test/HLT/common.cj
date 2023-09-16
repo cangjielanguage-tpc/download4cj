@@ -11,6 +11,7 @@ public let big_file_name="xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
 public let small_file_url="http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
 public let small_file_size=38662
 public let small_file_name="9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+public let timeOut=1200
 public class MyListen<: DownloadListener{
     public var flag01=0
     public var flag02=0

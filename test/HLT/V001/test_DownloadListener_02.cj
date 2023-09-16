@@ -11,12 +11,16 @@ public class Test01{
         let task:DownloadTask = DownloadTaskBuilder(url,dir).build()
         let listener01=MyListen()
         task.enqueue(listener01)
-        while(File.exists(dirName+"/"+fileName)  == false ){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
-        }
-        var length_fileInfo=FileInfo(dirName+"/"+fileName).length
-        while(length_fileInfo<small_file_size || listener01.flag11!=1 ){
-            sleep(Duration.second)
+            if(File.exists(dirName+"/"+fileName)  == false || FileInfo(dirName+"/"+fileName).length<small_file_size){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(listener01.flag01,1)
         @Assert(listener01.flag02,1)

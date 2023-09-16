@@ -10,8 +10,16 @@ public class Test01{
         let filename="target.tar.gz"
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
-        while(File.exists(dirName+"/"+filename) == false){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName+"/"+filename) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -23,8 +31,16 @@ public class Test01{
         let filename="target.gz"
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
-        while(File.exists(dirName+"/"+filename) == false){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName+"/"+filename) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -36,8 +52,16 @@ public class Test01{
         let filename="target.tar"
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
-        while(File.exists(dirName+"/"+filename) == false){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName+"/"+filename) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
@@ -49,8 +73,16 @@ public class Test01{
         let filename="target"
         let task:DownloadTask = DownloadTaskBuilder(url,dir).setFilename(filename).build()
         task.enqueue(MyListen())
-        while(File.exists(dirName+"/"+filename) == false){
+        var endFlag=true//进入循环的标志1
+        var count=0 //进入循环标志2,,最长等待5分钟
+        while(endFlag==true && count<timeOut){//下载目标达到，或者等待时间超多10min,退出循环
+            count+=1
             sleep(Duration.second)
+            if(File.exists(dirName+"/"+filename) == false){//文件不存在继续循环
+                endFlag=true
+            }else{//文件存在
+                endFlag=false
+            }
         }
         @Assert(File.exists(dirName+"/"+filename),true)
     }
