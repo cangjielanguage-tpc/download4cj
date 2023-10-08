@@ -13,8 +13,8 @@ var isComplete = false
 
 main(){
 
-        var url:String = "https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fup.enterdesk.com%2Fedpic%2Fc5%2F3a%2Fe5%2Fc53ae5ec144c1d16105303c9d9bf68bb.jpg&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D2171411284%2C1924893541%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D889%26h%3D500"
-
+        //var url:String = "https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fup.enterdesk.com%2Fedpic%2Fc5%2F3a%2Fe5%2Fc53ae5ec144c1d16105303c9d9bf68bb.jpg&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D2171411284%2C1924893541%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D889%26h%3D500"
+        var url:String = "https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe"
 
         let parentFilePath:Path = Path("./fileDownLoad")
         var parentFile:Option<Directory> = Option<Directory>.None
