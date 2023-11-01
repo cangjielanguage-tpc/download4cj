@@ -15,7 +15,7 @@ public class TestBlockInfoV003{
          while(endFlag==true && count<timeOut){
              count+=1
              sleep(Duration.second)
-             if(File.exists(dirName+"/"+big_file_name)){
+             if(File.exists(dirName+"/"+big_file_name)==false){
                  endFlag=true
              }else{//文件存在
                  endFlag=false
