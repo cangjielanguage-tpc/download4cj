@@ -13,7 +13,7 @@ var i = 0
 main(){
 
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-    var url2:String = "https://cr8.197946.com/lenovobatterysetting.zip"
+    var url2:String = "http://a2.dxiazaicc.com/down4/rufusv3.18_downcc.com.zip"
 
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     let lastIndex2:Int64 = url2.lastIndexOf(".").getOrThrow()

@@ -12,7 +12,7 @@ var isComplete = false
 
 main(){
 
-        var url:String = "https://cr8.197946.com/lenovobatterysetting.zip"
+        var url:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
 
         let parentFilePath:Path = Path("./fileDownLoad")
         var parentFile:Option<Directory> = Option<Directory>.None
@@ -27,7 +27,7 @@ main(){
             .build()
         task.execute(MyListen())
 
-        if(isComplete && task.getConnectionCount()==3){
+        if(isComplete && task.getConnectionCount()==4){
             // 小于1M   1M-5M  5M-50M  50M-100M  大于100M
             return 0
         }else{
