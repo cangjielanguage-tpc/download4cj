@@ -27,9 +27,9 @@ main(){
     let lastIndex1:Int64 = url1.lastIndexOf(".").getOrThrow()
     let lastIndex2:Int64 = url2.lastIndexOf(".").getOrThrow()
     let lastIndex3:Int64 = url3.lastIndexOf(".").getOrThrow()
-    var FileEnds1 = url1.substring(lastIndex1)
-    var FileEnds2 = url2.substring(lastIndex2)
-    var FileEnds3 = url3.substring(lastIndex3)
+    var FileEnds1 = url1[lastIndex1..]
+    var FileEnds2 = url2[lastIndex2..]
+    var FileEnds3 = url3[lastIndex3..]
 
 
     let filenamePre:String = "single-test"

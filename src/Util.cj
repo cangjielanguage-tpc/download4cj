@@ -126,8 +126,7 @@ public class Util{
 
 
      static func addRequestHeaderFields(userHeaderField:HashMap<String,ArrayList<String>>,connection:DownloadConnection):Unit{
-        var mapKeys:Keys<String> =  userHeaderField.keys()
-        var itera:Iterator<String> =  mapKeys.iterator()
+        var itera:Iterator<String> =  userHeaderField.keys().iterator()
         while(true){
             var optKey:Option<String> = itera.next()
             match(optKey){

@@ -14,7 +14,7 @@ main(){
 
     var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.121212.js" // 地址不存在
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
+    var FileEnds = url[lastIndex..]
 
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
