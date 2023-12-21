@@ -3,7 +3,7 @@ package download4cj
 public class DownloadUriOutputStream <: DownloadOutputStream{
 
 
-    let out:BufferedOutputStream
+    let out:BufferedOutputStream<OutputStream>
     let fos:File
 
     init(uri:String,bufferSize:Int64){
@@ -12,7 +12,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     }
 
 
-    public func write(b:Array<UInt8>){
+    public func write(b:Array<UInt8>):Unit{
         out.write(b)
     }
 

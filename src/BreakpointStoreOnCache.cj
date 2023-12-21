@@ -26,8 +26,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         this.keyToIdMap = KeyToIdMap()
         sortedOccupiedIds = ArrayList<Int64>()
 
-        let keyList:Keys<Int64> = storedInfos.keys()
-        let itera:Iterator<Int64>  = keyList.iterator()
+        let itera:Iterator<Int64>  = storedInfos.keys().iterator()
         while(true){
             var optKey:Option<Int64> = itera.next()
             match(optKey){
@@ -144,8 +143,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
             if(let Some(i) <- candidate){
                 return i
             }
-            let keyList:Keys<Int64> = storedInfos.keys()
-            let itera:Iterator<Int64>  = keyList.iterator()
+            let itera:Iterator<Int64>  = storedInfos.keys().iterator()
             while(true){
                var optKey:Option<Int64> = itera.next()
                match(optKey){
@@ -159,8 +157,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                     case None => break
                }
             }
-           let keyList2:Keys<Int64> = unStoredTasks.keys()
-           let itera2:Iterator<Int64>  = keyList2.iterator()
+           let itera2:Iterator<Int64>  = unStoredTasks.keys().iterator()
            while(true){
                 var optKey:Option<Int64> = itera2.next()
                 match(optKey){
@@ -188,8 +185,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         synchronized(m){
             clonedMap = storedInfos.clone()
         }
-        let keyList:Keys<Int64> = clonedMap.keys()
-        let itera:Iterator<Int64>  = keyList.iterator()
+        let itera:Iterator<Int64>  = clonedMap.keys().iterator()
         while(true){
             var optKey:Option<Int64> = itera.next()
             match(optKey){

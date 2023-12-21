@@ -17,7 +17,7 @@ main(){
 
     var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
+    var FileEnds = url[lastIndex..]
 
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds

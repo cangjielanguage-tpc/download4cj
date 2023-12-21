@@ -17,8 +17,8 @@ main(){
 
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     let lastIndex2:Int64 = url2.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
-    var FileEnds2 = url2.substring(lastIndex2)
+    var FileEnds = url[lastIndex..]
+    var FileEnds2 = url2[lastIndex2..]
 
 
     let filenamePre:String = "single-test"

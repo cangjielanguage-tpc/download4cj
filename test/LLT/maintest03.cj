@@ -18,7 +18,7 @@ main(){
 
     var url:String = "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
+    var FileEnds = url[lastIndex..]
 
     let filenamePre:String = "single-test"
     let filename = filenamePre+FileEnds
@@ -50,7 +50,7 @@ main(){
      println("MinIntervalMillisCallbackProcess="+task.getMinIntervalMillisCallbackProcess().toString())
      println("ConnectionCount="+task.getConnectionCount().toString())
 
-     if(isComplete && "single-test.js".equals(mFileName) && mConnectionCount == 1 && "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js".equals(mUrl)){
+     if(isComplete && "single-test.js"==mFileName && mConnectionCount == 1 && "https://mbdp01.bdstatic.com/static/landing-pc/js/news.9aff1630.js"==mUrl){
         return 0
      }else{
         return 1
