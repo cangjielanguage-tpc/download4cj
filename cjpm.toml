@@ -1,8 +1,8 @@
 [dependencies]
-  httpclient4cj = {path = "./httpclient4cj", version = "0.0.6"}
+httpclient4cj = {branch = "v0.0.7.B008", git = "https://gitee.com/HW-PLLab/httpclient4cj.git", version = "0.0.6"}
 
 [package]
-  cjc-version = "0.49.2"
+  cjc-version = "0.50.3"
   compile-option = ""
   description = "cj version download4cj"
   link-option = ""

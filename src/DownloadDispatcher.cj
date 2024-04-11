@@ -54,7 +54,7 @@ public class DownloadDispatcher{
             let taskList:ArrayList<DownloadTask>  = ArrayList<DownloadTask>()
             taskList.appendAll(tasks)
             if(taskList.size > 1){
-                taskList.sortBy({rht:DownloadTask,lht:DownloadTask =>
+                taskList.sortBy(stable:true,comparator:{rht:DownloadTask,lht:DownloadTask =>
                     if(rht.getPriority() < lht.getPriority()){
                         return Ordering.GT
                     }
@@ -62,7 +62,7 @@ public class DownloadDispatcher{
                         return Ordering.LT
                     }
                     return Ordering.EQ
-                },stable:true)
+                })
             }
 
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
@@ -84,7 +84,7 @@ public class DownloadDispatcher{
             }catch(e:Exception){
             }
             if(originReadyAsyncCallSize != readyAsyncCalls.size){
-                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                readyAsyncCalls.sortBy(stable:true,comparator:{rht:DownloadCall,lht:DownloadCall =>
                     if(rht.getPriority() < lht.getPriority()){
                         return Ordering.GT
                     }
@@ -92,7 +92,7 @@ public class DownloadDispatcher{
                         return Ordering.LT
                     }
                     return Ordering.EQ
-                },stable:true)
+                })
             }
 
         }
@@ -111,7 +111,7 @@ public class DownloadDispatcher{
             let originReadyAsyncCallSize:Int64 = readyAsyncCalls.size
             enqueueIgnorePriority(task)
             if(originReadyAsyncCallSize != readyAsyncCalls.size){
-                readyAsyncCalls.sortBy({rht:DownloadCall,lht:DownloadCall =>
+                readyAsyncCalls.sortBy(stable:true,comparator:{rht:DownloadCall,lht:DownloadCall =>
                     if(rht.getPriority() < lht.getPriority()){
                         return Ordering.GT
                     }
@@ -119,7 +119,7 @@ public class DownloadDispatcher{
                         return Ordering.LT
                     }
                     return Ordering.EQ
-                },stable:true)
+                })
             }
         }
     }
