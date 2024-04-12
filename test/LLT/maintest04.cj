@@ -12,7 +12,7 @@ var isComplete = false
 
 main(){
 
-        var url:String = "https://d4.youxi527.com/android4/20240304/mlyyxc.apk"
+        var url:String = "https://ucdl.25pp.com/fs08/2024/04/07/1/120_55c06b68501c1bea3405c58cda4ad3b9.apk"
 
         let parentFilePath:Path = Path("./fileDownLoad")
         var parentFile:Option<Directory> = Option<Directory>.None
