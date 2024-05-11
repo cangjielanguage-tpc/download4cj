@@ -3,7 +3,7 @@ httpclient4cj = {branch = "v0.0.7.B009", git = "https://gitee.com/HW-PLLab/httpc
 
 [package]
   cjc-version = "0.51.4"
-  compile-option = ""
+  compile-option = "-O2"
   description = "cj version download4cj"
   link-option = ""
   name = "download4cj"
