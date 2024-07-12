@@ -3,7 +3,7 @@
         "Name": "OkDownload",
         "License": "Apache-2.0 license",
         "License File": "LICENSE",
-        "Version Number": "v1.0 ",
+        "Version Number": "v1.0.7 ",
         "Owner" : "lingochamp"
         "Upstream URL": "https://github.com/lingochamp/okdownload.git",
         "Description": "A Reliable, Flexible, Fast and Powerful download engine."
