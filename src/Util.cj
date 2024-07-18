@@ -4,7 +4,6 @@
 
 package download4cj
 
-from std import convert.*
 
 public class Util{
 

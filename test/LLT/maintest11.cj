@@ -1,12 +1,12 @@
 
 
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
-from std import time.*
-from std import sync.sleep
-from std import time.Duration
+import download4cj.*
+import std.collection.*
+import std.fs.*
+import std.time.*
+import std.sync.sleep
+import std.time.Duration
 
 func runBench(n:Int64,fileName:String):Unit{
     var url:String = "https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe"

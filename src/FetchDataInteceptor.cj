@@ -4,12 +4,9 @@
 
 package download4cj
 
-from std import runtime.*
 public class FetchDataInterceptor <: InterceptorFetch {
 
     private let source:Source
-
-
     private let readBuffer:Array<Byte>
     private let outputStream:MultiPointOutputStream
     private let blockIndex:Int64

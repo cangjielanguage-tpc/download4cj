@@ -4,11 +4,7 @@
 
 package download4cj
 
-from httpclient4cj import httpclient4cj.*
-
-
 public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectionConnected{
-
 
     let client:HttpClient
     private let requestBuilder:RequestBuilder

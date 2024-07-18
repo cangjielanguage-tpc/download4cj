@@ -1,11 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
-from std import sync.sleep
-from std import time.Duration
+import download4cj.*
+import std.collection.*
+import std.fs.*
+import std.sync.sleep
+import std.time.Duration
 var i = 0
 
 

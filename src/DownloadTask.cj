@@ -4,14 +4,19 @@
 
 package download4cj
 
-from std import fs.*
-from encoding import url.*
-from std import collection.*
-from std import io.*
-from std import sync.*
-from std import log.*
-from std import socket.*
-from std import time.*
+protected import httpclient4cj.*
+protected import std.fs.*
+protected import encoding.url.*
+protected import std.collection.*
+protected import std.io.*
+protected import std.sync.*
+protected import std.log.*
+protected import std.socket.*
+protected import std.time.*
+protected import std.regex.*
+protected import std.runtime.*
+protected import std.convert.*
+protected import net.tls.*
 
 
 public class DownloadTask <: IdentifiedTask {

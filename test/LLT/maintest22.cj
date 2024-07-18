@@ -1,10 +1,10 @@
 
 
-from std import socket.*
-from net import tls.*
-from std import collection.*
-from std import time.*
-from std import sync.*
+import std.socket.*
+import net.tls.*
+import std.collection.*
+import std.time.*
+import std.sync.*
 
 //https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk
 //https://www.voidtools.com/Everything-1.4.1.1017.x64-Setup.exe
