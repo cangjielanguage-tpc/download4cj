@@ -4,7 +4,6 @@
 
 package download4cj
 
-from std import regex.*
 
 public class DownloadStrategy{
 

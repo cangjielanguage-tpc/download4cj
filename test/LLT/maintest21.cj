@@ -1,10 +1,10 @@
 
 
-from std import socket.*
-from net import tls.*
-from std import collection.*
-from std import time.*
-from std import sync.*
+import std.socket.*
+import net.tls.*
+import std.collection.*
+import std.time.*
+import std.sync.*
 
 
 main(){

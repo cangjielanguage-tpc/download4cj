@@ -2,11 +2,11 @@
 // EXEC: ./main
 
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
-from std import sync.sleep
-from std import time.Duration
+import download4cj.*
+import std.collection.*
+import std.fs.*
+import std.sync.sleep
+import std.time.Duration
 //目的 主要为了验证异步下载单个
 
 

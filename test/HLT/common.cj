@@ -1,10 +1,10 @@
 // 3rd_party_lib:download4cj/build/download4cj:download4cj/build/httpclient4cj:download4cj/build/crypto4cj
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
-from std import sync.*
-from std import time.*
-from std import math.*
+protected import download4cj.*
+protected import std.collection.*
+protected import std.fs.*
+protected import std.sync.*
+protected import std.time.*
+protected import std.math.*
 public let big_file_url="https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
 public let big_file_size=43994005
 public let big_file_name="xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"

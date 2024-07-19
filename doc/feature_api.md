@@ -337,9 +337,9 @@ interface DownloadListener
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -433,9 +433,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -543,9 +543,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -647,9 +647,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 

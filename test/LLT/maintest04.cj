@@ -2,9 +2,9 @@
 // EXEC: ./main
 
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 //目的 主要为了验证文件大一点的情况
 

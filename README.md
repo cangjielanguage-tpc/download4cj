@@ -4,9 +4,9 @@
 
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.51.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.4%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -105,9 +105,9 @@ python3 ci_test/main.py build
 
 ```
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -182,9 +182,9 @@ true
 
 ```
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -268,9 +268,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -379,9 +379,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -482,9 +482,9 @@ true
 
 ```cangjie
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
 
 var isComplete = false
 
@@ -616,6 +616,9 @@ true
 
 ```
 
+## 开源协议
+
+本项目基于 [Apache License 2.0](./LICENSE) ，请自由的享受和参与开源。
 
 
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献

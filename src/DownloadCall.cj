@@ -4,7 +4,6 @@
 
 package download4cj
 
-from net import tls.*
 
 public class DownloadCall <: Equatable<DownloadCall>{
 

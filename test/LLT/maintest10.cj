@@ -1,10 +1,10 @@
 
 
-from download4cj import download4cj.*
-from std import collection.*
-from std import fs.*
-from std import time.*
-from std import runtime.*
+import download4cj.*
+import std.collection.*
+import std.fs.*
+import std.time.*
+import std.runtime.*
 
 
 func runBench(n:Int64,fileName:String):Unit{

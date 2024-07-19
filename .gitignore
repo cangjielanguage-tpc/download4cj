@@ -5,3 +5,9 @@
 .gcno/
 .httpclient4cj/
 ci_test/
+cjpm.lock
+target/
+test/log/
+test/report/
+test/tmp/
+test_temp/
