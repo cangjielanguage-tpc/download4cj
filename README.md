@@ -14,7 +14,6 @@
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/> 介绍
 可靠、灵活、快速和强大的下载引擎。提供同步下载,异步下载,暂停任务
-参考地址 https://github.com/lingochamp/okdownload.git
 
 ### 特性
 
