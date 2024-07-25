@@ -112,7 +112,7 @@ var isComplete = false
 
 main(){
 
-        var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+        var url:String = "http://127.0.0.1/test.jpg"
         let parentFilePath:Path = Path("./fileDownLoad")
         var parentFile:Option<Directory> = Option<Directory>.None
         if (!Directory.exists(parentFilePath)) {
@@ -189,7 +189,7 @@ var isComplete = false
 
 main(){
 
-    var url:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
+    var url:String = "http://127.0.0.1/test.jpg"
     let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
     var FileEnds = url.substring(lastIndex)
     let filenamePre:String = "single-test"
@@ -275,7 +275,7 @@ var isComplete = false
 
 main(){
 
-        var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+        var url:String = "http://127.0.0.1/test.apk"
 
 
         let filename:String = "single-test"
@@ -386,7 +386,7 @@ var isComplete = false
 
 main(){
 
-        var url:String = "https://cdn.llscdn.com/yy/files/xs8qmxn8-lls-LLS-5.8-800-20171207-111607.apk"
+        var url:String = "http://127.0.0.1/test.apk"
 
 
         let filename:String = "single-test"
@@ -490,9 +490,9 @@ var isComplete = false
 main(){
 
 
-    var url1:String = "http://imgsrc.baidu.com/forum/w%3D580/sign=eed1753686d6277fe9123230183a1f63/9dcd7cd98d1001e950d1f582b90e7bec55e7974b.jpg"
-    var url2:String = "http://a2.dxiazaicc.com/down4/win7sp2_downcc.com.zip"
-    var url3:String = "https://cr8.197946.com/lenovobatterysetting.zip"
+    var url1:String = "http://127.0.0.1/test.jpg"
+    var url2:String = "http://127.0.0.1/test.zip"
+    var url3:String = "http://127.0.0.1/test2.zip"
 
 
     let lastIndex1:Int64 = url1.lastIndexOf(".").getOrThrow()
