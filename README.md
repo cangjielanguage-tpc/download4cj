@@ -80,21 +80,13 @@
 #### Linux编译
 
 ```
-git clone https://gitee.com/HW-PLLab/download4cj.git
-地址：https://gitee.com/HW-PLLab/testJekins 将 src 下 ci_test 放入 download4cj 根目录下
-python3 ci_test/main.py build
+cjpm build
 ```
 
 #### Windows编译
 
 ```
-1.获取最新tag的download4cj代码
-2.配置依赖库
-  (1)在src同级目录下创建okhttp文档，根据download4cj/module.json文件中指定的okhttp版本获取okhttp代码
-  (2)根据okhttp库介绍编译okhttp库
-3.编译download4cj
-  (1)切换到download4cj下，即src同级目录，执行如下命令，提示success即表示编译成功
-     cpm build
+cjpm build
 ```
 
 
