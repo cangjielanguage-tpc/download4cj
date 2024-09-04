@@ -1,8 +1,8 @@
 [dependencies]
-httpclient4cj = {branch = "v0.0.1.B001", git = "https://gitcode.com/Cangjie-TPC/httpclient4cj.git", version = "0.0.6"}
+httpclient4cj = {branch = "v0.0.1.B002", git = "https://gitcode.com/Cangjie-TPC/httpclient4cj.git", version = "0.0.6"}
 
 [package]
-  cjc-version = "0.53.4"
+  cjc-version = "0.54.3"
   compile-option = "-O2"
   description = "cj version download4cj"
   link-option = ""
