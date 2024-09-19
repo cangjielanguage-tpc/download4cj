@@ -703,7 +703,7 @@ main(){
     tasklists.append(task1)
     tasklists.append(task2)
     tasklists.append(task3)
-    let tasks:Array<DownloadTask> = Array<DownloadTask>(tasklists)
+    let tasks:Array<DownloadTask> = tasklists.toArray()
 
 
      DownloadTask.enqueues(tasks,MyListen())
