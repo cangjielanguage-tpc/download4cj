@@ -14,7 +14,7 @@
       [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
 
 [dependencies]
-  [dependencies.download4cj]
+  [dependencies.httpclient4cj]
     tag = "cjc_0.53.13_lottie4cj_lp"
     git = "https://gitcode.com/Cangjie-TPC/httpclient4cj.git"
 
