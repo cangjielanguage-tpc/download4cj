@@ -15,7 +15,7 @@
 
 [dependencies]
   [dependencies.download4cj]
-    tag = "v0.0.1.B001"
+    tag = "cjc_0.53.13_lottie4cj_lp"
     git = "https://gitcode.com/Cangjie-TPC/httpclient4cj.git"
 
 [package]
