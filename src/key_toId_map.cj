@@ -30,8 +30,8 @@ public class KeyToIdMap{
 
      func add(task:DownloadTask,id:Int64):Unit{
         let key:String = generateKey(task)
-        keyToIdMap.put(key,id)
-        idToKeyMap.put(id,key)
+        keyToIdMap.add(key,id)
+        idToKeyMap.add(id,key)
     }
 
 

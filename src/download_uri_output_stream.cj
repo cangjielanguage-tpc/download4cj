@@ -11,7 +11,7 @@ public class DownloadUriOutputStream <: DownloadOutputStream{
     let fos:File
 
     init(uri:String,bufferSize:Int64){
-        this.fos = File(uri,OpenOption.Open(true,true))
+        this.fos = File(uri,OpenMode.ReadWrite)
         this.out = BufferedOutputStream(fos,bufferSize)
     }
 

@@ -56,7 +56,7 @@ public class DownloadDispatcher{
     private func enqueueLocked(tasks:Array<DownloadTask>):Unit{
         synchronized(m){
             let taskList:ArrayList<DownloadTask>  = ArrayList<DownloadTask>()
-            taskList.appendAll(tasks)
+            taskList.add(all: tasks)
             if(taskList.size > 1){
                 taskList.sortBy(stable:true,comparator:{rht:DownloadTask,lht:DownloadTask =>
                     if(rht.getPriority() < lht.getPriority()){
@@ -131,7 +131,7 @@ public class DownloadDispatcher{
     private func enqueueIgnorePriority(task:DownloadTask):Unit{
         let call:DownloadCall = DownloadCall.create(task, true, store.getOrThrow())
         if (runningAsyncSize() < maxParallelRunningCount) {
-            runningAsyncCalls.append(call)
+            runningAsyncCalls.add(call)
             spawn{=>
                 try{
                     call.executeCall()
@@ -140,7 +140,7 @@ public class DownloadDispatcher{
                 }
             }
         } else {
-            readyAsyncCalls.append(call)
+            readyAsyncCalls.add(call)
         }
     }
 
@@ -156,7 +156,7 @@ public class DownloadDispatcher{
             }
 
             call = DownloadCall.create(task, false, store.getOrThrow())
-            runningSyncCalls.append(call)
+            runningSyncCalls.add(call)
         }
         try{
             call.executeCall()
@@ -214,7 +214,7 @@ public class DownloadDispatcher{
         synchronized(m){
             let TempreadyAsyncCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
             for(call in readyAsyncCalls){
-                TempreadyAsyncCalls.append(call)
+                TempreadyAsyncCalls.add(call)
             }
             for(call in TempreadyAsyncCalls){
                 if(refEq(call.task,task) ||  call.task.getId() == task.getId()){
@@ -228,23 +228,23 @@ public class DownloadDispatcher{
                         return b
                     })
 
-                    needCallbackCalls.append(call)
+                    needCallbackCalls.add(call)
                     return
                 }
             }
 
             for (call in runningAsyncCalls) {
                 if (refEq(call.task,task) || call.task.getId() == task.getId()) {
-                    needCallbackCalls.append(call)
-                    needCancelCalls.append(call)
+                    needCallbackCalls.add(call)
+                    needCancelCalls.add(call)
                     return
                 }
             }
 
             for (call in runningSyncCalls) {
                 if (refEq(call.task,task) || call.task.getId() == task.getId()) {
-                    needCallbackCalls.append(call)
-                    needCancelCalls.append(call)
+                    needCallbackCalls.add(call)
+                    needCancelCalls.add(call)
                     return
                 }
             }
@@ -275,7 +275,7 @@ public class DownloadDispatcher{
                 } else {
                     let callbackCanceledTasks:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
                     for (call in needCallbackCalls) {
-                        callbackCanceledTasks.append(call.task)
+                        callbackCanceledTasks.add(call.task)
                     }
                     Download4cj.withs().callbackDispatcher().endTasksWithCanceled(callbackCanceledTasks)
                 }
@@ -352,7 +352,7 @@ public class DownloadDispatcher{
         let callbackDispatcher:CallbackDispatcher = Download4cj.withs().callbackDispatcher()
         let TempCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
         for(call in calls){
-            TempCalls.append(call)
+            TempCalls.add(call)
         }
         for(call in TempCalls){
             if(call.isCanceled()){
@@ -362,7 +362,7 @@ public class DownloadDispatcher{
             if(refEq(call.task,task)||call.task.getId() == task.getId()){
                 if(call.isFinishing()){
                     Util.d(TAG, "task: "+task.getId().toString()+" is finishing, move it to finishing list")
-                    finishingCalls.append(call)
+                    finishingCalls.add(call)
                     calls.removeIf({mycall:DownloadCall =>
                         let b = refEq(mycall,call)
                         return b
@@ -371,7 +371,7 @@ public class DownloadDispatcher{
                 }
 
                 if(let Some(i) <- sameTaskList){
-                    i.append(task)
+                    i.add(task)
                 }else{
                     callbackDispatcher.dispatch().taskEnd(task,Option<Exception>.None)
                 }
@@ -402,7 +402,7 @@ public class DownloadDispatcher{
             }
             let TempreadyAsyncCalls:ArrayList<DownloadCall> = ArrayList<DownloadCall>()
             for(call in readyAsyncCalls){
-                TempreadyAsyncCalls.append(call)
+                TempreadyAsyncCalls.add(call)
             }
 
             for(call in TempreadyAsyncCalls){
@@ -414,7 +414,7 @@ public class DownloadDispatcher{
                     return b
                 })
 
-                runningAsyncCalls.append(call)
+                runningAsyncCalls.add(call)
                 spawn{=>
                     try{
                         call.executeCall()

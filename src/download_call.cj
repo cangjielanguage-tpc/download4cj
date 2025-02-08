@@ -107,7 +107,7 @@ public class DownloadCall <: Equatable<DownloadCall>{
                 }
                 setInfoToTask(info)
              }catch(e:IOException){
-                 info = BreakpointInfo(0,"",Option<Directory>.None,"")
+                 info = BreakpointInfo(0,"",Option<Path>.None,"")
                  this.cache = PreError(e)
                 break
              }
@@ -242,8 +242,8 @@ public class DownloadCall <: Equatable<DownloadCall>{
             }
             Util.resetBlockIfDirty(blockInfo)
             let chain:DownloadChain = DownloadChain.createChain(i, task, info, cache, store)
-            blockChainList.append(chain)
-            blockIndexList.append(chain.getBlockIndex())
+            blockChainList.add(chain)
+            blockIndexList.add(chain.getBlockIndex())
         }
 
         if (canceled) {
@@ -278,9 +278,9 @@ public class DownloadCall <: Equatable<DownloadCall>{
                         }
                     }
                 }
-                futures.append(fut)
+                futures.add(fut)
             }
-            blockChainList.appendAll(tasks)
+            blockChainList.add(all: tasks)
             for(future in futures){
                 future.get()
             }

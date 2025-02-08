@@ -55,7 +55,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
                 case Some(v)=>
                     var key = v[0]
                     var value = v[1]
-                    hashMapList.put(key,value)
+                    hashMapList.add(key,value)
                 case None => break
             }
         }
@@ -99,7 +99,7 @@ public class DownloadOkHttp3Connection <: DownloadConnection & DownloadConnectio
                     case Some(v)=>
                         var key = v[0]
                         var value = v[1]
-                        hashMapList.put(key,value)
+                        hashMapList.add(key,value)
                     case None =>
                         break
                 }

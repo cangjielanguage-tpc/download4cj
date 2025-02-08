@@ -37,7 +37,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 case Some(v)=>
                     let info:Option<BreakpointInfo> =  storedInfos.get(v).getOrThrow()
                     if(let Some(j) <- info){
-                        sortedOccupiedIds.append(j.id)
+                        sortedOccupiedIds.add(j.id)
                     }
                 case None => break
             }
@@ -56,7 +56,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         let id:Int64 = task.getId()
         var newInfo:BreakpointInfo = BreakpointInfo(id,task.getUrl(),task.getParentFile(), task.getFilename().getOrThrow())
         synchronized(m){
-            storedInfos.put(id, newInfo)
+            storedInfos.add(id, newInfo)
             unStoredTasks.remove(id)
         }
         return newInfo
@@ -79,7 +79,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         let filename:Option<String> = breakpointInfo.getFilename()
         if(let Some(i) <- filename){
             if(breakpointInfo.isTaskOnlyProvidedParentPath()){
-                this.responseFilenameMap.put(breakpointInfo.getUrl(), i);
+                this.responseFilenameMap.add(breakpointInfo.getUrl(), i);
             }
         }
 
@@ -89,7 +89,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 return true
             }
             synchronized(m){
-                this.storedInfos.put(breakpointInfo.id, breakpointInfo)
+                this.storedInfos.add(breakpointInfo.id, breakpointInfo)
             }
              return true
         }else{
@@ -116,7 +116,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
         if (!fileDirtyList.contains(id)){
             synchronized(m2){
                 if (!fileDirtyList.contains(id)) {
-                     fileDirtyList.append(id)
+                     fileDirtyList.add(id)
                      return true
                 }
             }
@@ -127,7 +127,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
     public func markFileClear(id:Int64):Bool{
          synchronized (m2) {
             try{
-                fileDirtyList.remove(id)
+                fileDirtyList.remove(at: id)
             }catch(e:Exception){
                 return false
             }
@@ -178,7 +178,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 }
            }
            let id:Int64 = allocateId()
-           unStoredTasks.put(id, task.mock(id))
+           unStoredTasks.add(id, task.mock(id))
            keyToIdMap.add(task, id)
            return id
         }
@@ -260,7 +260,7 @@ public class BreakpointStoreOnCache <: DownloadStore{
                 }
             }
 
-            sortedOccupiedIds.insert(index, newId)
+            sortedOccupiedIds.add(newId, at:index)
             return newId
         }
     }

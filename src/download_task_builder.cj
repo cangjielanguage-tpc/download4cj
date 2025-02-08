@@ -42,9 +42,9 @@ public class DownloadTaskBuilder{
 
 
 
-    public init(url:String,file:Directory){
+    public init(url:String,file:Path){
         this.url = url
-        this.uri = file.info.path.toString()
+        this.uri = file.toString()
         this.isFilenameFromResponse = false
         this.filename = ""
         this.connectionCount = 0

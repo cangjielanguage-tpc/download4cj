@@ -4,9 +4,9 @@
 
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.55.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.58.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.4%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -40,29 +40,14 @@
 ```shell
 .
 ├── CHANGELOG.md
-├── gitee_gate.cfg
 ├── LICENSE
-├── module.json
 ├── README.md
 ├── README.OPENSOURCE
 ├── doc
 │  ├── assets
 │  └── feaure_api.md
 ├── src
-│  ├── BreakpointInterceptor.cj
-│  ├── BreakPointLocalCheck.cj
-│  ├── BreakPointLocalCheck.cj
-│  ├── ......cj
-│  ├── DownloadTask.cj
-│  ├── DownloadCall.cj
-│  ├── DownloadChain.cj
-│  ├── DownloadListener.cj
-│  ├── DownloadDispatcher.cj
-│  ├── DownloadStrategy.cj
-│  ├── Download4cj.cj
-│  ├── DownloadStore.cj
-│  ├── DownloadOutputStream.cj
-│  └── DownloadConnection.cj
+│  └── download4cj
 └── test
 ```
 - `doc`  包含库的图片资源，feature_api文档
@@ -95,67 +80,60 @@ cjpm build
 ####  同步下载示例
 
 ```
-
 import download4cj.*
 import std.collection.*
 import std.fs.*
 
 var isComplete = false
 
-main(){
-
-        var url:String = "http://127.0.0.1/test.jpg"
-        let parentFilePath:Path = Path("./fileDownLoad")
-        var parentFile:Option<Directory> = Option<Directory>.None
-        if (!Directory.exists(parentFilePath)) {
-            parentFile = Directory.create(parentFilePath, recursive: true)
-        }
-        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            .setMinIntervalMillisCallbackProcess(30)
-            .build()
-        task.execute(MyListen())
-        if(isComplete){
-            println(isComplete)
-            return 0
-        }else{
-            return 1
-        }
-
+main() {
+    var url: String = "http://127.0.0.1/test.jpg"
+    let parentFilePath: Path = Path("./fileDownLoad")
+    if (!exists(parentFilePath)) {
+        Directory.create(parentFilePath, recursive: true)
+    }
+    let task: DownloadTask = DownloadTaskBuilder(url, parentFilePath).setMinIntervalMillisCallbackProcess(30).build()
+    task.execute(MyListen())
+    if (isComplete) {
+        println(isComplete)
+        return 0
+    } else {
+        return 1
+    }
 }
 
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
+public class MyListen <: DownloadListener {
+    public func taskStart(task: DownloadTask): Unit {
     }
 
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialStart(task: DownloadTask, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialEnd(task: DownloadTask, responseCode: Int64, responseHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func downloadFromBeginning(task:DownloadTask):Unit{
+    public func downloadFromBeginning(task: DownloadTask): Unit {
     }
 
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    public func downloadFromBreakpoint(task: DownloadTask): Unit {
     }
 
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectStart(task: DownloadTask, blockIndex: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectEnd(task: DownloadTask, blockIndex: Int64, responseCode: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchStart(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    public func fetchProgress(task: DownloadTask, blockIndex: Int64, increaseBytes: Int64): Unit {
     }
 
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchEnd(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    public func taskEnd(task: DownloadTask, realCause: Option<Exception>): Unit {
         isComplete = true
     }
 }
@@ -172,77 +150,71 @@ true
 ####  异步下载示例
 
 ```
-
 import download4cj.*
 import std.collection.*
 import std.fs.*
 
 var isComplete = false
 
-main(){
-
-    var url:String = "http://127.0.0.1/test.jpg"
-    let lastIndex:Int64 = url.lastIndexOf(".").getOrThrow()
-    var FileEnds = url.substring(lastIndex)
-    let filenamePre:String = "single-test"
-    let filename = filenamePre+FileEnds
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
+main() {
+    var url: String = "http://127.0.0.1/test.jpg"
+    let lastIndex: Int64 = url.lastIndexOf(".").getOrThrow()
+    var FileEnds = url[lastIndex..]
+    let filenamePre: String = "single-test"
+    let filename = filenamePre + FileEnds
+    let parentFilePath: Path = Path("./fileDownLoad0")
+    if (!exists(parentFilePath)) {
+        Directory.create(parentFilePath, recursive: true)
     }
-    let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-         .setFilename(filename)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
-     task.enqueue(MyListen())
-     sleep(1000*1000*1000*3)
-     if(isComplete){
+    let task: DownloadTask = DownloadTaskBuilder(url, parentFilePath)
+        .setFilename(filename)
+        .setMinIntervalMillisCallbackProcess(30)
+        .build()
+    task.enqueue(MyListen())
+    sleep(Duration.second * 3)
+    if (isComplete) {
         println(isComplete)
         return 0
-     }else{
+    } else {
         return 1
-     }
+    }
 }
 
-
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
+public class MyListen <: DownloadListener {
+    public func taskStart(task: DownloadTask): Unit {
     }
 
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialStart(task: DownloadTask, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialEnd(task: DownloadTask, responseCode: Int64, responseHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func downloadFromBeginning(task:DownloadTask):Unit{
+    public func downloadFromBeginning(task: DownloadTask): Unit {
     }
 
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    public func downloadFromBreakpoint(task: DownloadTask): Unit {
     }
 
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectStart(task: DownloadTask, blockIndex: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectEnd(task: DownloadTask, blockIndex: Int64, responseCode: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchStart(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    public func fetchProgress(task: DownloadTask, blockIndex: Int64, increaseBytes: Int64): Unit {
     }
 
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchEnd(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    public func taskEnd(task: DownloadTask, realCause: Option<Exception>): Unit {
         isComplete = true
     }
 }
-
 ```
 
 
@@ -258,101 +230,84 @@ true
 #### 同步下载暂停下载示例
 
 ```cangjie
-
 import download4cj.*
 import std.collection.*
 import std.fs.*
 
 var isComplete = false
 
-main(){
+main() {
+    var url: String = "http://127.0.0.1/test.apk"
+    let filename: String = "single-test"
+    let parentFilePath: Path = Path("./fileDownLoad")
+    if (!exists(parentFilePath)) {
+        Directory.create(parentFilePath, recursive: true)
+    } else {
+    }
 
-        var url:String = "http://127.0.0.1/test.apk"
+    let task: DownloadTask = DownloadTaskBuilder(url, parentFilePath).setMinIntervalMillisCallbackProcess(30).build()
 
-
-        let filename:String = "single-test"
-
-        let parentFilePath:Path = Path("./fileDownLoad")
-        var parentFile:Option<Directory> = Option<Directory>.None
-
-        if (!Directory.exists(parentFilePath)) {
-            parentFile = Directory.create(parentFilePath, recursive: true)
-        }else{
+    spawn {
+        =>
+        sleep(Duration.second)
+        task.cancel()
+        let blockList: ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
+        for (oneitem in blockList) {
+            println("==========================================================")
+            println("blockinfoCurrent=" + oneitem.getCurrentOffset().toString() + "=========blockinfoContent=" + oneitem.getContentLength().toString())
+            println("blockinfoRangeLeft=" + oneitem.getRangeLeft().toString() + "=========blockinfoRangeRight=" + oneitem.getRangeRight().toString())
+            println("==========================================================")
         }
+    }
+    task.execute(MyListen())
+    sleep(Duration.second * 3)
+    task.execute(MyListen())
+    sleep(Duration.second * 3)
 
-        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            .setMinIntervalMillisCallbackProcess(30)
-            .build()
-
-        spawn { =>
-            sleep(1000*1000*1000)
-            task.cancel()
-            let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
-            for(oneitem in blockList){
-                println("==========================================================")
-                println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
-                println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
-                println("==========================================================")
-            }
-        }
-
-        task.execute(MyListen())
-
-
-        sleep(1000*1000*1000*3)
-        task.execute(MyListen())
-        sleep(1000*1000*1000*3)
-
-        if(isComplete && task.getConnectionCount()==3){
-            println(true)
-            return 0
-        }else{
-            println(false)
-            return 1
-        }
-
-
+    if (isComplete && task.getConnectionCount() == 3) {
+        println(true)
+        return 0
+    } else {
+        println(false)
+        return 1
+    }
 }
 
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
+public class MyListen <: DownloadListener {
+    public func taskStart(task: DownloadTask): Unit {
     }
 
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialStart(task: DownloadTask, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialEnd(task: DownloadTask, responseCode: Int64, responseHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func downloadFromBeginning(task:DownloadTask):Unit{
+    public func downloadFromBeginning(task: DownloadTask): Unit {
     }
 
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    public func downloadFromBreakpoint(task: DownloadTask): Unit {
     }
 
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectStart(task: DownloadTask, blockIndex: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectEnd(task: DownloadTask, blockIndex: Int64, responseCode: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchStart(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    public func fetchProgress(task: DownloadTask, blockIndex: Int64, increaseBytes: Int64): Unit {
     }
 
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchEnd(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    public func taskEnd(task: DownloadTask, realCause: Option<Exception>): Unit {
         isComplete = true
     }
 }
-
-
-
 ```
 
 执行结果如下：
@@ -369,95 +324,83 @@ true
 
 
 ```cangjie
-
 import download4cj.*
 import std.collection.*
 import std.fs.*
 
 var isComplete = false
 
-main(){
+main() {
+    var url: String = "http://127.0.0.1/test.apk"
+    let filename: String = "single-test"
+    let parentFilePath: Path = Path("./fileDownLoad")
+    if (!exists(parentFilePath)) {
+        Directory.create(parentFilePath, recursive: true)
+    } else {
+    }
 
-        var url:String = "http://127.0.0.1/test.apk"
+    let task: DownloadTask = DownloadTaskBuilder(url, parentFilePath)
+        .setMinIntervalMillisCallbackProcess(30)
+        .build()
+    task.enqueue(MyListen())
+    sleep(Duration.second)
+    task.cancel()
 
+    let blockList: ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
+    for (oneitem in blockList) {
+        println("==========================================================")
+        println("blockinfoCurrent=" + oneitem.getCurrentOffset().toString() + "=========blockinfoContent=" + oneitem.getContentLength().toString())
+        println("blockinfoRangeLeft=" + oneitem.getRangeLeft().toString() + "=========blockinfoRangeRight=" + oneitem.getRangeRight().toString())
+        println("==========================================================")
+    }
 
-        let filename:String = "single-test"
-
-        let parentFilePath:Path = Path("./fileDownLoad")
-        var parentFile:Option<Directory> = Option<Directory>.None
-
-        if (!Directory.exists(parentFilePath)) {
-            parentFile = Directory.create(parentFilePath, recursive: true)
-        }else{
-        }
-
-        let task:DownloadTask = DownloadTaskBuilder(url, parentFile.getOrThrow())
-            .setMinIntervalMillisCallbackProcess(30)
-            .build()
-        task.enqueue(MyListen())
-        sleep(1000*1000*1000)
-        task.cancel()
-
-        let blockList:ArrayList<BlockInfo> = task.getBlockInfoList().getOrThrow()
-        for(oneitem in blockList){
-            println("==========================================================")
-            println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
-            println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
-            println("==========================================================")
-        }
-
-        sleep(1000*1000*1000*2)
-        task.enqueue(MyListen())
-        sleep(1000*1000*1000*3)
-        if(isComplete && task.getConnectionCount()==3){
-            println(true)
-            return 0
-        }else{
-            println(false)
-            return 1
-        }
-
-
+    sleep(Duration.second * 2)
+    task.enqueue(MyListen())
+    sleep(Duration.second * 3)
+    if (isComplete && task.getConnectionCount() == 3) {
+        println(true)
+        return 0
+    } else {
+        println(false)
+        return 1
+    }
 }
 
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
+public class MyListen <: DownloadListener {
+    public func taskStart(task: DownloadTask): Unit {
     }
 
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialStart(task: DownloadTask, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectTrialEnd(task: DownloadTask, responseCode: Int64, responseHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func downloadFromBeginning(task:DownloadTask):Unit{
+    public func downloadFromBeginning(task: DownloadTask): Unit {
     }
 
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
+    public func downloadFromBreakpoint(task: DownloadTask): Unit {
     }
 
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectStart(task: DownloadTask, blockIndex: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
+    public func connectEnd(task: DownloadTask, blockIndex: Int64, responseCode: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
     }
 
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchStart(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
+    public func fetchProgress(task: DownloadTask, blockIndex: Int64, increaseBytes: Int64): Unit {
     }
 
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
+    public func fetchEnd(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
     }
 
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
+    public func taskEnd(task: DownloadTask, realCause: Option<Exception>): Unit {
         isComplete = true
     }
 }
-
-
 ```
 
 执行结果如下：
@@ -472,131 +415,117 @@ true
 ####  异步下载多个文件暂停下载示例
 
 ```cangjie
-
 import download4cj.*
 import std.collection.*
 import std.fs.*
 
 var isComplete = false
 
-main(){
+main() {
+    var url1: String = "http://127.0.0.1/test.jpg"
+    var url2: String = "http://127.0.0.1/test.zip"
+    var url3: String = "http://127.0.0.1/test2.zip"
 
+    let lastIndex1: Int64 = url1.lastIndexOf(".").getOrThrow()
+    let lastIndex2: Int64 = url2.lastIndexOf(".").getOrThrow()
+    let lastIndex3: Int64 = url3.lastIndexOf(".").getOrThrow()
+    var FileEnds1 = url1[lastIndex1..]
+    var FileEnds2 = url2[lastIndex2..]
+    var FileEnds3 = url3[lastIndex3..]
 
-    var url1:String = "http://127.0.0.1/test.jpg"
-    var url2:String = "http://127.0.0.1/test.zip"
-    var url3:String = "http://127.0.0.1/test2.zip"
+    let filenamePre: String = "single-test"
+    let filename1 = filenamePre + "111" + FileEnds1
+    let filename2 = filenamePre + "222" + FileEnds2
+    let filename3 = filenamePre + "333" + FileEnds3
 
-
-    let lastIndex1:Int64 = url1.lastIndexOf(".").getOrThrow()
-    let lastIndex2:Int64 = url2.lastIndexOf(".").getOrThrow()
-    let lastIndex3:Int64 = url3.lastIndexOf(".").getOrThrow()
-    var FileEnds1 = url1.substring(lastIndex1)
-    var FileEnds2 = url2.substring(lastIndex2)
-    var FileEnds3 = url3.substring(lastIndex3)
-
-
-    let filenamePre:String = "single-test"
-    let filename1 = filenamePre+"111"+FileEnds1
-    let filename2 = filenamePre+"222"+FileEnds2
-    let filename3 = filenamePre+"333"+FileEnds3
-
-
-    let parentFilePath:Path = Path("./fileDownLoad0")
-    var parentFile:Option<Directory> = Option<Directory>.None
-
-    if (!Directory.exists(parentFilePath)) {
-        parentFile = Directory.create(parentFilePath, recursive: true)
-    }else{
+    let parentFilePath: Path = Path("./fileDownLoad0")
+    if (!exists(parentFilePath)) {
+        Directory.create(parentFilePath, recursive: true)
+    } else {
     }
 
-    let task1:DownloadTask = DownloadTaskBuilder(url1, parentFile.getOrThrow())
-         .setFilename(filename1)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
+    let task1: DownloadTask = DownloadTaskBuilder(url1, parentFilePath)
+        .setFilename(filename1)
+        .setMinIntervalMillisCallbackProcess(30)
+        .build()
 
-    let task2:DownloadTask = DownloadTaskBuilder(url2, parentFile.getOrThrow())
-         .setFilename(filename2)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
+    let task2: DownloadTask = DownloadTaskBuilder(url2, parentFilePath)
+        .setFilename(filename2)
+        .setMinIntervalMillisCallbackProcess(30)
+        .build()
 
-    let task3:DownloadTask = DownloadTaskBuilder(url3, parentFile.getOrThrow())
-         .setFilename(filename3)
-         .setMinIntervalMillisCallbackProcess(30)
-         .build()
+    let task3: DownloadTask = DownloadTaskBuilder(url3, parentFilePath)
+        .setFilename(filename3)
+        .setMinIntervalMillisCallbackProcess(30)
+        .build()
 
+    let tasklists: ArrayList<DownloadTask> = ArrayList<DownloadTask>()
+    tasklists.add(task1)
+    tasklists.add(task2)
+    tasklists.add(task3)
+    let tasks: Array<DownloadTask> = tasklists.toArray()
 
-    let tasklists:ArrayList<DownloadTask> = ArrayList<DownloadTask>()
-    tasklists.append(task1)
-    tasklists.append(task2)
-    tasklists.append(task3)
-    let tasks:Array<DownloadTask> = tasklists.toArray()
+    DownloadTask.enqueues(tasks, MyListen())
+    sleep(Duration.second * 2)
+    DownloadTask.cancels(tasks)
 
-
-     DownloadTask.enqueues(tasks,MyListen())
-     sleep(1000*1000*1000*2)
-     DownloadTask.cancels(tasks)
-
-     for(oneTask in tasks){
+    for (oneTask in tasks) {
         println("==========================================================")
-        let blockList:ArrayList<BlockInfo> = oneTask.getBlockInfoList().getOrThrow()
-        for(oneitem in blockList){
-            println("blockinfoCurrent="+oneitem.getCurrentOffset().toString()+"=========blockinfoContent="+oneitem.getContentLength().toString())
-            println("blockinfoRangeLeft="+oneitem.getRangeLeft().toString()+"=========blockinfoRangeRight="+oneitem.getRangeRight().toString())
+        let blockList: ArrayList<BlockInfo> = oneTask.getBlockInfoList().getOrThrow()
+        for (oneitem in blockList) {
+            println("blockinfoCurrent=" + oneitem.getCurrentOffset().toString() + "=========blockinfoContent=" + oneitem.getContentLength().toString())
+            println("blockinfoRangeLeft=" + oneitem.getRangeLeft().toString() + "=========blockinfoRangeRight=" + oneitem.getRangeRight().toString())
         }
         println("==========================================================")
-     }
+    }
 
-     sleep(1000*1000*1000*2)
-     DownloadTask.enqueues(tasks,MyListen())
-     sleep(1000*1000*1000*30)
-     if(isComplete){
+    sleep(Duration.second * 2)
+    DownloadTask.enqueues(tasks, MyListen())
+    sleep(Duration.second * 30)
+    if (isComplete) {
         println(true)
         return 0
-     }else{
+    } else {
         println(false)
         return 1
-     }
-}
-
-
-public class MyListen<: DownloadListener{
-
-    public func taskStart(task:DownloadTask):Unit{
-    }
-
-    public func connectTrialStart(task:DownloadTask,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectTrialEnd(task:DownloadTask,responseCode:Int64,responseHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-
-    }
-
-    public func downloadFromBeginning(task:DownloadTask):Unit{
-    }
-
-    public func downloadFromBreakpoint(task:DownloadTask):Unit{
-    }
-
-    public func connectStart(task:DownloadTask,blockIndex:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func connectEnd(task:DownloadTask,blockIndex:Int64,responseCode:Int64,requestHeaderFields:HashMap<String, ArrayList<String>>):Unit{
-    }
-
-    public func fetchStart(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func fetchProgress(task:DownloadTask,blockIndex:Int64,increaseBytes:Int64):Unit{
-    }
-
-    public func fetchEnd(task:DownloadTask,blockIndex:Int64,contentLength:Int64):Unit{
-    }
-
-    public func taskEnd(task:DownloadTask,realCause:Option<Exception>):Unit{
-       isComplete = true
     }
 }
 
+public class MyListen <: DownloadListener {
+    public func taskStart(task: DownloadTask): Unit {
+    }
+
+    public func connectTrialStart(task: DownloadTask, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
+    }
+
+    public func connectTrialEnd(task: DownloadTask, responseCode: Int64, responseHeaderFields: HashMap<String, ArrayList<String>>): Unit {
+    }
+
+    public func downloadFromBeginning(task: DownloadTask): Unit {
+    }
+
+    public func downloadFromBreakpoint(task: DownloadTask): Unit {
+    }
+
+    public func connectStart(task: DownloadTask, blockIndex: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
+    }
+
+    public func connectEnd(task: DownloadTask, blockIndex: Int64, responseCode: Int64, requestHeaderFields: HashMap<String, ArrayList<String>>): Unit {
+    }
+
+    public func fetchStart(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
+    }
+
+    public func fetchProgress(task: DownloadTask, blockIndex: Int64, increaseBytes: Int64): Unit {
+    }
+
+    public func fetchEnd(task: DownloadTask, blockIndex: Int64, contentLength: Int64): Unit {
+    }
+
+    public func taskEnd(task: DownloadTask, realCause: Option<Exception>): Unit {
+        isComplete = true
+    }
+}
 ```
 
 执行结果如下：

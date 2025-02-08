@@ -52,7 +52,7 @@ public class BreakpointLocalCheck {
         }else{
             return false
         }
-        if(File.exists(file.getOrThrow().info.path)){
+        if(exists(file.getOrThrow().info.path)){
             return true
         }else{
             return false
