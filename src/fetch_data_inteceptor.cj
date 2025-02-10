@@ -31,7 +31,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
 
         // fetch
 
-        var stream = ByteArrayStream()
+        var stream = ByteBuffer()
 
         var fetchLength:Int64 = source.read(stream,task.getReadBufferSize())
 
@@ -40,7 +40,7 @@ public class FetchDataInterceptor <: InterceptorFetch {
         }
 
         // write to file
-        outputStream.write(blockIndex, stream.readToEnd())
+        outputStream.write(blockIndex, stream.bytes())
 
 
         chain.increaseCallbackBytes(fetchLength)

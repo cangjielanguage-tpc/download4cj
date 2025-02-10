@@ -145,17 +145,17 @@ public class MultiPointOutputStream {
                         throw FileNotFoundException("Filename is not ready!")
                     }
 
-                    let parentFile:Directory = task.getParentFile()
-                    if(!Directory.exists(parentFile.info.path)){
+                    let parentFile:Path = task.getParentFile()
+                    if(!exists(parentFile)){
                         try{
-                            Directory.create(parentFile.info.path)
+                            Directory.create(parentFile)
                         }catch(e:ReadWriteException){
                             throw ReadWriteException("Create parent folder failed!")
                         }
                     }
                     try{
-                        parentFile.createFile(file.getOrThrow().info.path.fileName.getOrThrow())
-                        Util.d(TAG, "Create new file: " + file.getOrThrow().info.path.fileName.getOrThrow())
+                        File(parentFile.join(file.getOrThrow().info.path.fileName), ReadWrite)
+                        Util.d(TAG, "Create new file: " + file.getOrThrow().info.path.fileName)
                     }catch(e:Exception){
                     }
                     uri = file.getOrThrow().info.path.toString()
@@ -180,7 +180,7 @@ public class MultiPointOutputStream {
                     let totalLength:Int64 = info.getTotalLength()
                     if (!isFileScheme) {
                         let file:Option<File> = task.getFile()
-                        let requireSpace:Int64 = totalLength - file.getOrThrow().info.length
+                        let requireSpace:Int64 = totalLength - file.getOrThrow().info.size
                         if (requireSpace > 0) {
                             outputStream.getOrThrow().setLength(totalLength)
                         }
@@ -190,8 +190,8 @@ public class MultiPointOutputStream {
                 }
                 synchronized (m2) {
                     // make sure the length of noSyncLengthMap is equal to outputStreamMap
-                    outputStreamMap.put(blockIndex, outputStream.getOrThrow())
-                    noSyncLengthMap.put(blockIndex, AtomicInt64(0))
+                    outputStreamMap.add(blockIndex, outputStream.getOrThrow())
+                    noSyncLengthMap.add(blockIndex, AtomicInt64(0))
                 }
                 firstOutputStream = false
             }

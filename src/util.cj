@@ -4,6 +4,8 @@
 
 package download4cj
 
+import std.console.Console
+import log.*
 
 public class Util{
 
@@ -58,7 +60,7 @@ public class Util{
 
 
      static func d(tag:String,msg:String):Unit{
-        let logger:SimpleLogger = SimpleLogger()
+        let logger:SimpleLogger = SimpleLogger(Console.stdOut)
         logger.log(LogLevel.DEBUG,tag+"--"+msg)
     }
 

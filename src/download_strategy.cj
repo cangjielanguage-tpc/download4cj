@@ -99,14 +99,13 @@ public class DownloadStrategy{
                  if(Util.isEmpty(filename)){
                     filename = DateTime.now().toUnixTimeStamp().toNanoseconds().toString()
                  }
-
                   task.filenameHolder = FileNameHolder(filename)
-                  task.targetFile = task.getParentFile().createFile(filename)
+                  task.targetFile = File(task.getParentFile().join(filename), ReadWrite)
                   task.providedPathFile = task.getFile().getOrThrow()
             }else{
                 //不为空 这个就是文件名
                 task.filenameHolder = FileNameHolder(responseFileName)
-                task.targetFile = task.getParentFile().createFile(responseFileName)
+                task.targetFile = File(task.getParentFile().join(responseFileName), ReadWrite)
                 task.providedPathFile = task.getFile().getOrThrow()
             }
         }

@@ -10,7 +10,7 @@ public class BreakpointInfo {
     private let url:String
     private var etag:Option<String>
 
-    let parentFile:Option<Directory>
+    let parentFile:Option<Path>
     private var targetFile:Option<File>
     private let filenameHolder:FileNameHolder
 
@@ -18,7 +18,7 @@ public class BreakpointInfo {
     private let taskOnlyProvidedParentPath:Bool
     private var chunked:Bool = false
 
-    init(id:Int64,url:String,parentFile:Option<Directory>,filename:String){
+    init(id:Int64,url:String,parentFile:Option<Path>,filename:String){
         this.id = id
         this.url = url
         this.parentFile = parentFile
@@ -30,8 +30,8 @@ public class BreakpointInfo {
         }else{
             filenameHolder = FileNameHolder(filename)
             taskOnlyProvidedParentPath = false
-            let filePath:Path = parentFile.getOrThrow().info.path.join(filename)
-            this.targetFile = File.openRead(filePath)
+            let filePath:Path = parentFile.getOrThrow().join(filename)
+            this.targetFile = File(filePath, OpenMode.Read)
         }
         etag = ""
     }
@@ -42,7 +42,7 @@ public class BreakpointInfo {
     }
 
     func addBlock(blockInfo:BlockInfo):Unit{
-        this.blockInfoList.append(blockInfo)
+        this.blockInfoList.add(blockInfo)
     }
 
     func isChunked():Bool{
@@ -106,7 +106,7 @@ public class BreakpointInfo {
     }
 
     func isSameFrom(task:DownloadTask):Bool{
-        if(!parentFile.getOrThrow().info.path.toString().equals(task.getParentFile().info.path.toString())){
+        if(!parentFile.getOrThrow().toString().equals(task.getParentFile().toString())){
             return false
         }
         if(!url.equals(task.getUrl())){

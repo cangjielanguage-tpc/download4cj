@@ -10,8 +10,8 @@ protected import encoding.url.*
 protected import std.collection.*
 protected import std.io.*
 protected import std.sync.*
-protected import std.log.*
-protected import std.socket.*
+protected import logger.*
+protected import net.*
 protected import std.time.*
 protected import std.regex.*
 protected import std.runtime.*
@@ -47,7 +47,7 @@ public class DownloadTask <: IdentifiedTask {
     private var filenameFromResponse:Bool //文件名来自响应
     var filenameHolder:FileNameHolder
     var providedPathFile:Option<File> //提供的路径文件
-    var directoryFile :Directory
+    var directoryFile :Path
     var targetFile :Option<File>
     private var redirectLocation : String
     private var filename:Option<String>
@@ -80,7 +80,7 @@ public class DownloadTask <: IdentifiedTask {
         this.tag = Option<Object>.None
         this.redirectLocation = ""
 
-        let dirFile:Directory = Directory(uria)
+        let dirFile:Path = Path(uria)
         filenameFromResponse = true
         directoryFile = dirFile
         this.filenameFromResponse = filenameFromResponse
@@ -92,7 +92,7 @@ public class DownloadTask <: IdentifiedTask {
             providedPathFile = Option<File>.None
         }else{
             filenameHolder = FileNameHolder(this.filename.getOrThrow())
-            targetFile = directoryFile.createFile(this.filename.getOrThrow())
+            targetFile = File(directoryFile.join(this.filename.getOrThrow()), ReadWrite)
             providedPathFile = targetFile.getOrThrow()
         }
 
@@ -143,7 +143,7 @@ public class DownloadTask <: IdentifiedTask {
         return  providedPathFile
     }
 
-    protected func getParentFile():Directory{
+    protected func getParentFile():Path{
         return directoryFile
     }
 
@@ -156,7 +156,7 @@ public class DownloadTask <: IdentifiedTask {
 
         if(let Some(_) <- targetFile){
         }else{
-            targetFile = File(directoryFile.info.path.toString()+filenames.getOrThrow(),OpenOption.Open(true,true)); //targetFile就是下载的目标文件
+            targetFile = File(directoryFile.toString()+filenames.getOrThrow(),OpenMode.ReadWrite); //targetFile就是下载的目标文件
         }
         return targetFile
     }
@@ -271,7 +271,7 @@ public class DownloadTask <: IdentifiedTask {
 
 
     public func toString():String{
-        return  id.toString() + "@" + url + "@" + directoryFile.info.path.toString()+ "/" + filenameHolder.get().getOrThrow()
+        return  id.toString() + "@" + url + "@" + directoryFile.toString()+ "/" + filenameHolder.get().getOrThrow()
     }
 
 

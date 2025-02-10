@@ -10,7 +10,7 @@ public class MockTaskForCompare <: IdentifiedTask {
     let url:String
     let providedPathFile:Option<File>
     let filename:String
-    let parentFile:Option<Directory>
+    let parentFile:Option<Path>
 
 
 
@@ -44,7 +44,7 @@ public class MockTaskForCompare <: IdentifiedTask {
     }
 
 
-    protected  func getParentFile():Directory{
+    protected  func getParentFile():Path{
         return parentFile.getOrThrow()
     }
 
