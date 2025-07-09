@@ -83,7 +83,7 @@ public class BreakpointInterceptor <: InterceptorConnect & InterceptorFetch{
         match(matchDataArray){
             case Some(md)
                 =>
-                return Int64.parse(md.get(0).getOrThrow().matchStr(1))
+                return Int64.parse(md.get(0).getOrThrow().matchString(1))
             case None
                 =>
                 return -1
