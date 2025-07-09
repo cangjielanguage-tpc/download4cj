@@ -4,19 +4,21 @@
 
 package download4cj
 
-protected import httpclient4cj.*
-protected import std.fs.*
-protected import encoding.url.*
-protected import std.collection.*
-protected import std.io.*
-protected import std.sync.*
-protected import logger.*
-protected import net.*
-protected import std.time.*
-protected import std.regex.*
-protected import std.runtime.*
-protected import std.convert.*
-protected import net.tls.*
+internal import httpclient4cj.*
+internal import std.fs.*
+internal import stdx.encoding.url.*
+internal import std.collection.*
+internal import std.io.*
+internal import std.sync.*
+internal import stdx.log.*
+internal import stdx.logger.*
+internal import std.time.*
+internal import std.regex.*
+internal import std.runtime.*
+internal import std.convert.*
+internal import stdx.net.http.*
+internal import std.net.*
+internal import stdx.net.tls.*
 
 
 public class DownloadTask <: IdentifiedTask {

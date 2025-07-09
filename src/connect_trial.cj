@@ -121,7 +121,7 @@ public class ConnectTrial{
             match(matchData0){
                 case Some(s) =>
                     if (s.groupNumber() > 0) {
-                        fileName = s.matchStr(1)
+                        fileName = s.matchString(1)
                     }else{
                         fileName = Option<String>.None
                     }

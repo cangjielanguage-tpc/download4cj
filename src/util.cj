@@ -5,7 +5,6 @@
 package download4cj
 
 import std.console.Console
-import log.*
 
 public class Util{
 
